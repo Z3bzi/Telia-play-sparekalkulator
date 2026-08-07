@@ -31,11 +31,12 @@ export function useCountUp(value) {
     const tick = now => {
       const t = Math.min(1, (now - start) / DURATION);
       const current = Math.round(from + (value - from) * easeOut(t));
+      // Track every painted frame so an interrupting animation starts from
+      // what is on screen instead of snapping back to the previous origin.
+      fromRef.current = current;
       setDisplay(current);
       if (t < 1) {
         frameRef.current = requestAnimationFrame(tick);
-      } else {
-        fromRef.current = value;
       }
     };
     frameRef.current = requestAnimationFrame(tick);

@@ -77,9 +77,16 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
   const reset = () => setDraft(clone(DEFAULT_CONFIG));
 
   const save = () => {
+    // Deduplicate: PotSelector keys and matches selection by value, so two
+    // identical packages would collide.
+    const pots = [...new Set(draft.pots.filter(p => p > 0))].sort((a, b) => a - b);
     const cleaned = {
       ...draft,
-      pots: draft.pots.filter(p => p > 0).sort((a, b) => a - b),
+      // An empty PIN would let an empty input through the gate, and zero
+      // packages would leave the calculator computing against one that no
+      // longer exists — keep the previous values rather than persist either.
+      pin: draft.pin.trim() || config.pin,
+      pots: pots.length ? pots : config.pots,
       services: draft.services.filter(s => s.name.trim() && s.levels.length > 0),
     };
     onSave(cleaned);

@@ -6,13 +6,14 @@ import { brandColor, logoSrc, monogram } from "../lib/brand";
 function ServiceMark({ service }) {
   const src = logoSrc(service);
   // A configured logo that fails to load must not leave a blank square, so fall
-  // back to the monogram the same way an unconfigured service does.
-  const [failed, setFailed] = useState(false);
+  // back to the monogram the same way an unconfigured service does. The failure
+  // is remembered per-src, so correcting the path in admin retries immediately.
+  const [failedSrc, setFailedSrc] = useState(null);
 
-  if (src && !failed) {
+  if (src && failedSrc !== src) {
     return (
       <span className="app-svcLogo app-svcLogoImg">
-        <img src={src} alt="" onError={() => setFailed(true)} />
+        <img src={src} alt="" onError={() => setFailedSrc(src)} />
       </span>
     );
   }
