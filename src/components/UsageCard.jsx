@@ -1,6 +1,12 @@
 import { Heading } from "@purpur/library";
 import { kr } from "../lib/config";
 
+// A 0-point service has infinite value per point (it costs nothing from the
+// package) — meaningful for the packing order, meaningless on screen.
+const pointsRate = x => Number.isFinite(x.valuePerPoint)
+  ? `${x.points} p · ${x.valuePerPoint.toFixed(1)} kr/poeng`
+  : `${x.points} p`;
+
 const ALT_LABELS = {
   buy: "Kjøp ekstra poeng",
   fit: "Bare det som får plass",
@@ -74,7 +80,7 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
           <div className="app-coverRow" key={x.id}>
             <span className="app-coverName">
               {x.name} · {x.levelName}
-              <span className="app-coverRate">{x.points} p · {x.valuePerPoint.toFixed(1)} kr/poeng</span>
+              <span className="app-coverRate">{pointsRate(x)}</span>
             </span>
             <span className="app-coverVal">{kr(x.price)} kr/md.</span>
           </div>
@@ -89,7 +95,7 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
               <div className="app-coverRow app-coverDrop" key={x.id}>
                 <span className="app-coverName">
                   {x.name} · {x.levelName}
-                  <span className="app-coverRate">{x.points} p · {x.valuePerPoint.toFixed(1)} kr/poeng</span>
+                  <span className="app-coverRate">{pointsRate(x)}</span>
                 </span>
                 <span>{kr(x.price)} kr/md.</span>
               </div>
