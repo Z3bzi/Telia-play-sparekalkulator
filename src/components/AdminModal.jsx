@@ -50,13 +50,13 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
 
   const addLvl = si => setDraft(d => {
     const next = clone(d);
-    next.services[si].levels.push({ name: "Nytt nivå", price: 99 });
+    next.services[si].levels.push({ name: "Nytt nivå", price: 99, points: 10 });
     return next;
   });
 
   const addSvc = () => setDraft(d => {
     const next = clone(d);
-    next.services.push({ id: "svc" + Date.now(), name: "Ny tjeneste", points: 10, levels: [{ name: "Standard", price: 99 }] });
+    next.services.push({ id: "svc" + Date.now(), name: "Ny tjeneste", levels: [{ name: "Standard", price: 99, points: 10 }] });
     return next;
   });
 
@@ -121,14 +121,6 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
             <div className="app-adminSvc" key={si}>
               <div className="app-adminSvcTop">
                 <TextField id={`svc-name-${si}`} label="Navn" value={s.name} onChange={e => updateSvc(si, "name", e.target.value)} />
-                <TextField
-                  className="app-adminNum"
-                  id={`svc-points-${si}`}
-                  label="Poeng"
-                  type="number"
-                  value={s.points}
-                  onChange={e => updateSvc(si, "points", Math.max(0, Number(e.target.value) || 0))}
-                />
                 <Button variant="destructive" onClick={() => removeSvc(si)}>Fjern</Button>
               </div>
               <div className="app-adminRow">
@@ -152,7 +144,17 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                     value={l.price}
                     onChange={e => updateLvl(si, li, "price", Math.max(0, Number(e.target.value) || 0))}
                   />
-                  <Button variant="destructive" iconOnly aria-label="Fjern nivå" onClick={() => removeLvl(si, li)}>×</Button>
+                  <TextField
+                    className="app-adminNum"
+                    id={`lvl-points-${si}-${li}`}
+                    label="Poeng"
+                    type="number"
+                    value={l.points}
+                    onChange={e => updateLvl(si, li, "points", Math.max(0, Number(e.target.value) || 0))}
+                  />
+                  {/* Purpur's iconOnly buttons expect an icon child and render
+                      nothing for text, so these are ordinary labelled buttons. */}
+                  <Button variant="destructive" size="sm" onClick={() => removeLvl(si, li)}>Fjern nivå</Button>
                 </div>
               ))}
               <Button variant="tertiary-purple" onClick={() => addLvl(si)}>+ Nivå</Button>
@@ -192,7 +194,7 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                 value={p}
                 onChange={e => updatePot(pi, Math.max(0, Number(e.target.value) || 0))}
               />
-              <Button variant="destructive" iconOnly aria-label="Fjern pakke" onClick={() => removePot(pi)}>×</Button>
+              <Button variant="destructive" size="sm" onClick={() => removePot(pi)}>Fjern pakke</Button>
             </div>
           ))}
           <Button variant="tertiary-purple" onClick={addPot}>+ Pakke</Button>
