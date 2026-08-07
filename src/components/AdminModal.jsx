@@ -124,6 +124,16 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                 />
                 <Button variant="destructive" onClick={() => removeSvc(si)}>Fjern</Button>
               </div>
+              <div className="app-adminRow">
+                <TextField
+                  id={`svc-logo-${si}`}
+                  label="Logo"
+                  placeholder="netflix.svg"
+                  helperText="Filnavn i /logos, eller full URL. Tomt = bokstavmerke."
+                  value={s.logo ?? ""}
+                  onChange={e => updateSvc(si, "logo", e.target.value)}
+                />
+              </div>
               {s.levels.map((l, li) => (
                 <div className="app-adminLvl" key={li}>
                   <TextField id={`lvl-name-${si}-${li}`} label="Nivånavn" value={l.name} onChange={e => updateLvl(si, li, "name", e.target.value)} />

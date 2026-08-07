@@ -1,6 +1,28 @@
+import { useState } from "react";
 import { Checkbox, Heading, Select } from "@purpur/library";
 import { kr } from "../lib/config";
-import { brandColor, monogram } from "../lib/brand";
+import { brandColor, logoSrc, monogram } from "../lib/brand";
+
+function ServiceMark({ service }) {
+  const src = logoSrc(service);
+  // A configured logo that fails to load must not leave a blank square, so fall
+  // back to the monogram the same way an unconfigured service does.
+  const [failed, setFailed] = useState(false);
+
+  if (src && !failed) {
+    return (
+      <span className="app-svcLogo app-svcLogoImg">
+        <img src={src} alt="" onError={() => setFailed(true)} />
+      </span>
+    );
+  }
+
+  return (
+    <span className="app-svcLogo" style={{ background: brandColor(service) }} aria-hidden="true">
+      {monogram(service.name)}
+    </span>
+  );
+}
 
 export function ServicesCard({ services, selections, onToggle, onLevelChange }) {
   return (
@@ -33,9 +55,7 @@ export function ServicesCard({ services, selections, onToggle, onLevelChange }) 
                     aria-label={s.name}
                   />
                 </span>
-                <span className="app-svcLogo" style={{ background: brandColor(s) }} aria-hidden="true">
-                  {monogram(s.name)}
-                </span>
+                <ServiceMark service={s} />
                 <span className="app-svcText">
                   <span className="app-svcName">{s.name}</span>
                   <span className="app-svcMeta">
