@@ -5,7 +5,7 @@ import { kr } from "../lib/config";
  * Keeps the payoff figure visible while the user is still ticking services.
  * Shows only once the real result card has scrolled out of view.
  */
-export function StickyBar({ savingMonth, targetRef }) {
+export function StickyBar({ savingMonth, targetRef, suppressed = false }) {
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
@@ -20,8 +20,12 @@ export function StickyBar({ savingMonth, targetRef }) {
     return () => observer.disconnect();
   }, [targetRef]);
 
+  // While a modal is open the bar would sit over the dialog's own buttons, and
+  // it refers to page content the user isn't looking at anyway.
+  const shown = visible && !suppressed;
+
   return (
-    <div className={`app-stickyBar${visible ? " app-stickyOn" : ""}`} aria-hidden={!visible}>
+    <div className={`app-stickyBar${shown ? " app-stickyOn" : ""}`} aria-hidden={!shown}>
       <span className="app-stickyLabel">Du sparer</span>
       <span className="app-stickyValue">{kr(savingMonth)} kr/md.</span>
     </div>
