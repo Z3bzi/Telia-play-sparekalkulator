@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Heading, Paragraph, ThemeProvider } from "@purpur/library";
+import { IconPebble } from "@purpur/library/icon/pebble";
 import { loadConfig, persistConfig } from "./lib/config";
 import { calculate } from "./lib/calc";
 import { decodeState, encodeState } from "./lib/url-state";
@@ -121,7 +122,7 @@ export const App = () => {
             </>
           ) : (
             <section className="app-card app-emptyCard">
-              <span className="app-emptyMark" aria-hidden="true">kr</span>
+              <span className="app-emptyMark" aria-hidden="true"><IconPebble size="lg" /></span>
               <Heading tag="h2" variant="title-100">Klar når du er</Heading>
               <Paragraph variant="paragraph-100">
                 Kryss av tjenestene du betaler for i dag, så regner vi ut hva du kan spare.

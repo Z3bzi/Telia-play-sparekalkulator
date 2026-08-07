@@ -1,5 +1,6 @@
 import { useRef } from "react";
-import { Heading, Paragraph } from "@purpur/library";
+import { Heading, Paragraph, VisuallyHidden } from "@purpur/library";
+import { LogoPlayHorizontal } from "@purpur/library/logo/play-horizontal";
 
 export function Header({ onAdminTap }) {
   const tapCount = useRef(0);
@@ -18,13 +19,17 @@ export function Header({ onAdminTap }) {
 
   return (
     <header className="app-head">
+      {/* The logo carries the brand name visually, so the page still needs a
+          real h1 for document structure. */}
+      <VisuallyHidden>
+        <Heading tag="h1">Telia Play – sparekalkulator for strømmetjenester</Heading>
+      </VisuallyHidden>
       <button type="button" className="app-brandTap" onClick={handleTap}>
-        <span className="app-logoDot" aria-hidden="true">T</span>
-        <span>
-          <Heading tag="h1" variant="title-200">Telia Play</Heading>
-          <Paragraph variant="paragraph-100">Sparekalkulator for strømmetjenester</Paragraph>
-        </span>
+        <LogoPlayHorizontal color="purple" height={34} allyTitle="Telia Play" />
       </button>
+      <Paragraph variant="paragraph-100" className="app-brandSub">
+        Sparekalkulator for strømmetjenester
+      </Paragraph>
     </header>
   );
 }
