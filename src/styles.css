@@ -1,6 +1,12 @@
 :root {
   /* Purpur scales its rem-based tokens by this factor; 1 matches a 16px root font-size. */
   --purpur-rescale: 1;
+
+  /* Purpur's tokens name TeliaSans but the package ships no @font-face, so the
+     brand font is never available. Point both families at a self-hosted font
+     instead of letting them fall through to Helvetica/Arial. */
+  --purpur-typography-family-default: "Inter Variable", "Inter", system-ui, sans-serif;
+  --purpur-typography-family-display: "Inter Variable", "Inter", system-ui, sans-serif;
 }
 
 * {
@@ -9,10 +15,15 @@
 
 body {
   margin: 0;
+  /* Without this, anything outside a Purpur component inherits the browser
+     default and renders in Times New Roman. */
+  font-family: var(--purpur-typography-family-default);
+  color: var(--purpur-color-text-default);
   background: var(--purpur-color-background-secondary);
   min-height: 100vh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 .app-head {
@@ -95,6 +106,23 @@ body {
   border-radius: var(--purpur-border-radius-lg);
   overflow: hidden;
   padding: 13px 14px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.app-svcRow:hover {
+  border-color: var(--purpur-color-border-interactive-primary);
+}
+
+/* The checkbox and the level select stay pointer-normal — only the surrounding
+   card area acts as an extra click target. */
+.app-svcCheck,
+.app-svcDetail {
+  cursor: auto;
+}
+
+.app-svcMain {
+  user-select: none;
 }
 
 .app-svcOn {

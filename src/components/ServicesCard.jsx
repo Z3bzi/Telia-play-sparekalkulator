@@ -10,18 +10,26 @@ export function ServicesCard({ services, selections, onToggle, onLevelChange }) 
           const on = selections[s.id] !== undefined;
           const lvlIdx = on ? selections[s.id] : 0;
           return (
-            <div key={s.id} className={`app-svcRow${on ? " app-svcOn" : ""}`}>
+            <div
+              key={s.id}
+              className={`app-svcRow${on ? " app-svcOn" : ""}`}
+              onClick={() => onToggle(s.id)}
+            >
               <div className="app-svcMain">
-                <Checkbox
-                  id={`svc-${s.id}`}
-                  checked={on}
-                  onChange={() => onToggle(s.id)}
-                  label={s.name}
-                />
+                {/* The checkbox and its label already toggle themselves; stop the
+                    click here so the row handler doesn't undo it. */}
+                <span className="app-svcCheck" onClick={e => e.stopPropagation()}>
+                  <Checkbox
+                    id={`svc-${s.id}`}
+                    checked={on}
+                    onChange={() => onToggle(s.id)}
+                    label={s.name}
+                  />
+                </span>
                 <span className="app-svcPts">{s.points} p</span>
               </div>
               {on && (
-                <div className="app-svcDetail">
+                <div className="app-svcDetail" onClick={e => e.stopPropagation()}>
                   {s.levels.length > 1 ? (
                     <Select
                       id={`lvl-${s.id}`}
