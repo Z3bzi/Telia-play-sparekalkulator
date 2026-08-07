@@ -1,31 +1,58 @@
-import { useMemo, useState } from "react";
-import { ThemeProvider } from "@purpur/library";
+import { useEffect, useMemo, useRef, useState } from "react";
+import { Heading, Paragraph, ThemeProvider } from "@purpur/library";
 import { loadConfig, persistConfig } from "./lib/config";
 import { calculate } from "./lib/calc";
+import { decodeState, encodeState } from "./lib/url-state";
 import { Header } from "./components/Header";
 import { PotCard } from "./components/PotCard";
 import { ServicesCard } from "./components/ServicesCard";
 import { UsageCard } from "./components/UsageCard";
 import { ResultCard } from "./components/ResultCard";
 import { MathCard } from "./components/MathCard";
+import { StickyBar } from "./components/StickyBar";
 import { PinModal } from "./components/PinModal";
 import { AdminModal } from "./components/AdminModal";
 
 export const App = () => {
   const [config, setConfig] = useState(loadConfig);
-  const [pot, setPot] = useState(() =>
-    config.pots.includes(config.defaultPot) ? config.defaultPot : (config.pots[config.pots.length - 1] ?? 0),
+
+  // A shared link wins over the defaults, so read it once on mount.
+  const initial = useMemo(
+    () => decodeState(window.location.hash, config) ?? {},
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [],
   );
-  const [hasMobile, setHasMobile] = useState(false);
-  const [selections, setSelections] = useState({});
-  const [altMode, setAltMode] = useState("buy");
+
+  const [pot, setPot] = useState(() =>
+    initial.pot ??
+    (config.pots.includes(config.defaultPot) ? config.defaultPot : (config.pots[config.pots.length - 1] ?? 0)),
+  );
+  const [hasMobile, setHasMobile] = useState(() => initial.hasMobile ?? false);
+  const [selections, setSelections] = useState(() => initial.selections ?? {});
+  // null means "follow the recommendation" until the user picks explicitly.
+  const [altChoice, setAltChoice] = useState(() => initial.altMode ?? null);
   const [pinOpen, setPinOpen] = useState(false);
   const [adminOpen, setAdminOpen] = useState(false);
+  const resultRef = useRef(null);
+
+  const recommended = useMemo(
+    () => calculate(config, { pot, hasMobile, selections, altMode: "buy" }).recommended,
+    [config, pot, hasMobile, selections],
+  );
+  const altMode = altChoice ?? recommended;
 
   const calc = useMemo(
     () => calculate(config, { pot, hasMobile, selections, altMode }),
     [config, pot, hasMobile, selections, altMode],
   );
+
+  // Keep the URL in step with the current selection without adding history
+  // entries for every checkbox click.
+  useEffect(() => {
+    const encoded = encodeState({ pot, hasMobile, selections, altChoice });
+    const next = `${window.location.pathname}${window.location.search}#${encoded}`;
+    window.history.replaceState(null, "", next);
+  }, [pot, hasMobile, selections, altChoice]);
 
   const toggleService = id => {
     setSelections(prev => {
@@ -55,6 +82,8 @@ export const App = () => {
     }
   };
 
+  const hasSelection = calc.chosen.length > 0;
+
   return (
     <ThemeProvider forceColorScheme="light">
       <Header onAdminTap={() => setPinOpen(true)} />
@@ -78,17 +107,10 @@ export const App = () => {
         </div>
 
         <div className="app-col app-colResults">
-          {calc.chosen.length > 0 ? (
+          {hasSelection ? (
             <>
-              <UsageCard
-                calc={calc}
-                pot={pot}
-                hasMobile={hasMobile}
-                mobileBonus={config.mobileBonus}
-                altMode={altMode}
-                onAltModeChange={setAltMode}
-              />
-              <ResultCard savingMonth={calc.active.savingMonth} />
+              <ResultCard ref={resultRef} savingMonth={calc.active.savingMonth} />
+              <UsageCard calc={calc} altMode={altMode} onAltModeChange={setAltChoice} />
               <MathCard
                 calc={calc}
                 pot={pot}
@@ -99,13 +121,19 @@ export const App = () => {
             </>
           ) : (
             <section className="app-card app-emptyCard">
-              Kryss av tjenestene du betaler for i dag, så regner vi ut hva du kan spare.
+              <span className="app-emptyMark" aria-hidden="true">kr</span>
+              <Heading tag="h2" variant="title-100">Klar når du er</Heading>
+              <Paragraph variant="paragraph-100">
+                Kryss av tjenestene du betaler for i dag, så regner vi ut hva du kan spare.
+              </Paragraph>
             </section>
           )}
         </div>
 
         <footer className="app-foot">Veiledende priser per august 2026. Sjekk gjeldende pris hos den enkelte tjenesten.</footer>
       </main>
+
+      {hasSelection && <StickyBar savingMonth={calc.active.savingMonth} targetRef={resultRef} />}
 
       <PinModal
         open={pinOpen}

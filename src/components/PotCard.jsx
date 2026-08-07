@@ -1,24 +1,11 @@
-import { Checkbox, RadioCardGroup } from "@purpur/library";
+import { Checkbox, Heading } from "@purpur/library";
+import { PotSelector } from "./PotSelector";
 
 export function PotCard({ pots, pot, onPotChange, mobileBonus, hasMobile, onMobileChange }) {
-  const items = pots.map(p => ({
-    id: `pot-${p}`,
-    value: String(p),
-    title: `${p}`,
-    body: "poeng",
-  }));
-
   return (
     <section className="app-card">
-      <div className="app-stepLabel">Poengpotten din</div>
-      <RadioCardGroup
-        id="pot-group"
-        aria-label="Velg poengpott"
-        orientation="horizontal"
-        items={items}
-        value={String(pot)}
-        onValueChange={value => onPotChange(Number(value))}
-      />
+      <Heading tag="h2" variant="subsection-100" className="app-cardTitle">Poengpotten din</Heading>
+      <PotSelector pots={pots} pot={pot} onPotChange={onPotChange} />
       <div className="app-mobileRow">
         <Checkbox
           id="mobile-bonus"

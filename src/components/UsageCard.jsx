@@ -1,31 +1,57 @@
-import { RadioCardGroup } from "@purpur/library";
+import { Heading } from "@purpur/library";
 import { kr } from "../lib/config";
 
-export function UsageCard({ calc, pot, hasMobile, mobileBonus, altMode, onAltModeChange }) {
+const ALT_LABELS = {
+  buy: "Kjøp ekstra poeng",
+  fit: "Bare det som får plass",
+};
+
+function AltCard({ mode, calc, altMode, onAltModeChange }) {
+  const c = calc;
+  const data = mode === "buy" ? c.buy : c.fit;
+  const selected = altMode === mode;
+  const isBest = c.recommended === mode;
+
+  const body = mode === "buy"
+    ? `+${data.extraPoints} poeng for ${kr(data.extraCost)} kr/md. Alle ${c.chosen.length} tjenester dekkes.`
+    : `${data.covered.length} av ${c.chosen.length} tjenester — kombinasjonen med mest kroneverdi per poeng.`;
+
+  return (
+    <button
+      type="button"
+      role="radio"
+      aria-checked={selected}
+      className={`app-altCard${selected ? " app-altOn" : ""}`}
+      onClick={() => onAltModeChange(mode)}
+    >
+      <span className="app-altHead">
+        <span className="app-altTitle">{ALT_LABELS[mode]}</span>
+        {isBest && <span className="app-altBadge">Best</span>}
+      </span>
+      <span className="app-altBody">{body}</span>
+      <span className="app-altSum">Sparer {kr(data.savingMonth)} kr/md.</span>
+    </button>
+  );
+}
+
+export function UsageCard({ calc, altMode, onAltModeChange }) {
   const c = calc;
   const a = c.active;
-  const pct = c.available > 0 ? Math.min(100, (c.totalPoints / c.available) * 100) : 0;
-
-  const altItems = c.over && c.fit ? [
-    {
-      id: "alt-buy",
-      value: "buy",
-      title: "Kjøp ekstra poeng",
-      body: `+${c.buy.extraPoints} poeng for ${kr(c.buy.extraCost)} kr/md. Alle ${c.chosen.length} tjenester dekkes. Sparer ${kr(c.buy.savingMonth)} kr/md.`,
-    },
-    {
-      id: "alt-fit",
-      value: "fit",
-      title: "Bare det som får plass",
-      body: `${c.fit.covered.length} av ${c.chosen.length} tjenester — kombinasjonen med mest kroneverdi per poeng. Sparer ${kr(c.fit.savingMonth)} kr/md.`,
-    },
-  ] : [];
+  // The bar can exceed the pot, so scale against whichever is larger and draw a
+  // marker where the pot limit actually sits.
+  const scaleMax = Math.max(c.available, c.totalPoints) || 1;
+  const usedPct = Math.min(100, (c.totalPoints / scaleMax) * 100);
+  const limitPct = (c.available / scaleMax) * 100;
 
   return (
     <section className="app-card">
-      <div className="app-stepLabel">Poengbruk</div>
+      <Heading tag="h2" variant="subsection-100" className="app-cardTitle">Poengbruk</Heading>
+
       <div className="app-barTrack">
-        <div className={`app-barFill${c.over ? " app-barOver" : ""}`} style={{ width: `${pct}%` }} />
+        <div className={`app-barFill${c.over ? " app-barOver" : ""}`} style={{ width: `${usedPct}%` }} />
+        {c.over && (
+          <div className="app-barLimit" style={{ left: `${limitPct}%` }} aria-hidden="true" />
+        )}
       </div>
       <div className="app-barText">
         {c.totalPoints} av {c.available} poeng
@@ -35,14 +61,10 @@ export function UsageCard({ calc, pot, hasMobile, mobileBonus, altMode, onAltMod
       {c.over && c.fit && (
         <div className="app-altWrap">
           <div className="app-altHint">Tjenestene bruker mer enn potten. Velg løsning:</div>
-          <RadioCardGroup
-            id="alt-group"
-            aria-label="Velg løsning for poeng over pott"
-            orientation="horizontal"
-            items={altItems}
-            value={altMode}
-            onValueChange={onAltModeChange}
-          />
+          <div className="app-altGrid" role="radiogroup" aria-label="Velg løsning for poeng over pott">
+            <AltCard mode="buy" calc={c} altMode={altMode} onAltModeChange={onAltModeChange} />
+            <AltCard mode="fit" calc={c} altMode={altMode} onAltModeChange={onAltModeChange} />
+          </div>
         </div>
       )}
 
@@ -50,7 +72,10 @@ export function UsageCard({ calc, pot, hasMobile, mobileBonus, altMode, onAltMod
         <div className="app-coverHead">Dekkes av poeng:</div>
         {a.covered.map(x => (
           <div className="app-coverRow" key={x.id}>
-            <span>{x.name} · {x.levelName}</span>
+            <span className="app-coverName">
+              {x.name} · {x.levelName}
+              <span className="app-coverRate">{x.points} p · {x.valuePerPoint.toFixed(1)} kr/poeng</span>
+            </span>
             <span className="app-coverVal">{kr(x.price)} kr/md.</span>
           </div>
         ))}
@@ -62,7 +87,10 @@ export function UsageCard({ calc, pot, hasMobile, mobileBonus, altMode, onAltMod
             <div className="app-coverHead">Utenfor potten (beholdes som i dag):</div>
             {c.fit.dropped.map(x => (
               <div className="app-coverRow app-coverDrop" key={x.id}>
-                <span>{x.name} · {x.levelName}</span>
+                <span className="app-coverName">
+                  {x.name} · {x.levelName}
+                  <span className="app-coverRate">{x.points} p · {x.valuePerPoint.toFixed(1)} kr/poeng</span>
+                </span>
                 <span>{kr(x.price)} kr/md.</span>
               </div>
             ))}

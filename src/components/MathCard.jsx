@@ -24,7 +24,7 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 })
           </div>
           <div className="app-mathDivider" />
           <div className="app-mathRow">
-            <span>Verdi av tjenester dekket av poeng</span>
+            <span>Verdi av tjenester dekket av poeng ({a.covered.length} stk.)</span>
             <span>{kr(coveredValue)} kr/md.</span>
           </div>
           <div className="app-mathRow">
