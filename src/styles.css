@@ -578,14 +578,18 @@ body {
   align-items: flex-end;
   gap: 8px;
   margin: 6px 0 6px 12px;
+  /* Name + price + points + remove is too wide for a phone on one line;
+     the name field wraps onto its own row when space runs out. */
+  flex-wrap: wrap;
 }
 
 .app-adminLvl > *:first-child {
   flex: 1;
+  min-width: 140px;
 }
 
 .app-adminNum {
-  width: 90px;
+  width: 78px;
   flex: none;
 }
 

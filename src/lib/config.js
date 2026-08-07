@@ -1,5 +1,9 @@
 export const STORAGE_KEY = "telia-kalkulator-config";
 
+// Points are priced per tier, not per service: on Telia Play, HBO Max med
+// reklame costs 30 poeng while Standard costs 50, TV 2 Play spans 10-40, and
+// SkyShowtime 20-30. Point values below match the Telia Play interface
+// (august 2026); prices remain veiledende and editable in admin.
 export const DEFAULT_CONFIG = {
   pots: [15, 40, 60],
   defaultPot: 60,
@@ -8,37 +12,52 @@ export const DEFAULT_CONFIG = {
   pin: "1234",
   lastUpdated: null,
   services: [
-    { id: "netflix", name: "Netflix", points: 50, levels: [
-      { name: "Basis m/reklame", price: 119 },
-      { name: "Standard", price: 149 },
-      { name: "Premium", price: 219 } ]},
-    { id: "hbomax", name: "HBO Max", points: 30, levels: [
-      { name: "Basis m/reklame", price: 89 },
-      { name: "Standard", price: 149 },
-      { name: "Premium", price: 189 } ]},
-    { id: "viaplay", name: "Viaplay", points: 45, levels: [
-      { name: "Film og serier", price: 159 } ]},
-    { id: "prime", name: "Prime Video", points: 30, levels: [
-      { name: "Standard (m/reklame)", price: 79 },
-      { name: "Uten reklame", price: 108 } ]},
-    { id: "tv2play", name: "TV 2 Play", points: 10, levels: [
-      { name: "Start m/reklame", price: 129 } ]},
-    { id: "disney", name: "Disney+", points: 40, levels: [
-      { name: "Standard m/reklame", price: 69 },
-      { name: "Uten reklame", price: 99 } ]},
-    { id: "skyshowtime", name: "SkyShowtime", points: 30, levels: [
-      { name: "Standard", price: 79 } ]},
-    { id: "britbox", name: "BritBox", points: 10, levels: [
-      { name: "Standard", price: 59 } ]},
+    { id: "netflix", name: "Netflix", levels: [
+      { name: "Basis m/reklame", price: 119, points: 50 },
+      { name: "Standard", price: 149, points: 50 },
+      { name: "Premium", price: 219, points: 50 } ]},
+    { id: "hbomax", name: "HBO Max", levels: [
+      { name: "Basis m/reklame", price: 89, points: 30 },
+      { name: "Standard", price: 149, points: 50 },
+      { name: "Premium", price: 189, points: 50 } ]},
+    { id: "viaplay", name: "Viaplay", levels: [
+      { name: "Film og serier", price: 159, points: 45 } ]},
+    { id: "prime", name: "Prime Video", levels: [
+      { name: "Standard (m/reklame)", price: 79, points: 30 },
+      { name: "Uten reklame", price: 108, points: 30 } ]},
+    { id: "tv2play", name: "TV 2 Play", levels: [
+      { name: "Start m/reklame", price: 129, points: 10 },
+      { name: "Start", price: 199, points: 40 } ]},
+    { id: "disney", name: "Disney+", levels: [
+      { name: "Standard m/reklame", price: 69, points: 40 },
+      { name: "Uten reklame", price: 99, points: 40 } ]},
+    { id: "skyshowtime", name: "SkyShowtime", levels: [
+      { name: "Standard m/reklame", price: 59, points: 20 },
+      { name: "Standard", price: 79, points: 30 } ]},
+    { id: "britbox", name: "BritBox", levels: [
+      { name: "Standard", price: 59, points: 10 } ]},
   ],
 };
+
+// Configs saved before points moved onto levels carry a single service-wide
+// `points`; spread it onto every tier so stored admin edits keep working.
+function migrateConfig(cfg) {
+  for (const s of cfg.services) {
+    const fallback = Number(s.points) || 0;
+    for (const l of s.levels) {
+      if (typeof l.points !== "number") l.points = fallback;
+    }
+    delete s.points;
+  }
+  return cfg;
+}
 
 export function loadConfig() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) {
       const parsed = JSON.parse(raw);
-      if (parsed && Array.isArray(parsed.services)) return parsed;
+      if (parsed && Array.isArray(parsed.services)) return migrateConfig(parsed);
     }
   } catch (e) { /* utilgjengelig lagring — bruk startdata */ }
   return JSON.parse(JSON.stringify(DEFAULT_CONFIG));

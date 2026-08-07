@@ -2,13 +2,13 @@ export function calculate(config, { pot, hasMobile, selections, altMode }) {
   const chosen = config.services
     .filter(s => selections[s.id] !== undefined && s.levels[selections[s.id]])
     .map(s => {
-      const price = s.levels[selections[s.id]].price;
+      const level = s.levels[selections[s.id]];
       return {
-        id: s.id, name: s.name, points: s.points, price,
-        levelName: s.levels[selections[s.id]].name,
+        id: s.id, name: s.name, points: level.points, price: level.price,
+        levelName: level.name,
         // How much subscription value each point unlocks — this is the ordering
         // that "bare det som får plass" packs by, so it is worth surfacing.
-        valuePerPoint: s.points > 0 ? price / s.points : Infinity,
+        valuePerPoint: level.points > 0 ? level.price / level.points : Infinity,
       };
     });
 

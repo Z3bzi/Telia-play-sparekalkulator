@@ -38,6 +38,12 @@ export function ServicesCard({ services, selections, onToggle, onLevelChange }) 
           // price before the user commits to expanding it.
           const cheapest = s.levels.reduce((a, b) => (b.price < a.price ? b : a), s.levels[0]);
           const showFrom = !on && s.levels.length > 1;
+          // Tiers can cost different point amounts, so the collapsed badge
+          // shows the span; once a tier is chosen it shows that tier's cost.
+          const allPts = s.levels.map(l => l.points);
+          const minPts = Math.min(...allPts), maxPts = Math.max(...allPts);
+          const ptsLabel = on ? `${level.points} p`
+            : minPts === maxPts ? `${minPts} p` : `${minPts}–${maxPts} p`;
 
           return (
             <div
@@ -63,7 +69,7 @@ export function ServicesCard({ services, selections, onToggle, onLevelChange }) 
                     {showFrom ? "fra " : ""}{kr(on ? level.price : cheapest.price)} kr/md.
                   </span>
                 </span>
-                <span className="app-svcPts">{s.points} p</span>
+                <span className="app-svcPts">{ptsLabel}</span>
               </div>
               {on && s.levels.length > 1 && (
                 <div className="app-svcDetail" onClick={e => e.stopPropagation()}>
@@ -71,7 +77,7 @@ export function ServicesCard({ services, selections, onToggle, onLevelChange }) 
                     id={`lvl-${s.id}`}
                     aria-label={`Nivå for ${s.name}`}
                     options={s.levels.map((l, i) => ({
-                      label: `${l.name} — ${kr(l.price)} kr/md.`,
+                      label: `${l.name} — ${kr(l.price)} kr/md. · ${l.points} p`,
                       value: String(i),
                     }))}
                     value={String(lvlIdx)}
