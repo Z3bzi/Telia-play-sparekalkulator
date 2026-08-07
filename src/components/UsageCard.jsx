@@ -60,8 +60,8 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
 
       {c.over && c.fit && (
         <div className="app-altWrap">
-          <div className="app-altHint">Tjenestene bruker mer enn potten. Velg løsning:</div>
-          <div className="app-altGrid" role="radiogroup" aria-label="Velg løsning for poeng over pott">
+          <div className="app-altHint">Tjenestene bruker mer enn pakken. Velg løsning:</div>
+          <div className="app-altGrid" role="radiogroup" aria-label="Velg løsning for poeng over pakke">
             <AltCard mode="buy" calc={c} altMode={altMode} onAltModeChange={onAltModeChange} />
             <AltCard mode="fit" calc={c} altMode={altMode} onAltModeChange={onAltModeChange} />
           </div>
@@ -80,11 +80,11 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
           </div>
         ))}
         {a.covered.length === 0 && (
-          <div className="app-coverRow">Ingen av tjenestene får plass i potten.</div>
+          <div className="app-coverRow">Ingen av tjenestene får plass i pakken.</div>
         )}
         {c.over && altMode === "fit" && c.fit.dropped.length > 0 && (
           <>
-            <div className="app-coverHead">Utenfor potten (beholdes som i dag):</div>
+            <div className="app-coverHead">Utenfor pakken (beholdes som i dag):</div>
             {c.fit.dropped.map(x => (
               <div className="app-coverRow app-coverDrop" key={x.id}>
                 <span className="app-coverName">

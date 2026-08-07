@@ -174,7 +174,7 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
               onChange={e => setDraft(d => ({ ...d, mobileBonus: Math.max(0, Number(e.target.value) || 0) }))}
             />
           </div>
-          <div className="app-stepLabel">Valgbare poengpotter</div>
+          <div className="app-stepLabel">Valgbare poengpakker</div>
           {draft.pots.map((p, pi) => (
             <div className="app-adminRow" key={pi}>
               <TextField
@@ -185,10 +185,10 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                 value={p}
                 onChange={e => updatePot(pi, Math.max(0, Number(e.target.value) || 0))}
               />
-              <Button variant="destructive" iconOnly aria-label="Fjern pott" onClick={() => removePot(pi)}>×</Button>
+              <Button variant="destructive" iconOnly aria-label="Fjern pakke" onClick={() => removePot(pi)}>×</Button>
             </div>
           ))}
-          <Button variant="tertiary-purple" onClick={addPot}>+ Pott</Button>
+          <Button variant="tertiary-purple" onClick={addPot}>+ Pakke</Button>
         </div>
 
         <div className="app-adminSection">
