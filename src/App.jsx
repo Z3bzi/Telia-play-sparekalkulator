@@ -134,7 +134,13 @@ export const App = () => {
         <footer className="app-foot">Veiledende priser per august 2026. Sjekk gjeldende pris hos den enkelte tjenesten.</footer>
       </main>
 
-      {hasSelection && <StickyBar savingMonth={calc.active.savingMonth} targetRef={resultRef} />}
+      {hasSelection && (
+        <StickyBar
+          savingMonth={calc.active.savingMonth}
+          targetRef={resultRef}
+          suppressed={pinOpen || adminOpen}
+        />
+      )}
 
       <PinModal
         open={pinOpen}

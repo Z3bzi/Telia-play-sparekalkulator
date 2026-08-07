@@ -46,7 +46,7 @@ export function PotSelector({ pots, pot, onPotChange }) {
   const activeIndex = Math.max(0, pots.indexOf(pot));
 
   return (
-    <div className="app-segmented" role="radiogroup" aria-label="Velg poengpott">
+    <div className="app-segmented" role="radiogroup" aria-label="Velg poengpakke">
       {pots.map((p, i) => {
         const selected = p === pot;
         return (
