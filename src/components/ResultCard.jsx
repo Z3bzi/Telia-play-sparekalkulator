@@ -1,11 +1,17 @@
+import { forwardRef } from "react";
 import { kr } from "../lib/config";
+import { useCountUp } from "../hooks/useCountUp";
 
-export function ResultCard({ savingMonth }) {
+export const ResultCard = forwardRef(function ResultCard({ savingMonth }, ref) {
+  const animated = useCountUp(savingMonth);
+
   return (
-    <section className="app-resultCard">
+    <section className="app-resultCard" ref={ref}>
       <div className="app-resultLabel">Du sparer</div>
-      <div className="app-resultBig">{kr(savingMonth)} <span className="app-resultUnit">kr/md.</span></div>
-      <div className="app-resultYear">{kr(savingMonth * 12)} kr/år</div>
+      <div className="app-resultBig">
+        {kr(animated)} <span className="app-resultUnit">kr/md.</span>
+      </div>
+      <div className="app-resultYear">{kr(animated * 12)} kr/år</div>
     </section>
   );
-}
+});

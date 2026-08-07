@@ -1,6 +1,12 @@
 :root {
   /* Purpur scales its rem-based tokens by this factor; 1 matches a 16px root font-size. */
   --purpur-rescale: 1;
+
+  /* Purpur's tokens name TeliaSans but the package ships no @font-face, so the
+     brand font is never available. Point both families at a self-hosted font
+     instead of letting them fall through to Helvetica/Arial. */
+  --purpur-typography-family-default: "Inter Variable", "Inter", system-ui, sans-serif;
+  --purpur-typography-family-display: "Inter Variable", "Inter", system-ui, sans-serif;
 }
 
 * {
@@ -9,10 +15,15 @@
 
 body {
   margin: 0;
+  /* Without this, anything outside a Purpur component inherits the browser
+     default and renders in Times New Roman. */
+  font-family: var(--purpur-typography-family-default);
+  color: var(--purpur-color-text-default);
   background: var(--purpur-color-background-secondary);
   min-height: 100vh;
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   -webkit-text-size-adjust: 100%;
+  -webkit-font-smoothing: antialiased;
 }
 
 .app-head {
@@ -65,6 +76,11 @@ body {
   box-shadow: 0 1px 3px rgba(60, 20, 90, 0.06);
 }
 
+.app-cardTitle {
+  margin-bottom: 14px;
+}
+
+/* Still used by the admin panel's section labels. */
 .app-stepLabel {
   font-size: 13px;
   font-weight: var(--purpur-typography-weight-bold);
@@ -72,6 +88,54 @@ body {
   letter-spacing: 0.8px;
   color: var(--purpur-color-text-interactive-primary);
   margin-bottom: 14px;
+}
+
+/* ---- Compact pot selector ---- */
+.app-segmented {
+  display: flex;
+  gap: 8px;
+}
+
+.app-seg {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 12px 6px;
+  border: 2px solid var(--purpur-color-border-weak);
+  border-radius: var(--purpur-border-radius-lg);
+  background: var(--purpur-color-background-primary);
+  color: var(--purpur-color-text-default);
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.app-seg:hover {
+  border-color: var(--purpur-color-border-interactive-primary);
+}
+
+.app-seg:focus-visible {
+  outline: 2px solid var(--purpur-color-border-interactive-focus);
+  outline-offset: 2px;
+}
+
+.app-segOn {
+  border-color: var(--purpur-color-border-interactive-primary);
+  background: var(--purpur-color-brand-light-purple);
+}
+
+.app-segNum {
+  font-size: 26px;
+  font-weight: var(--purpur-typography-weight-bold);
+  letter-spacing: -0.5px;
+  line-height: 1.1;
+}
+
+.app-segUnit {
+  font-size: 12px;
+  color: var(--purpur-color-text-medium);
 }
 
 .app-mobileRow {
@@ -94,7 +158,56 @@ body {
   border: 2px solid var(--purpur-color-border-weak);
   border-radius: var(--purpur-border-radius-lg);
   overflow: hidden;
-  padding: 13px 14px;
+  padding: 9px 12px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.app-svcLogo {
+  width: 30px;
+  height: 30px;
+  min-width: 30px;
+  border-radius: var(--purpur-border-radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 12px;
+  font-weight: var(--purpur-typography-weight-bold);
+  letter-spacing: -0.2px;
+}
+
+.app-svcText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-svcName {
+  font-size: 15px;
+  font-weight: var(--purpur-typography-weight-medium);
+  line-height: 1.25;
+}
+
+.app-svcMeta {
+  font-size: 12.5px;
+  color: var(--purpur-color-text-medium);
+}
+
+.app-svcRow:hover {
+  border-color: var(--purpur-color-border-interactive-primary);
+}
+
+/* The checkbox and the level select stay pointer-normal — only the surrounding
+   card area acts as an extra click target. */
+.app-svcCheck,
+.app-svcDetail {
+  cursor: auto;
+}
+
+.app-svcMain {
+  user-select: none;
 }
 
 .app-svcOn {
@@ -132,10 +245,21 @@ body {
 }
 
 .app-barTrack {
+  position: relative;
   height: 14px;
   border-radius: var(--purpur-border-radius-sm);
   background: var(--purpur-color-background-secondary);
   overflow: hidden;
+}
+
+/* Marks where the pot runs out once usage has overflowed past it. */
+.app-barLimit {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--purpur-color-background-primary);
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.25);
 }
 
 .app-barFill {
@@ -170,6 +294,69 @@ body {
   margin-bottom: 10px;
 }
 
+.app-altGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.app-altCard {
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  border: 2px solid var(--purpur-color-border-weak);
+  border-radius: var(--purpur-border-radius-lg);
+  background: var(--purpur-color-background-primary);
+  color: var(--purpur-color-text-default);
+  padding: 12px;
+  font: inherit;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.app-altCard:hover {
+  border-color: var(--purpur-color-border-interactive-primary);
+}
+
+.app-altCard:focus-visible {
+  outline: 2px solid var(--purpur-color-border-interactive-focus);
+  outline-offset: 2px;
+}
+
+.app-altOn {
+  border-color: var(--purpur-color-border-interactive-primary);
+  background: var(--purpur-color-brand-light-purple);
+}
+
+.app-altHead {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+}
+
+.app-altTitle {
+  font-size: 14px;
+  font-weight: var(--purpur-typography-weight-bold);
+}
+
+.app-altBadge {
+  font-size: 11px;
+  font-weight: var(--purpur-typography-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  padding: 2px 7px;
+  border-radius: var(--purpur-border-radius-full);
+  background: var(--purpur-color-background-status-success-strong);
+  color: #fff;
+}
+
+.app-altBody {
+  font-size: 12.5px;
+  color: var(--purpur-color-text-medium);
+  line-height: 1.45;
+}
+
 .app-altSum {
   margin-top: 8px;
   font-size: 14px;
@@ -196,8 +383,20 @@ body {
   padding: 5px 0;
 }
 
+.app-coverName {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.app-coverRate {
+  font-size: 12px;
+  color: var(--purpur-color-text-weak);
+}
+
 .app-coverVal {
   font-weight: var(--purpur-typography-weight-medium);
+  white-space: nowrap;
 }
 
 .app-coverDrop {
@@ -274,7 +473,69 @@ body {
 .app-emptyCard {
   text-align: center;
   color: var(--purpur-color-text-medium);
-  padding: 28px 18px;
+  padding: 36px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.app-emptyMark {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--purpur-border-radius-full);
+  background: var(--purpur-color-brand-light-purple);
+  color: var(--purpur-color-text-interactive-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 19px;
+  font-weight: var(--purpur-typography-weight-bold);
+  margin-bottom: 4px;
+}
+
+/* ---- Sticky savings bar ---- */
+.app-stickyBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 14px 20px calc(14px + env(safe-area-inset-bottom));
+  background: var(--purpur-color-background-interactive-primary);
+  color: var(--purpur-color-text-interactive-on-primary);
+  box-shadow: 0 -4px 16px rgba(41, 0, 62, 0.22);
+  transform: translateY(110%);
+  transition: transform 0.22s ease;
+  pointer-events: none;
+}
+
+.app-stickyOn {
+  transform: translateY(0);
+}
+
+.app-stickyLabel {
+  font-size: 14px;
+  opacity: 0.85;
+}
+
+.app-stickyValue {
+  font-size: 20px;
+  font-weight: var(--purpur-typography-weight-bold);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .app-stickyBar,
+  .app-barFill,
+  .app-svcRow,
+  .app-seg,
+  .app-altCard {
+    transition: none;
+  }
 }
 
 .app-foot {
@@ -369,6 +630,9 @@ body {
 
 @media (min-width: 900px) {
   .app-head { max-width: 1080px; padding-top: 28px; }
+  .app-altGrid { grid-template-columns: 1fr 1fr; }
+  /* The result card is always on screen on desktop, so the bar is redundant. */
+  .app-stickyBar { display: none; }
   .app-stack {
     max-width: 1080px;
     display: grid;

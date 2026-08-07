@@ -1,11 +1,16 @@
 export function calculate(config, { pot, hasMobile, selections, altMode }) {
   const chosen = config.services
     .filter(s => selections[s.id] !== undefined && s.levels[selections[s.id]])
-    .map(s => ({
-      id: s.id, name: s.name, points: s.points,
-      levelName: s.levels[selections[s.id]].name,
-      price: s.levels[selections[s.id]].price,
-    }));
+    .map(s => {
+      const price = s.levels[selections[s.id]].price;
+      return {
+        id: s.id, name: s.name, points: s.points, price,
+        levelName: s.levels[selections[s.id]].name,
+        // How much subscription value each point unlocks — this is the ordering
+        // that "bare det som får plass" packs by, so it is worth surfacing.
+        valuePerPoint: s.points > 0 ? price / s.points : Infinity,
+      };
+    });
 
   const totalPrice = chosen.reduce((a, c) => a + c.price, 0);
   const totalPoints = chosen.reduce((a, c) => a + c.points, 0);
@@ -19,7 +24,7 @@ export function calculate(config, { pot, hasMobile, selections, altMode }) {
 
   let fit = null;
   if (over) {
-    const sorted = [...chosen].sort((a, b) => b.price / b.points - a.price / a.points);
+    const sorted = [...chosen].sort((a, b) => b.valuePerPoint - a.valuePerPoint);
     const packed = []; let used = 0;
     for (const c of sorted) {
       if (used + c.points <= available) { packed.push(c); used += c.points; }
@@ -33,6 +38,9 @@ export function calculate(config, { pot, hasMobile, selections, altMode }) {
     };
   }
 
+  // Ties go to "buy", which keeps every service the user actually pays for.
+  const recommended = fit && fit.savingMonth > buy.savingMonth ? "fit" : "buy";
+
   const active = over && altMode === "fit" && fit ? fit : buy;
-  return { chosen, totalPrice, totalPoints, available, over, buy, fit, active };
+  return { chosen, totalPrice, totalPoints, available, over, buy, fit, active, recommended };
 }
