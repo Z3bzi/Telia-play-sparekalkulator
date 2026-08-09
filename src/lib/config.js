@@ -17,19 +17,20 @@ export const STORAGE_KEY = "telia-kalkulator-config";
 // but they are TV-kanaler with no standalone kronepris, so "hva betaler du i
 // dag" has no meaningful answer for them and they are left out of startdata.
 export const DEFAULT_CONFIG = {
-  // Telia Play sells the point packages as named tiers, so the selector shows
-  // the same names the customer sees when signing up. `points` is what the
-  // calculation runs on.
+  // Poengpakkene ship as bare point counts, because that is all we can vouch
+  // for. They briefly carried the names Start/Standard/Premium and the prices
+  // 109/189/399 — those belong to TV 2 Plays egne abonnementer på play.tv2.no,
+  // not to Telias poengpakker, and had no business here.
   //
-  // The månedspris is kept, but hidden by default: MDU-kunder pay whatever
-  // their borettslag has agreed with Telia, so listprisen would be wrong for
-  // them and the calculator has no way to tell the two apart. Slå den på i
-  // admin når prisene stemmer for de som faktisk bruker kalkulatoren.
+  // `name` and `price` are still supported and editable in admin, for whoever
+  // has the real ones. Prisen holds off by default regardless: MDU-kunder pay
+  // whatever their borettslag has agreed with Telia, and the calculator cannot
+  // tell who is looking.
   showPotPrices: false,
   pots: [
-    { name: "Start", points: 15, price: 109 },
-    { name: "Standard", points: 40, price: 189 },
-    { name: "Premium", points: 60, price: 399 },
+    { points: 15 },
+    { points: 40 },
+    { points: 60 },
   ],
   defaultPot: 60,
   mobileBonus: 10,
@@ -46,25 +47,36 @@ export const DEFAULT_CONFIG = {
       { name: "Standard", price: 149, points: 50 },
       { name: "Premium", price: 189, points: null } ],
       addons: [ { id: "sport", name: "Sport", price: 50, points: 20 } ]},
+    // Viaplay har nå to Film og serier-varianter, 109 med reklame og 169 uten.
+    // Telia lister bare én, til 45 poeng, og sier ikke hvilken. 169 er lagt til
+    // grunn: der Telia faktisk skiller på reklame — HBO Max, SkyShowtime, Prime,
+    // TV 2 Play — er reklamevarianten alltid billigere i poeng, så en enslig
+    // oppføring til 45 poeng peker mot den fulle tjenesten. Verdt å bekrefte.
     { id: "viaplay", name: "Viaplay", levels: [
-      { name: "Film og serier", price: 159, points: 45 },
+      { name: "Film og serier", price: 169, points: 45 },
       { name: "V Premium", price: 699, points: null },
       { name: "Viaplay Total", price: 749, points: null } ]},
     { id: "prime", name: "Prime Video", levels: [
       { name: "Standard", price: 79, points: 30 } ]},
+    // play.tv2.no oppgir "fra 109,-/mnd" for Start og "fra 189,-/mnd" for
+    // Standard — det er reklamevariantene, de samme som koster 10 og 50 poeng
+    // hos Telia. Prisene uten reklame er fortsatt anslag.
     { id: "tv2play", name: "TV 2 Play", levels: [
-      { name: "Start m/reklame", price: 129, points: 10 },
+      { name: "Start m/reklame", price: 109, points: 10 },
       { name: "Start", price: 199, points: 40 },
-      { name: "Standard m/Disney+, m/reklame", price: 299, points: 50 },
+      { name: "Standard m/Disney+, m/reklame", price: 189, points: 50 },
       { name: "Standard m/Disney+", price: 379, points: 110 } ]},
     { id: "disney", name: "Disney+", levels: [
       { name: "Standard m/reklame", price: 69, points: 40 },
       { name: "Uten reklame", price: 99, points: 40 } ]},
     { id: "skyshowtime", name: "SkyShowtime", levels: [
-      { name: "Med reklame", price: 59, points: 20 },
+      { name: "Med reklame", price: 69, points: 20 },
       { name: "Uten reklame", price: 79, points: 30 } ]},
+    // 89 kr er månedsprisen. Årsabonnementet på 699 kr tilsvarer 58 kr/md.,
+    // men det er ikke det du slipper å betale om poeng dekker tjenesten fra
+    // måned til måned, så månedsprisen er den riktige å sammenligne med.
     { id: "britbox", name: "BritBox", levels: [
-      { name: "Standard", price: 59, points: 10 } ]},
+      { name: "Standard", price: 89, points: 10 } ]},
   ],
 };
 
@@ -87,12 +99,12 @@ function migrateConfig(cfg) {
   // Configs stored while prices were always visible must not keep showing them.
   if (typeof cfg.showPotPrices !== "boolean") cfg.showPotPrices = false;
   cfg.pots = (Array.isArray(cfg.pots) ? cfg.pots : []).map(p => {
-    if (p && typeof p === "object") {
-      return { name: String(p.name ?? `${p.points} poeng`), points: Number(p.points) || 0, price: Number(p.price) || 0 };
-    }
-    const points = Number(p) || 0;
-    const known = DEFAULT_CONFIG.pots.find(d => d.points === points);
-    return known ? { ...known } : { name: `${points} poeng`, points, price: 0 };
+    // A pakke needs nothing but its poengtall; navn and pris are optional and
+    // stay absent unless someone has actually filled them in.
+    const points = Number(p && typeof p === "object" ? p.points : p) || 0;
+    const name = typeof p === "object" ? String(p?.name ?? "").trim() : "";
+    const price = Number(typeof p === "object" ? p?.price : 0) || 0;
+    return { points, ...(name ? { name } : {}), ...(price ? { price } : {}) };
   });
   return cfg;
 }

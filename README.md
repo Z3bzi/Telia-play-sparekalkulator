@@ -5,18 +5,17 @@ i stedet for å betale for hver tjeneste separat.
 
 **[Åpne kalkulatoren →](https://z3bzi.github.io/Telia-play-sparekalkulator/)**
 
-Du velger poengpakke – Start (15 poeng), Standard (40) eller Premium (60), pluss 10 poeng
-hvis du har mobilabonnement hos Telia – krysser av tjenestene du betaler for i dag, og får
-besparelsen i kr/md. og kr/år.
+Du velger poengpakke – 15, 40 eller 60 poeng, pluss 10 poeng hvis du har mobilabonnement
+hos Telia – krysser av tjenestene du betaler for i dag, og får besparelsen i kr/md. og kr/år.
 
-Månedsprisen på selve pakken vises ikke. MDU-kunder – de som får TV gjennom borettslag
-eller sameie – betaler det avtalen deres med Telia sier, ikke listepris, og kalkulatoren
-vet ikke hvem som sitter på andre siden. Prisene ligger i oppsettet og kan slås på i admin
-der de faktisk stemmer.
+Pakkene vises som rene poengtall, uten navn og uten månedspris. Navn og pris kan legges
+inn i admin av den som har de riktige, men prisen holdes av som standard uansett:
+MDU-kunder – de som får TV gjennom borettslag eller sameie – betaler det avtalen deres med
+Telia sier, og kalkulatoren vet ikke hvem som sitter på andre siden.
 
 Vet du hva du selv betaler, kan du skrive det inn i **«Hva betaler du for Telia Play?»**.
-Beløpet legger seg på pakken du har valgt, går inn i delelenken, og overstyrer listeprisen
-– din pris er den eneste vi vet er riktig for deg. Feltet er tomt til du fyller det ut;
+Beløpet legger seg på pakken du har valgt og går inn i delelenken – din pris er den eneste
+vi vet er riktig for deg. Feltet er tomt til du fyller det ut;
 0 kr er et gyldig svar og er ikke det samme som å la det stå tomt.
 
 Uansett trekkes de ikke fra besparelsen: kalkulatoren sammenligner hva strømmetjenestene
@@ -124,10 +123,22 @@ Push til `main` bygger og publiserer automatisk til GitHub Pages via
 Poengverdiene følger Telia Play-grensesnittet (august 2026). Prisene er veiledende –
 sjekk gjeldende pris hos den enkelte tjenesten, og korriger i admin ved behov.
 
+Prisene ble sist kontrollert mot tjenestenes egne sider 9. august 2026. Netflix, HBO Max,
+Prime Video og Disney+ stemte. SkyShowtime med reklame ble rettet fra 59 til 69, BritBox
+fra 59 til 89 – 59 lå nær årsprisen delt på tolv, men det er månedsprisen du slipper unna
+når poeng dekker tjenesten – og Viaplay fra 159 til 169.
+
 Poeng og priser for HBO Max, Viaplay, SkyShowtime og Prime Video er hentet fra Telias
-egne innholdssider. Prisene på de fire TV 2 Play-nivåene er derimot anslag: der oppgir
-Telia bare poengkostnaden (10/40/50/110), så kroneprisen må bekreftes mot TV 2 og
-eventuelt rettes i admin.
+egne innholdssider.
+
+For TV 2 Play oppgir Telia bare poengkostnaden (10/40/50/110). Kroneprisen på
+reklamevariantene er hentet fra play.tv2.no, som oppgir «fra 109,-/mnd» for Start og «fra
+189,-/mnd» for Standard. Prisene uten reklame (199 og 379) er fortsatt anslag og bør
+bekreftes mot TV 2.
+
+TV 2 Play har også et Premium-nivå til 399,-/mnd med norsk toppfotball, Champions League
+og La Liga. Det selges ikke gjennom Telia, verken for poeng eller kroner, og hører derfor
+ikke hjemme i kalkulatoren.
 
 Viaplays V Sport (20 poeng), V Sport Golf (50) og V Series (5) kan også kjøpes for poeng,
 men de er TV-kanaler uten egen abonnementspris. Spørsmålet «hva betaler du for i dag?» har

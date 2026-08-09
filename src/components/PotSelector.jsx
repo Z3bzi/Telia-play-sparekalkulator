@@ -66,9 +66,9 @@ export function PotSelector({ pots, pot, onPotChange, showPrices, ownPrice }) {
             className={`app-seg${selected ? " app-segOn" : ""}`}
             onClick={() => onPotChange(p.points)}
             onKeyDown={e => handleKeyDown(e, i)}
-            aria-label={`${p.name}, ${p.points} poeng${price === null ? "" : `, ${own ? "" : "fra "}${kr(price)} kroner per måned`}`}
+            aria-label={`${p.name ? `${p.name}, ` : ""}${p.points} poeng${price === null ? "" : `, ${own ? "" : "fra "}${kr(price)} kroner per måned`}`}
           >
-            <span className="app-segName">{p.name}</span>
+            {p.name && <span className="app-segName">{p.name}</span>}
             <span className="app-segNum">{p.points}</span>
             <span className="app-segUnit">poeng</span>
             {price !== null && <span className="app-segPrice">{own ? "" : "fra "}{kr(price)},–/md.</span>}
