@@ -1,7 +1,7 @@
 import { Accordion } from "@purpur/library";
 import { kr } from "../lib/config";
 
-export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 }) {
+export function MathCard({ calc, ownPrice, pot, hasMobile, mobileBonus, extraPricePer10 }) {
   const c = calc;
   const a = c.active;
   const coveredValue = a.covered.reduce((x, y) => x + y.price, 0);
@@ -40,6 +40,19 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 })
             <span>× 12 måneder</span>
             <span>{kr(a.savingMonth * 12)} kr/år</span>
           </div>
+          {ownPrice !== null && (
+            <>
+              <div className="app-mathDivider" />
+              <div className="app-mathRow">
+                <span>
+                  Telia Play-pakken din
+                  <br />
+                  <small>Ikke trukket fra: besparelsen er forskjellen på strømmetjenestene med og uten poeng, og den betaler du uansett om du har pakken.</small>
+                </span>
+                <span>{kr(ownPrice)} kr/md.</span>
+              </div>
+            </>
+          )}
           {c.premium.length > 0 && (
             <>
               <div className="app-mathDivider" />

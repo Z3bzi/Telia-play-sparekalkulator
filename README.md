@@ -14,6 +14,11 @@ eller sameie – betaler det avtalen deres med Telia sier, ikke listepris, og ka
 vet ikke hvem som sitter på andre siden. Prisene ligger i oppsettet og kan slås på i admin
 der de faktisk stemmer.
 
+Vet du hva du selv betaler, kan du skrive det inn i **«Hva betaler du for Telia Play?»**.
+Beløpet legger seg på pakken du har valgt, går inn i delelenken, og overstyrer listeprisen
+– din pris er den eneste vi vet er riktig for deg. Feltet er tomt til du fyller det ut;
+0 kr er et gyldig svar og er ikke det samme som å la det stå tomt.
+
 Uansett trekkes de ikke fra besparelsen: kalkulatoren sammenligner hva strømmetjenestene
 koster med og uten poeng, og forutsetter at du har Telia Play uansett.
 
@@ -86,9 +91,10 @@ Tjenester viser en farget bokstavforkortelse som standard. For ekte logoer: legg
 
 ## Deling
 
-Valgene dine ligger i URL-en (`#p=60&s=netflix:2,hbomax:1&x=hbomax:sport`), så en lenke
-gjenskaper akkurat det resultatet – `s` er nivåene, `x` er tilleggene. Ugyldige verdier
-forkastes, så gamle lenker fortsatt virker etter at oppsettet er endret.
+Valgene dine ligger i URL-en (`#p=60&c=349&s=netflix:2,hbomax:1&x=hbomax:sport`), så en
+lenke gjenskaper akkurat det resultatet – `s` er nivåene, `x` er tilleggene og `c` er
+prisen du oppga for pakken. Ugyldige verdier forkastes, så gamle lenker fortsatt virker
+etter at oppsettet er endret.
 
 ## Struktur
 
