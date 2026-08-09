@@ -31,9 +31,6 @@ export const App = () => {
       : (config.pots[config.pots.length - 1]?.points ?? 0)),
   );
   const [hasMobile, setHasMobile] = useState(() => initial.hasMobile ?? false);
-  // What the visitor pays for Telia Play itself. Null until they say — MDU-priser
-  // are per avtale, so there is no sensible default to guess at.
-  const [ownPrice, setOwnPrice] = useState(() => initial.ownPrice ?? null);
   const [selections, setSelections] = useState(() => initial.selections ?? {});
   const [addons, setAddons] = useState(() => initial.addons ?? {});
   // null means "follow the recommendation" until the user picks explicitly.
@@ -56,10 +53,10 @@ export const App = () => {
   // Keep the URL in step with the current selection without adding history
   // entries for every checkbox click.
   useEffect(() => {
-    const encoded = encodeState({ pot, hasMobile, ownPrice, selections, addons, altChoice });
+    const encoded = encodeState({ pot, hasMobile, selections, addons, altChoice });
     const next = `${window.location.pathname}${window.location.search}#${encoded}`;
     window.history.replaceState(null, "", next);
-  }, [pot, hasMobile, ownPrice, selections, addons, altChoice]);
+  }, [pot, hasMobile, selections, addons, altChoice]);
 
   const toggleService = id => {
     setSelections(prev => {
@@ -131,8 +128,6 @@ export const App = () => {
             pot={pot}
             onPotChange={setPot}
             showPotPrices={config.showPotPrices}
-            ownPrice={ownPrice}
-            onOwnPriceChange={setOwnPrice}
             mobileBonus={config.mobileBonus}
             hasMobile={hasMobile}
             onMobileChange={setHasMobile}
@@ -154,7 +149,6 @@ export const App = () => {
               <UsageCard calc={calc} altMode={altMode} onAltModeChange={setAltChoice} />
               <MathCard
                 calc={calc}
-                ownPrice={ownPrice}
                 pot={pot}
                 hasMobile={hasMobile}
                 mobileBonus={config.mobileBonus}
