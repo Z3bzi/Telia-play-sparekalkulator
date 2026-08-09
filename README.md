@@ -5,8 +5,13 @@ i stedet for å betale for hver tjeneste separat.
 
 **[Åpne kalkulatoren →](https://z3bzi.github.io/Telia-play-sparekalkulator/)**
 
-Du velger poengpakke (15/40/60, pluss 10 poeng hvis du har mobilabonnement hos Telia),
-krysser av tjenestene du betaler for i dag, og får besparelsen i kr/md. og kr/år.
+Du velger poengpakke – Start (15 poeng), Standard (40) eller Premium (60), pluss 10 poeng
+hvis du har mobilabonnement hos Telia – krysser av tjenestene du betaler for i dag, og får
+besparelsen i kr/md. og kr/år.
+
+Månedsprisen på pakken vises som informasjon i velgeren, men trekkes ikke fra besparelsen:
+kalkulatoren sammenligner hva strømmetjenestene koster med og uten poeng, og forutsetter at
+du har Telia Play uansett.
 
 ---
 
@@ -49,8 +54,8 @@ npm run preview  # server dist/ lokalt
 
 Trykk fem ganger på logoen i toppen, og skriv inn PIN (standard: `1234`).
 
-Her kan du endre tjenester, nivåer, priser, poeng per nivå, valgbare poengpakker,
-mobilbonus, pris per 10 ekstra poeng, PIN-koden og logofiler.
+Her kan du endre tjenester, nivåer, priser, poeng per nivå, valgbare poengpakker
+(navn, poeng og månedspris), mobilbonus, pris per 10 ekstra poeng, PIN-koden og logofiler.
 «Tilbakestill til startdata» henter inn standardoppsettet igjen.
 
 > [!IMPORTANT]
@@ -97,3 +102,6 @@ Push til `main` bygger og publiserer automatisk til GitHub Pages via
 
 Poengverdiene følger Telia Play-grensesnittet (august 2026). Prisene er veiledende –
 sjekk gjeldende pris hos den enkelte tjenesten, og korriger i admin ved behov.
+
+Prisene på de fire TV 2 Play-nivåene er anslag: Telia oppgir bare poengkostnaden
+(10/40/50/110), så kroneprisen må bekreftes mot TV 2 og eventuelt rettes i admin.

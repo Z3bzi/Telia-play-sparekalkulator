@@ -28,7 +28,7 @@ export function decodeState(hash, config) {
   const state = {};
 
   const pot = Number(params.get("p"));
-  if (Number.isFinite(pot) && config.pots.includes(pot)) state.pot = pot;
+  if (Number.isFinite(pot) && config.pots.some(p => p.points === pot)) state.pot = pot;
 
   state.hasMobile = params.get("m") === "1";
 

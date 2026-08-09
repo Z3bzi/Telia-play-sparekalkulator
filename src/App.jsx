@@ -26,7 +26,9 @@ export const App = () => {
 
   const [pot, setPot] = useState(() =>
     initial.pot ??
-    (config.pots.includes(config.defaultPot) ? config.defaultPot : (config.pots[config.pots.length - 1] ?? 0)),
+    (config.pots.some(p => p.points === config.defaultPot)
+      ? config.defaultPot
+      : (config.pots[config.pots.length - 1]?.points ?? 0)),
   );
   const [hasMobile, setHasMobile] = useState(() => initial.hasMobile ?? false);
   const [selections, setSelections] = useState(() => initial.selections ?? {});
@@ -78,8 +80,10 @@ export const App = () => {
       }
     }
     setSelections(cleanedSelections);
-    if (!saved.pots.includes(pot) && saved.pots.length) {
-      setPot(saved.pots.includes(saved.defaultPot) ? saved.defaultPot : saved.pots[saved.pots.length - 1]);
+    if (!saved.pots.some(p => p.points === pot) && saved.pots.length) {
+      setPot(saved.pots.some(p => p.points === saved.defaultPot)
+        ? saved.defaultPot
+        : saved.pots[saved.pots.length - 1].points);
     }
   };
 

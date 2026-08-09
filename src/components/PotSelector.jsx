@@ -1,4 +1,5 @@
 import { useRef } from "react";
+import { kr } from "../lib/config";
 
 /**
  * Purpur's RadioCardGroup ignores `orientation="horizontal"` below a 600px
@@ -12,7 +13,7 @@ export function PotSelector({ pots, pot, onPotChange }) {
   const move = (from, delta) => {
     if (!pots.length) return;
     const next = (from + delta + pots.length) % pots.length;
-    onPotChange(pots[next]);
+    onPotChange(pots[next].points);
     refs.current[next]?.focus();
   };
 
@@ -30,12 +31,12 @@ export function PotSelector({ pots, pot, onPotChange }) {
         break;
       case "Home":
         e.preventDefault();
-        onPotChange(pots[0]);
+        onPotChange(pots[0].points);
         refs.current[0]?.focus();
         break;
       case "End":
         e.preventDefault();
-        onPotChange(pots[pots.length - 1]);
+        onPotChange(pots[pots.length - 1].points);
         refs.current[pots.length - 1]?.focus();
         break;
       default:
@@ -43,26 +44,29 @@ export function PotSelector({ pots, pot, onPotChange }) {
     }
   };
 
-  const activeIndex = Math.max(0, pots.indexOf(pot));
+  const activeIndex = Math.max(0, pots.findIndex(p => p.points === pot));
 
   return (
     <div className="app-segmented" role="radiogroup" aria-label="Velg poengpakke">
       {pots.map((p, i) => {
-        const selected = p === pot;
+        const selected = p.points === pot;
         return (
           <button
-            key={p}
+            key={p.points}
             ref={el => { refs.current[i] = el; }}
             type="button"
             role="radio"
             aria-checked={selected}
             tabIndex={i === activeIndex ? 0 : -1}
             className={`app-seg${selected ? " app-segOn" : ""}`}
-            onClick={() => onPotChange(p)}
+            onClick={() => onPotChange(p.points)}
             onKeyDown={e => handleKeyDown(e, i)}
+            aria-label={`${p.name}, ${p.points} poeng${p.price ? `, fra ${kr(p.price)} kroner per måned` : ""}`}
           >
-            <span className="app-segNum">{p}</span>
+            <span className="app-segName">{p.name}</span>
+            <span className="app-segNum">{p.points}</span>
             <span className="app-segUnit">poeng</span>
+            {p.price > 0 && <span className="app-segPrice">fra {kr(p.price)},–/md.</span>}
           </button>
         );
       })}
