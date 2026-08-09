@@ -1,13 +1,10 @@
 // Selections live in the URL hash so a result can be linked or shared. The hash
 // is used rather than the query string to keep it inert for static hosting.
 
-export function encodeState({ pot, hasMobile, ownPrice, selections, addons, altChoice }) {
+export function encodeState({ pot, hasMobile, selections, addons, altChoice }) {
   const params = new URLSearchParams();
   params.set("p", String(pot));
   if (hasMobile) params.set("m", "1");
-  // Null means "ikke oppgitt", which is not the same as 0 kr — only a price the
-  // user actually typed goes in the link.
-  if (ownPrice !== null && ownPrice !== undefined) params.set("c", String(ownPrice));
   const picked = Object.entries(selections).map(([id, lvl]) => `${id}:${lvl}`);
   if (picked.length) params.set("s", picked.join(","));
   const extras = Object.entries(addons ?? {})
@@ -37,9 +34,6 @@ export function decodeState(hash, config) {
   if (Number.isFinite(pot) && config.pots.some(p => p.points === pot)) state.pot = pot;
 
   state.hasMobile = params.get("m") === "1";
-
-  const own = Number(params.get("c"));
-  state.ownPrice = params.has("c") && Number.isFinite(own) && own >= 0 ? own : null;
 
   const selections = {};
   for (const entry of (params.get("s") || "").split(",")) {
