@@ -103,7 +103,10 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
     for (const p of draft.pots) {
       if (p.points <= 0 || seen.has(p.points)) continue;
       seen.add(p.points);
-      pots.push({ ...p, name: String(p.name ?? "").trim() || `${p.points} poeng` });
+      // An empty navn means the pakken shows as a bare poengtall, which is the
+      // honest default — we do not know what Telia calls them.
+      const name = String(p.name ?? "").trim();
+      pots.push({ points: p.points, ...(name ? { name } : {}), ...(p.price ? { price: p.price } : {}) });
     }
     pots.sort((a, b) => a.points - b.points);
     const cleaned = {
@@ -256,8 +259,8 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
             <div className="app-adminRow app-adminPot" key={pi}>
               <TextField
                 id={`pot-name-${pi}`}
-                label="Navn"
-                value={p.name}
+                label="Navn (valgfritt)"
+                value={p.name ?? ""}
                 onChange={e => updatePot(pi, "name", e.target.value)}
               />
               <TextField
@@ -273,7 +276,7 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                 id={`pot-price-${pi}`}
                 label="Kr/md."
                 type="number"
-                value={p.price}
+                value={p.price ?? ""}
                 onChange={e => updatePot(pi, "price", Math.max(0, Number(e.target.value) || 0))}
               />
               <Button variant="destructive" size="sm" onClick={() => removePot(pi)}>Fjern pakke</Button>
