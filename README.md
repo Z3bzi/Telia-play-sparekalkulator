@@ -132,8 +132,8 @@ reklamevariantene er hentet fra play.tv2.no, som oppgir «fra 109,-/mnd» for St
 bekreftes mot TV 2.
 
 TV 2 Play har også et Premium-nivå til 399,-/mnd med norsk toppfotball, Champions League
-og La Liga. Det er ikke tatt med, fordi vi ikke vet om Telia tilbyr det for poeng i det
-hele tatt – og i så fall til hvor mange.
+og La Liga. Det selges ikke gjennom Telia, verken for poeng eller kroner, og hører derfor
+ikke hjemme i kalkulatoren.
 
 Viaplays V Sport (20 poeng), V Sport Golf (50) og V Series (5) kan også kjøpes for poeng,
 men de er TV-kanaler uten egen abonnementspris. Spørsmålet «hva betaler du for i dag?» har
