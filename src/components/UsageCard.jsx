@@ -75,7 +75,7 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
       )}
 
       <div className="app-coverList">
-        <div className="app-coverHead">Dekkes av poeng:</div>
+        {c.chosen.length > 0 && <div className="app-coverHead">Dekkes av poeng:</div>}
         {a.covered.map(x => (
           <div className="app-coverRow" key={x.id}>
             <span className="app-coverName">
@@ -85,7 +85,7 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
             <span className="app-coverVal">{kr(x.price)} kr/md.</span>
           </div>
         ))}
-        {a.covered.length === 0 && (
+        {c.chosen.length > 0 && a.covered.length === 0 && (
           <div className="app-coverRow">Ingen av tjenestene får plass i pakken.</div>
         )}
         {c.over && altMode === "fit" && c.fit.dropped.length > 0 && (
@@ -107,6 +107,20 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
             <span>Ekstra poeng ({a.extraPoints} p)</span>
             <span>−{kr(a.extraCost)} kr/md.</span>
           </div>
+        )}
+        {c.premium.length > 0 && (
+          <>
+            <div className="app-coverHead">Kan ikke kjøpes for poeng:</div>
+            {c.premium.map(x => (
+              <div className="app-coverRow app-coverDrop" key={x.id}>
+                <span className="app-coverName">
+                  {x.name} · {x.levelName}
+                  <span className="app-coverRate">samme pris med og uten poeng</span>
+                </span>
+                <span>{kr(x.price)} kr/md.</span>
+              </div>
+            ))}
+          </>
         )}
       </div>
     </section>

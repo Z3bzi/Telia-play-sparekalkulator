@@ -143,6 +143,17 @@ body {
   white-space: nowrap;
 }
 
+.app-svcAddon {
+  display: block;
+  margin-top: 10px;
+}
+
+.app-svcAddonMeta {
+  margin-left: 8px;
+  font-size: 12px;
+  color: var(--purpur-color-text-medium);
+}
+
 .app-mobileRow {
   margin-top: 14px;
 }

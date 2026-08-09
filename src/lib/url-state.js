@@ -1,12 +1,15 @@
 // Selections live in the URL hash so a result can be linked or shared. The hash
 // is used rather than the query string to keep it inert for static hosting.
 
-export function encodeState({ pot, hasMobile, selections, altChoice }) {
+export function encodeState({ pot, hasMobile, selections, addons, altChoice }) {
   const params = new URLSearchParams();
   params.set("p", String(pot));
   if (hasMobile) params.set("m", "1");
   const picked = Object.entries(selections).map(([id, lvl]) => `${id}:${lvl}`);
   if (picked.length) params.set("s", picked.join(","));
+  const extras = Object.entries(addons ?? {})
+    .flatMap(([id, list]) => list.map(a => `${id}:${a}`));
+  if (extras.length) params.set("x", extras.join(","));
   // Only an explicit choice is encoded. Omitting it means "follow the
   // recommendation", so a link never freezes a default that later stops being
   // the better option.
@@ -44,6 +47,19 @@ export function decodeState(hash, config) {
     selections[id] = Math.min(Math.max(0, lvl), service.levels.length - 1);
   }
   state.selections = selections;
+
+  // Tillegg only mean anything alongside the service they hang off, so an entry
+  // for an unselected — or since-removed — service is dropped rather than kept.
+  const addons = {};
+  for (const entry of (params.get("x") || "").split(",")) {
+    if (!entry) continue;
+    const [id, addonId] = entry.split(":");
+    if (selections[id] === undefined) continue;
+    const service = config.services.find(s => s.id === id);
+    if (!service?.addons?.some(a => a.id === addonId)) continue;
+    (addons[id] ??= []).push(addonId);
+  }
+  state.addons = addons;
 
   const alt = params.get("a");
   if (alt === "fit" || alt === "buy") state.altMode = alt;

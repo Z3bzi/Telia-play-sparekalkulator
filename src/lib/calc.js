@@ -1,19 +1,43 @@
-export function calculate(config, { pot, hasMobile, selections, altMode }) {
-  const chosen = config.services
-    .filter(s => selections[s.id] !== undefined && s.levels[selections[s.id]])
-    .map(s => {
-      const level = s.levels[selections[s.id]];
-      return {
-        id: s.id, name: s.name, points: level.points, price: level.price,
-        levelName: level.name,
-        // How much subscription value each point unlocks — this is the ordering
-        // that "bare det som får plass" packs by, so it is worth surfacing.
-        valuePerPoint: level.points > 0 ? level.price / level.points : Infinity,
-      };
+// Everything the user has ticked, split by how it is paid for. `chosen` is what
+// poeng can cover and what the besparelse is measured against; `premium` is the
+// kroner-only tiers, which cost the same with or without Telia Play and so are
+// reported separately rather than folded into the saving.
+function collect(config, selections, addons) {
+  const chosen = [], premium = [];
+
+  const add = (item) => {
+    if (item.points === null) premium.push(item);
+    else chosen.push({
+      ...item,
+      // How much subscription value each point unlocks — this is the ordering
+      // that "bare det som får plass" packs by, so it is worth surfacing.
+      valuePerPoint: item.points > 0 ? item.price / item.points : Infinity,
     });
+  };
+
+  for (const s of config.services) {
+    const levelIndex = selections[s.id];
+    if (levelIndex === undefined || !s.levels[levelIndex]) continue;
+    const level = s.levels[levelIndex];
+    add({ id: s.id, name: s.name, levelName: level.name, points: level.points, price: level.price });
+
+    // Tillegg stack on the chosen nivå, so they are separate line items with
+    // their own poeng- and kronekostnad.
+    for (const a of s.addons ?? []) {
+      if (!(addons[s.id] ?? []).includes(a.id)) continue;
+      add({ id: `${s.id}:${a.id}`, name: s.name, levelName: a.name, points: a.points, price: a.price });
+    }
+  }
+
+  return { chosen, premium };
+}
+
+export function calculate(config, { pot, hasMobile, selections, addons = {}, altMode }) {
+  const { chosen, premium } = collect(config, selections, addons);
 
   const totalPrice = chosen.reduce((a, c) => a + c.price, 0);
   const totalPoints = chosen.reduce((a, c) => a + c.points, 0);
+  const premiumCost = premium.reduce((a, c) => a + c.price, 0);
   const available = pot + (hasMobile ? config.mobileBonus : 0);
   const over = totalPoints > available;
 
@@ -42,5 +66,5 @@ export function calculate(config, { pot, hasMobile, selections, altMode }) {
   const recommended = fit && fit.savingMonth > buy.savingMonth ? "fit" : "buy";
 
   const active = over && altMode === "fit" && fit ? fit : buy;
-  return { chosen, totalPrice, totalPoints, available, over, buy, fit, active, recommended };
+  return { chosen, premium, premiumCost, totalPrice, totalPoints, available, over, buy, fit, active, recommended };
 }

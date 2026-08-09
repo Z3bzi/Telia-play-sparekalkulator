@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Modal, TextField } from "@purpur/library";
+import { Button, Checkbox, Modal, TextField } from "@purpur/library";
 import { DEFAULT_CONFIG } from "../lib/config";
 
 const clone = obj => JSON.parse(JSON.stringify(obj));
@@ -56,7 +56,26 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
 
   const addSvc = () => setDraft(d => {
     const next = clone(d);
-    next.services.push({ id: "svc" + Date.now(), name: "Ny tjeneste", levels: [{ name: "Standard", price: 99, points: 10 }] });
+    next.services.push({ id: "svc" + Date.now(), name: "Ny tjeneste", levels: [{ name: "Standard", price: 99, points: 10 }], addons: [] });
+    return next;
+  });
+
+  const updateAddon = (si, ai, field, value) => setDraft(d => {
+    const next = clone(d);
+    next.services[si].addons[ai][field] = value;
+    return next;
+  });
+
+  const removeAddon = (si, ai) => setDraft(d => {
+    const next = clone(d);
+    next.services[si].addons.splice(ai, 1);
+    return next;
+  });
+
+  const addAddon = si => setDraft(d => {
+    const next = clone(d);
+    // The id lives in shared links, so it has to stay stable once handed out.
+    (next.services[si].addons ??= []).push({ id: "add" + Date.now(), name: "Nytt tillegg", price: 50, points: 10 });
     return next;
   });
 
@@ -156,8 +175,16 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                     id={`lvl-points-${si}-${li}`}
                     label="Poeng"
                     type="number"
-                    value={l.points}
+                    value={l.points ?? ""}
                     onChange={e => updateLvl(si, li, "points", Math.max(0, Number(e.target.value) || 0))}
+                  />
+                  {/* Some tiers are sold in kroner only. Clearing the poengfelt
+                      this way is what keeps them out of the poengbudsjettet. */}
+                  <Checkbox
+                    id={`lvl-kr-${si}-${li}`}
+                    checked={l.points === null}
+                    onChange={value => updateLvl(si, li, "points", value === true ? null : 0)}
+                    label="Kun kr"
                   />
                   {/* Purpur's iconOnly buttons expect an icon child and render
                       nothing for text, so these are ordinary labelled buttons. */}
@@ -165,6 +192,30 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                 </div>
               ))}
               <Button variant="tertiary-purple" onClick={() => addLvl(si)}>+ Nivå</Button>
+
+              {(s.addons ?? []).map((a, ai) => (
+                <div className="app-adminLvl" key={a.id}>
+                  <TextField id={`addon-name-${si}-${ai}`} label="Tillegg" value={a.name} onChange={e => updateAddon(si, ai, "name", e.target.value)} />
+                  <TextField
+                    className="app-adminNum"
+                    id={`addon-price-${si}-${ai}`}
+                    label="Kr/md."
+                    type="number"
+                    value={a.price}
+                    onChange={e => updateAddon(si, ai, "price", Math.max(0, Number(e.target.value) || 0))}
+                  />
+                  <TextField
+                    className="app-adminNum"
+                    id={`addon-points-${si}-${ai}`}
+                    label="Poeng"
+                    type="number"
+                    value={a.points}
+                    onChange={e => updateAddon(si, ai, "points", Math.max(0, Number(e.target.value) || 0))}
+                  />
+                  <Button variant="destructive" size="sm" onClick={() => removeAddon(si, ai)}>Fjern tillegg</Button>
+                </div>
+              ))}
+              <Button variant="tertiary-purple" onClick={() => addAddon(si)}>+ Tillegg</Button>
             </div>
           ))}
           <Button variant="tertiary-purple" onClick={addSvc}>+ Legg til tjeneste</Button>
