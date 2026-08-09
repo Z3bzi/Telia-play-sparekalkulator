@@ -40,6 +40,19 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 })
             <span>× 12 måneder</span>
             <span>{kr(a.savingMonth * 12)} kr/år</span>
           </div>
+          {c.premium.length > 0 && (
+            <>
+              <div className="app-mathDivider" />
+              <div className="app-mathRow">
+                <span>
+                  Betales i kroner ({c.premium.length} {c.premium.length === 1 ? "nivå" : "nivåer"})
+                  <br />
+                  <small>Telias pris er den samme som å betale tjenesten direkte, så poeng endrer ingenting her.</small>
+                </span>
+                <span>{kr(c.premiumCost)} kr/md.</span>
+              </div>
+            </>
+          )}
         </Accordion.Item>
       </Accordion>
     </section>

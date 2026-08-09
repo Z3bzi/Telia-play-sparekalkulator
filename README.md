@@ -5,8 +5,13 @@ i stedet for å betale for hver tjeneste separat.
 
 **[Åpne kalkulatoren →](https://z3bzi.github.io/Telia-play-sparekalkulator/)**
 
-Du velger poengpakke (15/40/60, pluss 10 poeng hvis du har mobilabonnement hos Telia),
-krysser av tjenestene du betaler for i dag, og får besparelsen i kr/md. og kr/år.
+Du velger poengpakke – Start (15 poeng), Standard (40) eller Premium (60), pluss 10 poeng
+hvis du har mobilabonnement hos Telia – krysser av tjenestene du betaler for i dag, og får
+besparelsen i kr/md. og kr/år.
+
+Månedsprisen på pakken vises som informasjon i velgeren, men trekkes ikke fra besparelsen:
+kalkulatoren sammenligner hva strømmetjenestene koster med og uten poeng, og forutsetter at
+du har Telia Play uansett.
 
 ---
 
@@ -15,6 +20,15 @@ krysser av tjenestene du betaler for i dag, og får besparelsen i kr/md. og kr/�
 Hver tjeneste koster et antall poeng, og prisen varierer per nivå: HBO Max med reklame
 koster 30 poeng, Standard koster 50. Kalkulatoren summerer poengbehovet for de valgte
 nivåene og sammenligner med pakken din.
+
+Noen nivåer selges bare i kroner – HBO Max Premium, V Premium og Viaplay Total. De er
+merket **kun kr**, holdes utenfor poengbudsjettet, og teller ikke som besparelse: Telias
+pris er den samme som å betale tjenesten direkte, så poengene endrer ingenting for dem.
+De vises likevel, under «Kan ikke kjøpes for poeng», så regnestykket blir fullstendig.
+
+Enkelte tjenester har **tillegg** som legger seg oppå nivået i stedet for å erstatte det.
+HBO Max Sport koster 20 poeng (eller 50 kr/md.) i tillegg til Basis eller Standard, og
+blir en egen linje i poengbruken.
 
 Får alt plass, sparer du hele beløpet du betaler i dag. Hvis ikke, vises to løsninger:
 
@@ -49,8 +63,9 @@ npm run preview  # server dist/ lokalt
 
 Trykk fem ganger på logoen i toppen, og skriv inn PIN (standard: `1234`).
 
-Her kan du endre tjenester, nivåer, priser, poeng per nivå, valgbare poengpakker,
-mobilbonus, pris per 10 ekstra poeng, PIN-koden og logofiler.
+Her kan du endre tjenester, nivåer, priser, poeng per nivå, tillegg, valgbare poengpakker
+(navn, poeng og månedspris), mobilbonus, pris per 10 ekstra poeng, PIN-koden og logofiler.
+Kryss av **Kun kr** på et nivå for å markere at det ikke kan kjøpes for poeng.
 «Tilbakestill til startdata» henter inn standardoppsettet igjen.
 
 > [!IMPORTANT]
@@ -66,9 +81,9 @@ Tjenester viser en farget bokstavforkortelse som standard. For ekte logoer: legg
 
 ## Deling
 
-Valgene dine ligger i URL-en (`#p=60&s=netflix:2,hbomax:0`), så en lenke gjenskaper
-akkurat det resultatet. Ugyldige verdier forkastes, så gamle lenker fortsatt virker
-etter at oppsettet er endret.
+Valgene dine ligger i URL-en (`#p=60&s=netflix:2,hbomax:1&x=hbomax:sport`), så en lenke
+gjenskaper akkurat det resultatet – `s` er nivåene, `x` er tilleggene. Ugyldige verdier
+forkastes, så gamle lenker fortsatt virker etter at oppsettet er endret.
 
 ## Struktur
 
@@ -97,3 +112,13 @@ Push til `main` bygger og publiserer automatisk til GitHub Pages via
 
 Poengverdiene følger Telia Play-grensesnittet (august 2026). Prisene er veiledende –
 sjekk gjeldende pris hos den enkelte tjenesten, og korriger i admin ved behov.
+
+Poeng og priser for HBO Max, Viaplay, SkyShowtime og Prime Video er hentet fra Telias
+egne innholdssider. Prisene på de fire TV 2 Play-nivåene er derimot anslag: der oppgir
+Telia bare poengkostnaden (10/40/50/110), så kroneprisen må bekreftes mot TV 2 og
+eventuelt rettes i admin.
+
+Viaplays V Sport (20 poeng), V Sport Golf (50) og V Series (5) kan også kjøpes for poeng,
+men de er TV-kanaler uten egen abonnementspris. Spørsmålet «hva betaler du for i dag?» har
+derfor ikke noe meningsfullt svar for dem, og de er utelatt fra startdata. Trenger du dem,
+legg dem inn som tillegg i admin.

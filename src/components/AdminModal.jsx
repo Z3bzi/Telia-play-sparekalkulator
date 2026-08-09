@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Modal, TextField } from "@purpur/library";
+import { Button, Checkbox, Modal, TextField } from "@purpur/library";
 import { DEFAULT_CONFIG } from "../lib/config";
 
 const clone = obj => JSON.parse(JSON.stringify(obj));
@@ -56,13 +56,32 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
 
   const addSvc = () => setDraft(d => {
     const next = clone(d);
-    next.services.push({ id: "svc" + Date.now(), name: "Ny tjeneste", levels: [{ name: "Standard", price: 99, points: 10 }] });
+    next.services.push({ id: "svc" + Date.now(), name: "Ny tjeneste", levels: [{ name: "Standard", price: 99, points: 10 }], addons: [] });
     return next;
   });
 
-  const updatePot = (pi, value) => setDraft(d => {
+  const updateAddon = (si, ai, field, value) => setDraft(d => {
     const next = clone(d);
-    next.pots[pi] = value;
+    next.services[si].addons[ai][field] = value;
+    return next;
+  });
+
+  const removeAddon = (si, ai) => setDraft(d => {
+    const next = clone(d);
+    next.services[si].addons.splice(ai, 1);
+    return next;
+  });
+
+  const addAddon = si => setDraft(d => {
+    const next = clone(d);
+    // The id lives in shared links, so it has to stay stable once handed out.
+    (next.services[si].addons ??= []).push({ id: "add" + Date.now(), name: "Nytt tillegg", price: 50, points: 10 });
+    return next;
+  });
+
+  const updatePot = (pi, field, value) => setDraft(d => {
+    const next = clone(d);
+    next.pots[pi][field] = value;
     return next;
   });
 
@@ -72,14 +91,21 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
     return next;
   });
 
-  const addPot = () => setDraft(d => ({ ...clone(d), pots: [...d.pots, 20] }));
+  const addPot = () => setDraft(d => ({ ...clone(d), pots: [...clone(d.pots), { name: "Ny pakke", points: 20, price: 0 }] }));
 
   const reset = () => setDraft(clone(DEFAULT_CONFIG));
 
   const save = () => {
-    // Deduplicate: PotSelector keys and matches selection by value, so two
-    // identical packages would collide.
-    const pots = [...new Set(draft.pots.filter(p => p > 0))].sort((a, b) => a - b);
+    // Deduplicate by point count: PotSelector keys and matches selection by it,
+    // so two packages of the same size would collide. First one entered wins.
+    const seen = new Set();
+    const pots = [];
+    for (const p of draft.pots) {
+      if (p.points <= 0 || seen.has(p.points)) continue;
+      seen.add(p.points);
+      pots.push({ ...p, name: String(p.name ?? "").trim() || `${p.points} poeng` });
+    }
+    pots.sort((a, b) => a.points - b.points);
     const cleaned = {
       ...draft,
       // An empty PIN would let an empty input through the gate, and zero
@@ -149,8 +175,16 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                     id={`lvl-points-${si}-${li}`}
                     label="Poeng"
                     type="number"
-                    value={l.points}
+                    value={l.points ?? ""}
                     onChange={e => updateLvl(si, li, "points", Math.max(0, Number(e.target.value) || 0))}
+                  />
+                  {/* Some tiers are sold in kroner only. Clearing the poengfelt
+                      this way is what keeps them out of the poengbudsjettet. */}
+                  <Checkbox
+                    id={`lvl-kr-${si}-${li}`}
+                    checked={l.points === null}
+                    onChange={value => updateLvl(si, li, "points", value === true ? null : 0)}
+                    label="Kun kr"
                   />
                   {/* Purpur's iconOnly buttons expect an icon child and render
                       nothing for text, so these are ordinary labelled buttons. */}
@@ -158,6 +192,30 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                 </div>
               ))}
               <Button variant="tertiary-purple" onClick={() => addLvl(si)}>+ Nivå</Button>
+
+              {(s.addons ?? []).map((a, ai) => (
+                <div className="app-adminLvl" key={a.id}>
+                  <TextField id={`addon-name-${si}-${ai}`} label="Tillegg" value={a.name} onChange={e => updateAddon(si, ai, "name", e.target.value)} />
+                  <TextField
+                    className="app-adminNum"
+                    id={`addon-price-${si}-${ai}`}
+                    label="Kr/md."
+                    type="number"
+                    value={a.price}
+                    onChange={e => updateAddon(si, ai, "price", Math.max(0, Number(e.target.value) || 0))}
+                  />
+                  <TextField
+                    className="app-adminNum"
+                    id={`addon-points-${si}-${ai}`}
+                    label="Poeng"
+                    type="number"
+                    value={a.points}
+                    onChange={e => updateAddon(si, ai, "points", Math.max(0, Number(e.target.value) || 0))}
+                  />
+                  <Button variant="destructive" size="sm" onClick={() => removeAddon(si, ai)}>Fjern tillegg</Button>
+                </div>
+              ))}
+              <Button variant="tertiary-purple" onClick={() => addAddon(si)}>+ Tillegg</Button>
             </div>
           ))}
           <Button variant="tertiary-purple" onClick={addSvc}>+ Legg til tjeneste</Button>
@@ -185,14 +243,28 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
           </div>
           <div className="app-stepLabel">Valgbare poengpakker</div>
           {draft.pots.map((p, pi) => (
-            <div className="app-adminRow" key={pi}>
+            <div className="app-adminRow app-adminPot" key={pi}>
+              <TextField
+                id={`pot-name-${pi}`}
+                label="Navn"
+                value={p.name}
+                onChange={e => updatePot(pi, "name", e.target.value)}
+              />
               <TextField
                 className="app-adminNum"
                 id={`pot-${pi}`}
                 label="Poeng"
                 type="number"
-                value={p}
-                onChange={e => updatePot(pi, Math.max(0, Number(e.target.value) || 0))}
+                value={p.points}
+                onChange={e => updatePot(pi, "points", Math.max(0, Number(e.target.value) || 0))}
+              />
+              <TextField
+                className="app-adminNum"
+                id={`pot-price-${pi}`}
+                label="Kr/md."
+                type="number"
+                value={p.price}
+                onChange={e => updatePot(pi, "price", Math.max(0, Number(e.target.value) || 0))}
               />
               <Button variant="destructive" size="sm" onClick={() => removePot(pi)}>Fjern pakke</Button>
             </div>

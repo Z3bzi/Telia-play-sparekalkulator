@@ -25,7 +25,10 @@ function ServiceMark({ service }) {
   );
 }
 
-export function ServicesCard({ services, selections, onToggle, onLevelChange }) {
+// A kroner-only tier has no poengpris to show, in the badge or in the select.
+const levelPoints = l => (l.points === null ? "kun kr" : `${l.points} p`);
+
+export function ServicesCard({ services, selections, addons, onToggle, onLevelChange, onAddonToggle }) {
   return (
     <section className="app-card">
       <Heading tag="h2" variant="subsection-100" className="app-cardTitle">Hva betaler du for i dag?</Heading>
@@ -40,10 +43,13 @@ export function ServicesCard({ services, selections, onToggle, onLevelChange }) 
           const showFrom = !on && s.levels.length > 1;
           // Tiers can cost different point amounts, so the collapsed badge
           // shows the span; once a tier is chosen it shows that tier's cost.
-          const allPts = s.levels.map(l => l.points);
+          // Kroner-only tiers hold no poeng and are left out of the span.
+          const allPts = s.levels.map(l => l.points).filter(p => p !== null);
           const minPts = Math.min(...allPts), maxPts = Math.max(...allPts);
-          const ptsLabel = on ? `${level.points} p`
+          const ptsLabel = on ? levelPoints(level)
+            : !allPts.length ? "kun kr"
             : minPts === maxPts ? `${minPts} p` : `${minPts}–${maxPts} p`;
+          const picked = addons[s.id] ?? [];
 
           return (
             <div
@@ -71,18 +77,30 @@ export function ServicesCard({ services, selections, onToggle, onLevelChange }) 
                 </span>
                 <span className="app-svcPts">{ptsLabel}</span>
               </div>
-              {on && s.levels.length > 1 && (
+              {on && (s.levels.length > 1 || (s.addons ?? []).length > 0) && (
                 <div className="app-svcDetail" onClick={e => e.stopPropagation()}>
-                  <Select
-                    id={`lvl-${s.id}`}
-                    aria-label={`Nivå for ${s.name}`}
-                    options={s.levels.map((l, i) => ({
-                      label: `${l.name} — ${kr(l.price)} kr/md. · ${l.points} p`,
-                      value: String(i),
-                    }))}
-                    value={String(lvlIdx)}
-                    onChange={e => onLevelChange(s.id, Number(e.target.value))}
-                  />
+                  {s.levels.length > 1 && (
+                    <Select
+                      id={`lvl-${s.id}`}
+                      aria-label={`Nivå for ${s.name}`}
+                      options={s.levels.map((l, i) => ({
+                        label: `${l.name} — ${kr(l.price)} kr/md. · ${levelPoints(l)}`,
+                        value: String(i),
+                      }))}
+                      value={String(lvlIdx)}
+                      onChange={e => onLevelChange(s.id, Number(e.target.value))}
+                    />
+                  )}
+                  {(s.addons ?? []).map(a => (
+                    <span className="app-svcAddon" key={a.id}>
+                      <Checkbox
+                        id={`addon-${s.id}-${a.id}`}
+                        checked={picked.includes(a.id)}
+                        onChange={() => onAddonToggle(s.id, a.id)}
+                        label={<>+ {a.name}<span className="app-svcAddonMeta">{kr(a.price)} kr/md. · {a.points} p</span></>}
+                      />
+                    </span>
+                  ))}
                 </div>
               )}
             </div>

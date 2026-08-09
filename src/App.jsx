@@ -26,10 +26,13 @@ export const App = () => {
 
   const [pot, setPot] = useState(() =>
     initial.pot ??
-    (config.pots.includes(config.defaultPot) ? config.defaultPot : (config.pots[config.pots.length - 1] ?? 0)),
+    (config.pots.some(p => p.points === config.defaultPot)
+      ? config.defaultPot
+      : (config.pots[config.pots.length - 1]?.points ?? 0)),
   );
   const [hasMobile, setHasMobile] = useState(() => initial.hasMobile ?? false);
   const [selections, setSelections] = useState(() => initial.selections ?? {});
+  const [addons, setAddons] = useState(() => initial.addons ?? {});
   // null means "follow the recommendation" until the user picks explicitly.
   const [altChoice, setAltChoice] = useState(() => initial.altMode ?? null);
   const [pinOpen, setPinOpen] = useState(false);
@@ -37,23 +40,23 @@ export const App = () => {
   const resultRef = useRef(null);
 
   const recommended = useMemo(
-    () => calculate(config, { pot, hasMobile, selections, altMode: "buy" }).recommended,
-    [config, pot, hasMobile, selections],
+    () => calculate(config, { pot, hasMobile, selections, addons, altMode: "buy" }).recommended,
+    [config, pot, hasMobile, selections, addons],
   );
   const altMode = altChoice ?? recommended;
 
   const calc = useMemo(
-    () => calculate(config, { pot, hasMobile, selections, altMode }),
-    [config, pot, hasMobile, selections, altMode],
+    () => calculate(config, { pot, hasMobile, selections, addons, altMode }),
+    [config, pot, hasMobile, selections, addons, altMode],
   );
 
   // Keep the URL in step with the current selection without adding history
   // entries for every checkbox click.
   useEffect(() => {
-    const encoded = encodeState({ pot, hasMobile, selections, altChoice });
+    const encoded = encodeState({ pot, hasMobile, selections, addons, altChoice });
     const next = `${window.location.pathname}${window.location.search}#${encoded}`;
     window.history.replaceState(null, "", next);
-  }, [pot, hasMobile, selections, altChoice]);
+  }, [pot, hasMobile, selections, addons, altChoice]);
 
   const toggleService = id => {
     setSelections(prev => {
@@ -61,6 +64,28 @@ export const App = () => {
       if (next[id] !== undefined) delete next[id];
       else next[id] = 0;
       return next;
+    });
+    // Tillegg cannot outlive the service they sit on.
+    setAddons(prev => {
+      if (!prev[id]) return prev;
+      const next = { ...prev };
+      delete next[id];
+      return next;
+    });
+  };
+
+  const toggleAddon = (serviceId, addonId) => {
+    setAddons(prev => {
+      const current = prev[serviceId] ?? [];
+      const next = current.includes(addonId)
+        ? current.filter(a => a !== addonId)
+        : [...current, addonId];
+      if (!next.length) {
+        const rest = { ...prev };
+        delete rest[serviceId];
+        return rest;
+      }
+      return { ...prev, [serviceId]: next };
     });
   };
 
@@ -72,18 +97,25 @@ export const App = () => {
     const saved = persistConfig(next);
     setConfig(saved);
     const cleanedSelections = {};
+    const cleanedAddons = {};
     for (const s of saved.services) {
-      if (selections[s.id] !== undefined) {
-        cleanedSelections[s.id] = Math.min(selections[s.id], s.levels.length - 1);
-      }
+      if (selections[s.id] === undefined) continue;
+      cleanedSelections[s.id] = Math.min(selections[s.id], s.levels.length - 1);
+      const kept = (addons[s.id] ?? []).filter(a => (s.addons ?? []).some(x => x.id === a));
+      if (kept.length) cleanedAddons[s.id] = kept;
     }
     setSelections(cleanedSelections);
-    if (!saved.pots.includes(pot) && saved.pots.length) {
-      setPot(saved.pots.includes(saved.defaultPot) ? saved.defaultPot : saved.pots[saved.pots.length - 1]);
+    setAddons(cleanedAddons);
+    if (!saved.pots.some(p => p.points === pot) && saved.pots.length) {
+      setPot(saved.pots.some(p => p.points === saved.defaultPot)
+        ? saved.defaultPot
+        : saved.pots[saved.pots.length - 1].points);
     }
   };
 
-  const hasSelection = calc.chosen.length > 0;
+  // A kroner-only tier saves nothing, but it is still a selection: the results
+  // column has to explain that rather than sit on the empty state.
+  const hasSelection = calc.chosen.length + calc.premium.length > 0;
 
   return (
     <ThemeProvider forceColorScheme="light">
@@ -102,8 +134,10 @@ export const App = () => {
           <ServicesCard
             services={config.services}
             selections={selections}
+            addons={addons}
             onToggle={toggleService}
             onLevelChange={setServiceLevel}
+            onAddonToggle={toggleAddon}
           />
         </div>
 
