@@ -9,9 +9,13 @@ Du velger poengpakke – Start (15 poeng), Standard (40) eller Premium (60), plu
 hvis du har mobilabonnement hos Telia – krysser av tjenestene du betaler for i dag, og får
 besparelsen i kr/md. og kr/år.
 
-Månedsprisen på pakken vises som informasjon i velgeren, men trekkes ikke fra besparelsen:
-kalkulatoren sammenligner hva strømmetjenestene koster med og uten poeng, og forutsetter at
-du har Telia Play uansett.
+Månedsprisen på selve pakken vises ikke. MDU-kunder – de som får TV gjennom borettslag
+eller sameie – betaler det avtalen deres med Telia sier, ikke listepris, og kalkulatoren
+vet ikke hvem som sitter på andre siden. Prisene ligger i oppsettet og kan slås på i admin
+der de faktisk stemmer.
+
+Uansett trekkes de ikke fra besparelsen: kalkulatoren sammenligner hva strømmetjenestene
+koster med og uten poeng, og forutsetter at du har Telia Play uansett.
 
 ---
 
@@ -65,7 +69,8 @@ Trykk fem ganger på logoen i toppen, og skriv inn PIN (standard: `1234`).
 
 Her kan du endre tjenester, nivåer, priser, poeng per nivå, tillegg, valgbare poengpakker
 (navn, poeng og månedspris), mobilbonus, pris per 10 ekstra poeng, PIN-koden og logofiler.
-Kryss av **Kun kr** på et nivå for å markere at det ikke kan kjøpes for poeng.
+Kryss av **Kun kr** på et nivå for å markere at det ikke kan kjøpes for poeng, og
+**Vis månedspris på pakkene** hvis listeprisene stemmer for dem som skal bruke kalkulatoren.
 «Tilbakestill til startdata» henter inn standardoppsettet igjen.
 
 > [!IMPORTANT]

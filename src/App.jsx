@@ -127,6 +127,7 @@ export const App = () => {
             pots={config.pots}
             pot={pot}
             onPotChange={setPot}
+            showPotPrices={config.showPotPrices}
             mobileBonus={config.mobileBonus}
             hasMobile={hasMobile}
             onMobileChange={setHasMobile}

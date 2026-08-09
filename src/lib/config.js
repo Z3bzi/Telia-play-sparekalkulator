@@ -18,8 +18,14 @@ export const STORAGE_KEY = "telia-kalkulator-config";
 // dag" has no meaningful answer for them and they are left out of startdata.
 export const DEFAULT_CONFIG = {
   // Telia Play sells the point packages as named tiers, so the selector shows
-  // the same name and månedspris the customer sees when signing up. `points`
-  // is what the calculation runs on; `price` is context only.
+  // the same names the customer sees when signing up. `points` is what the
+  // calculation runs on.
+  //
+  // The månedspris is kept, but hidden by default: MDU-kunder pay whatever
+  // their borettslag has agreed with Telia, so listprisen would be wrong for
+  // them and the calculator has no way to tell the two apart. Slå den på i
+  // admin når prisene stemmer for de som faktisk bruker kalkulatoren.
+  showPotPrices: false,
   pots: [
     { name: "Start", points: 15, price: 109 },
     { name: "Standard", points: 40, price: 189 },
@@ -78,6 +84,8 @@ function migrateConfig(cfg) {
   // Packages used to be bare point counts. Name and price the ones we still
   // recognise from the defaults; anything the admin invented keeps working
   // under a generic label rather than being dropped.
+  // Configs stored while prices were always visible must not keep showing them.
+  if (typeof cfg.showPotPrices !== "boolean") cfg.showPotPrices = false;
   cfg.pots = (Array.isArray(cfg.pots) ? cfg.pots : []).map(p => {
     if (p && typeof p === "object") {
       return { name: String(p.name ?? `${p.points} poeng`), points: Number(p.points) || 0, price: Number(p.price) || 0 };

@@ -1,11 +1,11 @@
 import { Checkbox, Heading } from "@purpur/library";
 import { PotSelector } from "./PotSelector";
 
-export function PotCard({ pots, pot, onPotChange, mobileBonus, hasMobile, onMobileChange }) {
+export function PotCard({ pots, pot, onPotChange, showPotPrices, mobileBonus, hasMobile, onMobileChange }) {
   return (
     <section className="app-card">
       <Heading tag="h2" variant="subsection-100" className="app-cardTitle">Poengpakken din</Heading>
-      <PotSelector pots={pots} pot={pot} onPotChange={onPotChange} />
+      <PotSelector pots={pots} pot={pot} onPotChange={onPotChange} showPrices={showPotPrices} />
       <div className="app-mobileRow">
         <Checkbox
           id="mobile-bonus"
