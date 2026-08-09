@@ -47,8 +47,13 @@ export const DEFAULT_CONFIG = {
       { name: "Standard", price: 149, points: 50 },
       { name: "Premium", price: 189, points: null } ],
       addons: [ { id: "sport", name: "Sport", price: 50, points: 20 } ]},
+    // Viaplay har nå to Film og serier-varianter, 109 med reklame og 169 uten.
+    // Telia lister bare én, til 45 poeng, og sier ikke hvilken. 169 er lagt til
+    // grunn: der Telia faktisk skiller på reklame — HBO Max, SkyShowtime, Prime,
+    // TV 2 Play — er reklamevarianten alltid billigere i poeng, så en enslig
+    // oppføring til 45 poeng peker mot den fulle tjenesten. Verdt å bekrefte.
     { id: "viaplay", name: "Viaplay", levels: [
-      { name: "Film og serier", price: 159, points: 45 },
+      { name: "Film og serier", price: 169, points: 45 },
       { name: "V Premium", price: 699, points: null },
       { name: "Viaplay Total", price: 749, points: null } ]},
     { id: "prime", name: "Prime Video", levels: [
@@ -65,10 +70,13 @@ export const DEFAULT_CONFIG = {
       { name: "Standard m/reklame", price: 69, points: 40 },
       { name: "Uten reklame", price: 99, points: 40 } ]},
     { id: "skyshowtime", name: "SkyShowtime", levels: [
-      { name: "Med reklame", price: 59, points: 20 },
+      { name: "Med reklame", price: 69, points: 20 },
       { name: "Uten reklame", price: 79, points: 30 } ]},
+    // 89 kr er månedsprisen. Årsabonnementet på 699 kr tilsvarer 58 kr/md.,
+    // men det er ikke det du slipper å betale om poeng dekker tjenesten fra
+    // måned til måned, så månedsprisen er den riktige å sammenligne med.
     { id: "britbox", name: "BritBox", levels: [
-      { name: "Standard", price: 59, points: 10 } ]},
+      { name: "Standard", price: 89, points: 10 } ]},
   ],
 };
 

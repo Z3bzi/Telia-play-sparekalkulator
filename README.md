@@ -123,6 +123,11 @@ Push til `main` bygger og publiserer automatisk til GitHub Pages via
 Poengverdiene følger Telia Play-grensesnittet (august 2026). Prisene er veiledende –
 sjekk gjeldende pris hos den enkelte tjenesten, og korriger i admin ved behov.
 
+Prisene ble sist kontrollert mot tjenestenes egne sider 9. august 2026. Netflix, HBO Max,
+Prime Video og Disney+ stemte. SkyShowtime med reklame ble rettet fra 59 til 69, BritBox
+fra 59 til 89 – 59 lå nær årsprisen delt på tolv, men det er månedsprisen du slipper unna
+når poeng dekker tjenesten – og Viaplay fra 159 til 169.
+
 Poeng og priser for HBO Max, Viaplay, SkyShowtime og Prime Video er hentet fra Telias
 egne innholdssider.
 
