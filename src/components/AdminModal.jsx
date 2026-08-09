@@ -242,6 +242,16 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
             />
           </div>
           <div className="app-stepLabel">Valgbare poengpakker</div>
+          <div className="app-adminRow">
+            {/* Off by default: MDU-kunder betaler det borettslaget har avtalt,
+                ikke listepris, og kalkulatoren vet ikke hvem som ser på. */}
+            <Checkbox
+              id="show-pot-prices"
+              checked={draft.showPotPrices === true}
+              onChange={value => setDraft(d => ({ ...d, showPotPrices: value === true }))}
+              label="Vis månedspris på pakkene (av for MDU – de har egne priser)"
+            />
+          </div>
           {draft.pots.map((p, pi) => (
             <div className="app-adminRow app-adminPot" key={pi}>
               <TextField

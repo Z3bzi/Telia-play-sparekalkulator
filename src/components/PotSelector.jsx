@@ -7,7 +7,7 @@ import { kr } from "../lib/config";
  * for a three-way numeric choice. This is a compact segmented control with the
  * same semantics: a radiogroup with roving tabindex and arrow-key navigation.
  */
-export function PotSelector({ pots, pot, onPotChange }) {
+export function PotSelector({ pots, pot, onPotChange, showPrices, ownPrice }) {
   const refs = useRef([]);
 
   const move = (from, delta) => {
@@ -50,6 +50,11 @@ export function PotSelector({ pots, pot, onPotChange }) {
     <div className="app-segmented" role="radiogroup" aria-label="Velg poengpakke">
       {pots.map((p, i) => {
         const selected = p.points === pot;
+        // A price the user typed beats listeprisen on the pakken they hold —
+        // it is the only figure we know is right for them. "Fra" is dropped
+        // with it, since theirs is an exact amount rather than a startpris.
+        const own = selected && ownPrice !== null && ownPrice !== undefined;
+        const price = own ? ownPrice : (showPrices && p.price > 0 ? p.price : null);
         return (
           <button
             key={p.points}
@@ -61,12 +66,12 @@ export function PotSelector({ pots, pot, onPotChange }) {
             className={`app-seg${selected ? " app-segOn" : ""}`}
             onClick={() => onPotChange(p.points)}
             onKeyDown={e => handleKeyDown(e, i)}
-            aria-label={`${p.name}, ${p.points} poeng${p.price ? `, fra ${kr(p.price)} kroner per måned` : ""}`}
+            aria-label={`${p.name}, ${p.points} poeng${price === null ? "" : `, ${own ? "" : "fra "}${kr(price)} kroner per måned`}`}
           >
             <span className="app-segName">{p.name}</span>
             <span className="app-segNum">{p.points}</span>
             <span className="app-segUnit">poeng</span>
-            {p.price > 0 && <span className="app-segPrice">fra {kr(p.price)},–/md.</span>}
+            {price !== null && <span className="app-segPrice">{own ? "" : "fra "}{kr(price)},–/md.</span>}
           </button>
         );
       })}
