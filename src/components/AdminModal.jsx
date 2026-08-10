@@ -1,8 +1,14 @@
 import { useEffect, useRef, useState } from "react";
-import { Button, Checkbox, Modal, TextField } from "@purpur/library";
-import { DEFAULT_CONFIG } from "../lib/config";
+import { Button, Checkbox, Modal, Select, TextField } from "@purpur/library";
+import { DEFAULT_CONFIG, pruneBundleRefs } from "../lib/config";
 
 const clone = obj => JSON.parse(JSON.stringify(obj));
+
+// Everything but the service being edited, for the two kombinasjonsfeltene.
+const otherServices = (services, si) => [
+  { label: "— ingen —", value: "" },
+  ...services.flatMap((x, i) => (i === si ? [] : [{ label: x.name, value: x.id }])),
+];
 
 export function AdminModal({ open, onOpenChange, config, onSave }) {
   const [draft, setDraft] = useState(() => clone(config));
@@ -35,6 +41,16 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
       return next;
     });
   };
+
+  // `includes` is a list, but one bundled tjeneste per nivå is all Telia
+  // actually does, so the field is a single select. A hand-written config with
+  // several keeps them until this select is touched.
+  const updateIncludes = (si, li, value) => setDraft(d => {
+    const next = clone(d);
+    const level = next.services[si].levels[li];
+    if (value) level.includes = [value]; else delete level.includes;
+    return next;
+  });
 
   const removeSvc = si => setDraft(d => {
     const next = clone(d);
@@ -116,7 +132,9 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
       // longer exists — keep the previous values rather than persist either.
       pin: draft.pin.trim() || config.pin,
       pots: pots.length ? pots : config.pots,
-      services: draft.services.filter(s => s.name.trim() && s.levels.length > 0),
+      // A tjeneste that was just removed cannot be required or included by the
+      // ones that remain — such a peker would lock them out of poeng for good.
+      services: pruneBundleRefs(draft.services.filter(s => s.name.trim() && s.levels.length > 0)),
     };
     onSave(cleaned);
     setDraft(clone(cleaned));
@@ -162,6 +180,18 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                   onChange={e => updateSvc(si, "logo", e.target.value)}
                 />
               </div>
+              <div className="app-adminRow">
+                {/* Disney+ selges bare sammen med TV 2 Play. Uten den valgt har
+                    tjenesten ingen poengpris, og føres som ren kroneutgift. */}
+                <Select
+                  id={`svc-requires-${si}`}
+                  label="Krever"
+                  helperText="Tjenesten kan bare kjøpes for poeng sammen med denne."
+                  options={otherServices(draft.services, si)}
+                  value={s.requires ?? ""}
+                  onChange={e => updateSvc(si, "requires", e.target.value)}
+                />
+              </div>
               {s.levels.map((l, li) => (
                 <div className="app-adminLvl" key={li}>
                   <TextField id={`lvl-name-${si}-${li}`} label="Nivånavn" value={l.name} onChange={e => updateLvl(si, li, "name", e.target.value)} />
@@ -188,6 +218,16 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
                     checked={l.points === null}
                     onChange={value => updateLvl(si, li, "points", value === true ? null : 0)}
                     label="Kun kr"
+                  />
+                  {/* TV 2 Plays Standard-nivåer inneholder Disney+. Tjenesten
+                      som ligger inne her belastes ikke en gang til. */}
+                  <Select
+                    className="app-adminInc"
+                    id={`lvl-includes-${si}-${li}`}
+                    label="Inneholder"
+                    options={otherServices(draft.services, si)}
+                    value={l.includes?.[0] ?? ""}
+                    onChange={e => updateIncludes(si, li, e.target.value)}
                   />
                   {/* Purpur's iconOnly buttons expect an icon child and render
                       nothing for text, so these are ordinary labelled buttons. */}

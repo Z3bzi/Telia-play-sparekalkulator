@@ -33,6 +33,18 @@ Enkelte tjenester har **tillegg** som legger seg oppå nivået i stedet for å e
 HBO Max Sport koster 20 poeng (eller 50 kr/md.) i tillegg til Basis eller Standard, og
 blir en egen linje i poengbruken.
 
+**Disney+ selges bare i kombinasjon med TV 2 Play**, og kalkulatoren regner deretter:
+
+| Har du … | … så gjelder dette for Disney+ |
+| --- | --- |
+| TV 2 Play Standard | Følger med i nivået. Ingen ekstra poeng, ingen ekstra kroner – og den telles ikke en gang til om du krysser av begge. |
+| TV 2 Play Start | Kan kjøpes til for 40 poeng, som en hvilken som helst annen tjeneste. |
+| Ikke TV 2 Play | Ingen poengvei dit. Den havner under «Kan ikke kjøpes for poeng» og teller ikke som besparelse. |
+
+Under *bare det som får plass* henger Disney+ sammen med TV 2 Play: ryker verten ut av
+pakken, blir ikke Disney+ stående igjen alene. Det samme gjelder tillegg og nivået de
+sitter på.
+
 Får alt plass, sparer du hele beløpet du betaler i dag. Hvis ikke, vises to løsninger:
 
 | Løsning | Hva den gjør |
@@ -71,6 +83,12 @@ Her kan du endre tjenester, nivåer, priser, poeng per nivå, tillegg, valgbare 
 Kryss av **Kun kr** på et nivå for å markere at det ikke kan kjøpes for poeng, og
 **Vis månedspris på pakkene** hvis listeprisene stemmer for dem som skal bruke kalkulatoren.
 «Tilbakestill til startdata» henter inn standardoppsettet igjen.
+
+To felter binder tjenester sammen, slik Disney+ og TV 2 Play henger sammen:
+**Krever** på tjenesten sier at den bare kan kjøpes for poeng sammen med en annen, og
+**Inneholder** på et nivå sier hvilken tjeneste nivået allerede inkluderer. Sletter du
+tjenesten det pekes på, forkastes pekeren – ellers ville den avhengige tjenesten vært
+låst ute fra poeng for godt.
 
 > [!IMPORTANT]
 > Endringer lagres i `localStorage` og gjelder **bare den enheten og nettleseren du
@@ -133,6 +151,11 @@ bekreftes mot TV 2.
 TV 2 Play har også et Premium-nivå til 399,-/mnd med norsk toppfotball, Champions League
 og La Liga. Det selges ikke gjennom Telia, verken for poeng eller kroner, og hører derfor
 ikke hjemme i kalkulatoren.
+
+Disney+ står oppført til 40 poeng, men er ikke en tjeneste du kan velge for seg selv hos
+Telia – den er bare tilgjengelig i kombinasjon med TV 2 Play, og ligger allerede inne i
+TV 2 Plays Standard-nivåer. Kroneprisene (69 med reklame, 99 uten) er Disney+ sine egne,
+og er det du sammenligner med når du betaler dem direkte i dag.
 
 Viaplays V Sport (20 poeng), V Sport Golf (50) og V Series (5) kan også kjøpes for poeng,
 men de er TV-kanaler uten egen abonnementspris. Spørsmålet «hva betaler du for i dag?» har
