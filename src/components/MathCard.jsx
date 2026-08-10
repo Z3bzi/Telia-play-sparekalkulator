@@ -1,6 +1,19 @@
 import { Accordion } from "@purpur/library";
 import { kr } from "../lib/config";
 
+// Two different reasons land in the same bucket, and the explanation has to
+// cover the ones actually on screen: a kroner-only tier costs the same either
+// way, while a tjeneste med kombinasjonskrav has no poengpris før verten er med.
+function premiumReason(premium) {
+  const kroner = premium.some(x => x.reason !== "requires");
+  const requires = premium.filter(x => x.reason === "requires");
+  const names = [...new Set(requires.map(x => x.name))].join(", ");
+  return [
+    kroner && "Telias pris er den samme som å betale tjenesten direkte, så poeng endrer ingenting her.",
+    names && `${names} selges bare i kombinasjon med en annen tjeneste, og kan ikke dekkes av poeng alene.`,
+  ].filter(Boolean).join(" ");
+}
+
 export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 }) {
   const c = calc;
   const a = c.active;
@@ -47,7 +60,7 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 })
                 <span>
                   Betales i kroner ({c.premium.length} {c.premium.length === 1 ? "nivå" : "nivåer"})
                   <br />
-                  <small>Telias pris er den samme som å betale tjenesten direkte, så poeng endrer ingenting her.</small>
+                  <small>{premiumReason(c.premium)}</small>
                 </span>
                 <span>{kr(c.premiumCost)} kr/md.</span>
               </div>

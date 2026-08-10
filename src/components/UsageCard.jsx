@@ -108,6 +108,22 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
             <span>−{kr(a.extraCost)} kr/md.</span>
           </div>
         )}
+        {c.included.length > 0 && (
+          <>
+            <div className="app-coverHead">Følger med:</div>
+            {c.included.map(x => (
+              <div className="app-coverRow app-coverDrop" key={x.id}>
+                <span className="app-coverName">
+                  {x.name}
+                  <span className="app-coverRate">
+                    inkludert i {x.host.name} · {x.host.levelName}
+                  </span>
+                </span>
+                <span>0 kr/md.</span>
+              </div>
+            ))}
+          </>
+        )}
         {c.premium.length > 0 && (
           <>
             <div className="app-coverHead">Kan ikke kjøpes for poeng:</div>
@@ -115,7 +131,7 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
               <div className="app-coverRow app-coverDrop" key={x.id}>
                 <span className="app-coverName">
                   {x.name} · {x.levelName}
-                  <span className="app-coverRate">samme pris med og uten poeng</span>
+                  <span className="app-coverRate">{x.note}</span>
                 </span>
                 <span>{kr(x.price)} kr/md.</span>
               </div>

@@ -269,6 +269,22 @@ body {
   padding-top: 10px;
 }
 
+/* Kombinasjonskravet, kort nok til å stå på metalinjen ved siden av prisen. */
+.app-svcNeed {
+  color: var(--purpur-color-text-status-warning-strong);
+}
+
+/* Den fulle forklaringen, som bare vises når raden er krysset av. */
+.app-svcNote {
+  margin-top: 9px;
+  padding: 8px 10px;
+  border-radius: var(--purpur-border-radius-sm);
+  background: var(--purpur-color-background-secondary);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--purpur-color-text-medium);
+}
+
 .app-lvlSingle {
   font-size: 14px;
   color: var(--purpur-color-text-medium);
@@ -615,6 +631,11 @@ body {
 
 .app-adminNum {
   width: 78px;
+  flex: none;
+}
+
+.app-adminInc {
+  width: 150px;
   flex: none;
 }
 

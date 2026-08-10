@@ -16,6 +16,17 @@ export const STORAGE_KEY = "telia-kalkulator-config";
 // Viaplay's V Sport, V Sport Golf and V Series are also poengpriset (20/50/5),
 // but they are TV-kanaler with no standalone kronepris, so "hva betaler du i
 // dag" has no meaningful answer for them and they are left out of startdata.
+//
+// Two fields tie services together, both needed for Disney+, which Telia only
+// sells in combination with TV 2 Play:
+//
+//   `requires` on a service — its poengpris only applies alongside that other
+//   service. Disney+ without TV 2 Play cannot be bought for poeng at all, so it
+//   is reported as en ren kroneutgift instead of counting as besparelse.
+//
+//   `includes` on a nivå — services that tier already contains. TV 2 Plays
+//   Standard-nivåer inkluderer Disney+, so ticking both must not charge for
+//   Disney+ twice: it rides along on TV 2 Plays poeng og kroner.
 export const DEFAULT_CONFIG = {
   // Poengpakkene ship as bare point counts, because that is all we can vouch
   // for. They briefly carried the names Start/Standard/Premium and the prices
@@ -64,9 +75,13 @@ export const DEFAULT_CONFIG = {
     { id: "tv2play", name: "TV 2 Play", levels: [
       { name: "Start m/reklame", price: 109, points: 10 },
       { name: "Start", price: 199, points: 40 },
-      { name: "Standard m/Disney+, m/reklame", price: 189, points: 50 },
-      { name: "Standard m/Disney+", price: 379, points: 110 } ]},
-    { id: "disney", name: "Disney+", levels: [
+      { name: "Standard m/Disney+, m/reklame", price: 189, points: 50, includes: ["disney"] },
+      { name: "Standard m/Disney+", price: 379, points: 110, includes: ["disney"] } ]},
+    // Disney+ selges ikke løsrevet hos Telia — det er bare tilgjengelig sammen
+    // med TV 2 Play. På Standard-nivåene ligger det allerede inne i prisen; på
+    // Start-nivåene kan det kjøpes til for 40 poeng. Uten TV 2 Play i det hele
+    // tatt er det ingen poengvei til Disney+, og kroneprisen står som den er.
+    { id: "disney", name: "Disney+", requires: "tv2play", levels: [
       { name: "Standard m/reklame", price: 69, points: 40 },
       { name: "Uten reklame", price: 99, points: 40 } ]},
     { id: "skyshowtime", name: "SkyShowtime", levels: [
@@ -80,9 +95,32 @@ export const DEFAULT_CONFIG = {
   ],
 };
 
+// `requires` og `includes` peker på andre tjenester ved id. En peker til en
+// tjeneste som ikke finnes kan aldri innfris, og ville låst den avhengige
+// tjenesten ute fra poeng for godt — så den forkastes i stedet for å håndheves.
+// Kjøres både ved innlasting og ved lagring fra admin, der tjenester slettes.
+export function pruneBundleRefs(services) {
+  const ids = new Set(services.map(s => s.id));
+  for (const s of services) {
+    if (typeof s.requires !== "string" || !ids.has(s.requires) || s.requires === s.id) {
+      delete s.requires;
+    }
+    for (const l of s.levels ?? []) {
+      // A tier cannot include the service it belongs to, and duplicate entries
+      // would list the same tjeneste twice under «Følger med».
+      const kept = Array.isArray(l.includes)
+        ? [...new Set(l.includes)].filter(id => id !== s.id && ids.has(id))
+        : [];
+      if (kept.length) l.includes = kept; else delete l.includes;
+    }
+  }
+  return services;
+}
+
 // Configs saved before points moved onto levels carry a single service-wide
 // `points`; spread it onto every tier so stored admin edits keep working.
 function migrateConfig(cfg) {
+  pruneBundleRefs(cfg.services);
   for (const s of cfg.services) {
     const fallback = Number(s.points) || 0;
     for (const l of s.levels) {

@@ -113,9 +113,10 @@ export const App = () => {
     }
   };
 
-  // A kroner-only tier saves nothing, but it is still a selection: the results
-  // column has to explain that rather than sit on the empty state.
-  const hasSelection = calc.chosen.length + calc.premium.length > 0;
+  // A kroner-only tier saves nothing, and neither does one that only comes
+  // bundled with another, but both are still selections: the results column has
+  // to explain that rather than sit on the empty state.
+  const hasSelection = calc.chosen.length + calc.premium.length + calc.included.length > 0;
 
   return (
     <ThemeProvider forceColorScheme="light">
@@ -136,6 +137,7 @@ export const App = () => {
             services={config.services}
             selections={selections}
             addons={addons}
+            bundle={calc.bundle}
             onToggle={toggleService}
             onLevelChange={setServiceLevel}
             onAddonToggle={toggleAddon}
