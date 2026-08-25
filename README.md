@@ -13,8 +13,12 @@ inn i admin av den som har de riktige, men prisen holdes av som standard uansett
 MDU-kunder – de som får TV gjennom borettslag eller sameie – betaler det avtalen deres med
 Telia sier, og kalkulatoren vet ikke hvem som sitter på andre siden.
 
-Prisen på pakken inngår uansett ikke i regnestykket: kalkulatoren sammenligner hva
+Prisen på de løse pakkene inngår ikke i regnestykket: kalkulatoren sammenligner hva
 strømmetjenestene koster med og uten poeng, og forutsetter at du har Telia Play uansett.
+
+Velger du i stedet **fellesavtalen borettslaget har**, kommer TV-poengene – og hva de
+koster – rett fra Telias prisark. Da inngår tillegget i regnestykket, fordi det er en
+utgift du faktisk tar på deg for å få poengene. Se [Fellesavtaler](#fellesavtaler).
 
 ---
 
@@ -63,6 +67,44 @@ den forklarer hvorfor akkurat de tjenestene ble valgt.
 > rask og lett å forklare, men for enkelte kombinasjoner finnes det et bedre utvalg.
 > «Bare det som får plass» betyr *godt*, ikke *beviselig best*.
 
+## Fellesavtaler
+
+Fanen **Avtaler** viser prisarket for Telias Flex-avtaler: for hver avtale en tabell med
+bredbåndshastighet bortover og TV-poeng nedover.
+
+Avtalen har en fast verdi som kan tas ut som hastighet, som TV-poeng, eller som en
+blanding. Det gir tre slags celler:
+
+| Celle | Betyr |
+| --- | --- |
+| **Ingen kostnad** | Kombinasjonen ligger i rammen for fellesavtalen. |
+| **Pris i kr/md.** | Tillegg beboeren betaler oppå fellesavtalen. |
+| **–** | Kombinasjonen tilbys ikke – den ligger under avtalens verdi. Telia selger ikke ned: lavere hastighet gir flere TV-poeng, ikke lavere pris. |
+
+TV-poengene i arket er de samme poengene kalkulatoren regner med, så avtalen kan tas rett
+inn i den – fra **Bruk i kalkulatoren** på tabellen, eller fra **Fellesavtalen din** øverst
+i kalkulatoren. Da skjer tre ting:
+
+- Pakkevalget bytter fra de løse poengpakkene til TV-poengene avtalen faktisk tilbyr, med
+  prisen på hver av dem. Poengtall avtalen ikke tilbyr på den valgte hastigheten står
+  stiplet ut – de kommer tilbake på lavere hastighet, og det er hele poenget.
+- Tillegget for kombinasjonen trekkes fra besparelsen, på linje med kostnaden for
+  ekstrapoeng. Ligger kombinasjonen i rammen, trekkes ingenting.
+- Pakken som gir mest igjen når den er betalt for merkes **Mest igjen**. Det er sjelden
+  den største: en pakke til 389 kr/md. må dekke mer enn 389 kr/md. i tjenester før den
+  slår den som er inkludert.
+
+Koster poengene mer enn tjenestene de dekker, sier resultatkortet **Du betaler mer** i
+stedet for å vise en besparelse med minus foran.
+
+Hastigheten starter der kombinasjonen er inkludert, slik at det å velge en avtale aldri i
+seg selv legger på en kostnad. Er du usikker på hvilken avtale borettslaget har, la
+**Vet ikke / velg selv** stå – da regner kalkulatoren på de løse poengpakkene som før.
+
+Prisene ligger i [`src/lib/plans.json`](src/lib/plans.json), transkribert fra prisarket.
+Oppdaterer Telia arket, er det den filen som skal byttes – ingenting annet er avhengig av
+tallene.
+
 ## Kjøre lokalt
 
 Krever [Node.js](https://nodejs.org) 20 eller nyere.
@@ -104,17 +146,21 @@ Tjenester viser en farget bokstavforkortelse som standard. For ekte logoer: legg
 ## Deling
 
 Valgene dine ligger i URL-en (`#p=60&s=netflix:2,hbomax:1&x=hbomax:sport`), så en
-lenke gjenskaper akkurat det resultatet – `s` er nivåene og `x` er tilleggene. Ugyldige
-verdier forkastes, så gamle lenker fortsatt virker etter at oppsettet er endret.
+lenke gjenskaper akkurat det resultatet – `s` er nivåene og `x` er tilleggene. Har du valgt
+fellesavtale, følger den med som `f` (avtale) og `sp` (hastighet), og `v=plans` åpner
+avtalesiden. Ugyldige verdier forkastes, så gamle lenker fortsatt virker etter at oppsettet
+er endret.
 
 ## Struktur
 
 ```
 src/
   lib/          calc.js (beregning), config.js (standarddata + migrering),
+                plans.js + plans.json (fellesavtalene fra prisarket),
                 url-state.js (deling), brand.js (farger og forkortelser)
-  components/   én fil per kort: pakkevelger, tjenesteliste, poengbruk,
-                resultat, regnestykke, sticky-linje, PIN- og admin-modal
+  components/   én fil per kort: avtalevelger, pakkevelger, tjenesteliste,
+                poengbruk, resultat, regnestykke, sticky-linje, PIN- og
+                admin-modal — pluss PlansPage.jsx, hele prisarket
   hooks/        useCountUp.js (animert tellesum)
 ```
 

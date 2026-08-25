@@ -690,6 +690,8 @@ body {
 
 @media (max-width: 380px) {
   .app-resultBig { font-size: 46px; }
+  /* The logo and both tabs have to share a 320px line. */
+  .app-navTab { padding: 6px 10px; font-size: 12px; }
 }
 
 @media (min-width: 900px) {
@@ -712,4 +714,364 @@ body {
   .app-resultYear { font-size: 22px; }
   .app-foot { grid-column: 1 / -1; }
   .app-emptyCard { padding: 48px 24px; }
+}
+
+/* ---- Header navigation ---- */
+.app-headTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.app-nav {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: var(--purpur-border-radius-full);
+  background: var(--purpur-color-background-primary);
+  box-shadow: inset 0 0 0 1px var(--purpur-color-border-weak);
+}
+
+.app-navTab {
+  border: none;
+  background: none;
+  font: inherit;
+  font-size: 13px;
+  font-weight: var(--purpur-typography-weight-medium);
+  color: var(--purpur-color-text-medium);
+  padding: 6px 14px;
+  border-radius: var(--purpur-border-radius-full);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.app-navTab:hover {
+  color: var(--purpur-color-text-interactive-primary);
+}
+
+.app-navTab:focus-visible {
+  outline: 2px solid var(--purpur-color-border-interactive-focus);
+  outline-offset: 2px;
+}
+
+.app-navOn,
+.app-navOn:hover {
+  background: var(--purpur-color-background-interactive-primary);
+  color: var(--purpur-color-text-interactive-on-primary);
+}
+
+/* ---- Fellesavtale picker ---- */
+.app-planHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.app-planLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: none;
+  background: none;
+  padding: 0;
+  font: inherit;
+  font-size: 13.5px;
+  font-weight: var(--purpur-typography-weight-medium);
+  color: var(--purpur-color-text-interactive-primary);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.app-planLink:hover {
+  text-decoration: underline;
+}
+
+.app-planLink:focus-visible {
+  outline: 2px solid var(--purpur-color-border-interactive-focus);
+  outline-offset: 3px;
+  border-radius: var(--purpur-border-radius-sm);
+}
+
+.app-planFields {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.app-planNote {
+  margin: 12px 0 0;
+  padding: 9px 11px;
+  border-radius: var(--purpur-border-radius-sm);
+  background: var(--purpur-color-background-secondary);
+  font-size: 12.5px;
+  line-height: 1.45;
+  color: var(--purpur-color-text-medium);
+}
+
+/* ---- Pot tiles: plan-driven states ---- */
+.app-segmented {
+  flex-wrap: wrap;
+  /* Extra room between wrapped rows so a «Mest igjen» flag, which sits above
+     its tile, does not land on the tile in the row above. */
+  row-gap: 18px;
+}
+
+.app-seg {
+  position: relative;
+  flex: 1 1 84px;
+  min-width: 84px;
+}
+
+/* A pakke the avtalen does not offer at this hastighet. Kept on screen, because
+   it comes back at a lower speed and that trade-off is the whole point. */
+.app-segOff {
+  cursor: not-allowed;
+  border-style: dashed;
+  border-color: var(--purpur-color-border-weak);
+  background: var(--purpur-color-background-secondary);
+  color: var(--purpur-color-text-weak);
+}
+
+.app-segOff:hover {
+  border-color: var(--purpur-color-border-weak);
+}
+
+.app-segBest {
+  border-color: var(--purpur-color-border-status-success);
+}
+
+.app-segFlag {
+  position: absolute;
+  top: -9px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  font-weight: var(--purpur-typography-weight-bold);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  padding: 2px 7px;
+  border-radius: var(--purpur-border-radius-full);
+  background: var(--purpur-color-background-status-success-strong);
+  color: #fff;
+}
+
+/* ---- Plan info page ---- */
+.app-srOnly {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.app-mxLegend {
+  list-style: none;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  font-size: 13.5px;
+  line-height: 1.45;
+  color: var(--purpur-color-text-medium);
+}
+
+.app-mxLegend li {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Miniatures of the cells themselves — same deep purple, same three
+   treatments — so the key can be matched to the table by eye. */
+.app-mxKey {
+  flex: none;
+  min-width: 96px;
+  text-align: center;
+  padding: 4px 8px;
+  border-radius: var(--purpur-border-radius-sm);
+  background: var(--purpur-color-brand-deep-purple);
+  color: var(--purpur-color-text-medium-negative);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.app-mxKey.app-mx-included {
+  color: var(--purpur-color-text-default-negative);
+  font-weight: var(--purpur-typography-weight-bold);
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+    var(--purpur-color-brand-deep-purple);
+}
+
+.app-mxKey.app-mx-paid {
+  color: var(--purpur-color-text-default-negative);
+}
+
+.app-mxKey.app-mx-unavailable {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-mxFilter {
+  margin-top: 16px;
+}
+
+/* The price sheet itself, on the brand's deep purple the way the original
+   prisark prints it. Purpur's -negative tokens are the on-dark set, so the
+   panel keeps working from the same palette as everything else. */
+.app-mxPanel {
+  background: var(--purpur-color-brand-deep-purple);
+  color: var(--purpur-color-text-default-negative);
+  border-radius: var(--purpur-border-radius-xl);
+  padding: 22px 0 18px;
+  box-shadow: 0 6px 20px rgba(41, 0, 62, 0.18);
+}
+
+.app-mxHead {
+  padding: 0 20px 16px;
+}
+
+.app-mxHead h2 {
+  color: var(--purpur-color-text-default-negative);
+}
+
+.app-mxLead {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--purpur-color-text-medium-negative);
+}
+
+.app-mxScroll {
+  /* Positioned so the visually-hidden cell text is contained — and clipped — by
+     the scroller. Left to the initial containing block it escapes the scroll
+     container and drags the whole page sideways. */
+  position: relative;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 20px;
+}
+
+.app-mx {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+  white-space: nowrap;
+}
+
+.app-mxColHead,
+.app-mxRowHead {
+  font-weight: var(--purpur-typography-weight-bold);
+  color: var(--purpur-color-text-default-negative);
+}
+
+.app-mxColHead {
+  padding: 0 10px 10px;
+  text-align: center;
+  font-size: 12.5px;
+}
+
+/* The row labels stay put while the speeds scroll past on a phone, so a price
+   never ends up without the TV-poeng it belongs to. */
+.app-mxRowHead,
+.app-mxCorner {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: var(--purpur-color-brand-deep-purple);
+  text-align: right;
+  padding: 10px 14px 10px 0;
+}
+
+.app-mxCell {
+  padding: 10px;
+  text-align: center;
+  border-left: 1px solid rgba(255, 255, 255, 0.14);
+  color: var(--purpur-color-text-medium-negative);
+}
+
+.app-mx tbody tr + tr .app-mxCell,
+.app-mx tbody tr + tr .app-mxRowHead {
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+.app-mxCell.app-mx-paid {
+  color: var(--purpur-color-text-default-negative);
+}
+
+.app-mxCell.app-mx-included {
+  color: var(--purpur-color-text-default-negative);
+  font-weight: var(--purpur-typography-weight-bold);
+  background: rgba(255, 255, 255, 0.1);
+  /* Colour alone must not carry «Ingen kostnad», so the cell keeps the words. */
+  white-space: normal;
+  min-width: 92px;
+}
+
+.app-mxCell.app-mx-unavailable {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.app-mxFoot {
+  padding: 16px 20px 0;
+  display: flex;
+  justify-content: flex-start;
+}
+
+/* The page's own cards keep the light surface, so the buttons on the purple
+   panel need the negative treatment to stay legible. */
+.app-mxPanel .app-mxFoot button {
+  --purpur-color-text-interactive-primary: var(--purpur-color-text-interactive-primary-negative);
+  --purpur-color-border-interactive-primary: var(--purpur-color-border-interactive-primary-negative);
+  --purpur-color-background-interactive-transparent-hover: var(--purpur-color-background-interactive-transparent-hover-negative);
+}
+
+/* The info page is one column of full-width tables, not the calculator's
+   two-column split. */
+@media (min-width: 900px) {
+  .app-stackWide {
+    display: flex;
+    flex-direction: column;
+  }
+  .app-mxPanel { padding: 28px 0 22px; }
+  .app-mxHead, .app-mxScroll, .app-mxFoot { padding-left: 28px; padding-right: 28px; }
+  .app-mx { font-size: 15px; }
+}
+
+/* A besparelse that turned into an utgift. The card keeps its shape so the
+   figure stays in the same place, but stops claiming to be a saving. */
+.app-resultLoss {
+  background: var(--purpur-color-background-status-warning-strong);
+  box-shadow: 0 6px 20px rgba(140, 70, 0, 0.22);
+}
+
+.app-resultNote {
+  margin: 12px auto 0;
+  max-width: 34ch;
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0.9;
+}
+
+.app-mxHint {
+  margin: 10px 0 0;
+  padding: 0 20px;
+  font-size: 12px;
+  color: var(--purpur-color-text-medium-negative);
+}
+
+@media (min-width: 900px) {
+  /* Every table fits at this width, so there is nothing to swipe. */
+  .app-mxHint { display: none; }
 }

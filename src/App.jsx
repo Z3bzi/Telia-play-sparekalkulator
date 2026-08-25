@@ -1,10 +1,13 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Heading, Paragraph, ThemeProvider } from "@purpur/library";
 import { IconPebble } from "@purpur/library/icon/pebble";
-import { loadConfig, persistConfig } from "./lib/config";
+import { kr, loadConfig, persistConfig } from "./lib/config";
 import { calculate } from "./lib/calc";
 import { decodeState, encodeState } from "./lib/url-state";
+import { defaultSpeed, planCost, tiersForSpeed } from "./lib/plans";
 import { Header } from "./components/Header";
+import { PlanCard } from "./components/PlanCard";
+import { PlansPage } from "./components/PlansPage";
 import { PotCard } from "./components/PotCard";
 import { ServicesCard } from "./components/ServicesCard";
 import { UsageCard } from "./components/UsageCard";
@@ -24,6 +27,9 @@ export const App = () => {
     [],
   );
 
+  const [view, setView] = useState(() => initial.view ?? "calc");
+  const [plan, setPlan] = useState(() => initial.plan ?? null);
+  const [plansFilter, setPlansFilter] = useState(() => initial.plan?.family ?? null);
   const [pot, setPot] = useState(() =>
     initial.pot ??
     (config.pots.some(p => p.points === config.defaultPot)
@@ -39,24 +45,91 @@ export const App = () => {
   const [adminOpen, setAdminOpen] = useState(false);
   const resultRef = useRef(null);
 
+  // With a fellesavtale in play the pakkevalget comes from prisarket — the
+  // TV-poeng that avtalen offers at the chosen hastighet, and what each of them
+  // costs. Without one it stays the løse poengpakkene from admin.
+  const planTiers = useMemo(
+    () => (plan ? tiersForSpeed(plan.family, plan.speed) : null),
+    [plan],
+  );
+
+  // What the chosen kombinasjonen adds to the monthly bill. A kombinasjon the
+  // avtalen doesn't offer has no price at all; it is treated as free here and
+  // called out in the pakkevalget instead, so the sum never invents a number.
+  const currentPlanCost = plan ? (planCost(plan.family, plan.speed, pot) ?? 0) : 0;
+
+  // Which pakke leaves the most igjen once it is paid for. Worth surfacing
+  // precisely because the answer is not "the biggest one": a pakke that costs
+  // 389 kr/md. has to save more than that before it beats the free one.
+  const bestPoints = useMemo(() => {
+    if (!planTiers || !Object.keys(selections).length) return null;
+    let best = null;
+    for (const t of planTiers) {
+      if (!t.available) continue;
+      const c = calculate(config, {
+        pot: t.points, hasMobile, selections, addons, altMode: "buy", planCost: t.price,
+      });
+      // The user is free to pick either alternative when the pakke overflows,
+      // so a pakke is judged by the better of the two.
+      const value = Math.max(c.buy.savingMonth, c.fit?.savingMonth ?? -Infinity);
+      if (!best || value > best.value) best = { points: t.points, value };
+    }
+    return best?.points ?? null;
+  }, [planTiers, config, hasMobile, selections, addons]);
+
+  const potOptions = useMemo(() => {
+    if (!planTiers) return config.pots;
+    return planTiers.map(t => ({
+      points: t.points,
+      disabled: !t.available,
+      priceLabel: t.priceType === "included" ? "Ingen kostnad" : `${kr(t.price)} kr/md.`,
+      best: t.available && t.points === bestPoints,
+    }));
+  }, [planTiers, config.pots, bestPoints]);
+
+  // Changing avtale or hastighet can take the current pakke off the table.
+  // Move up to the nearest one still offered rather than down, so the poeng the
+  // user had do not quietly shrink.
+  useEffect(() => {
+    if (potOptions.some(p => p.points === pot && !p.disabled)) return;
+    const usable = potOptions.filter(p => !p.disabled);
+    if (!usable.length) return;
+    setPot((usable.find(p => p.points >= pot) ?? usable[usable.length - 1]).points);
+  }, [potOptions, pot]);
+
   const recommended = useMemo(
-    () => calculate(config, { pot, hasMobile, selections, addons, altMode: "buy" }).recommended,
-    [config, pot, hasMobile, selections, addons],
+    () => calculate(config, {
+      pot, hasMobile, selections, addons, altMode: "buy", planCost: currentPlanCost,
+    }).recommended,
+    [config, pot, hasMobile, selections, addons, currentPlanCost],
   );
   const altMode = altChoice ?? recommended;
 
   const calc = useMemo(
-    () => calculate(config, { pot, hasMobile, selections, addons, altMode }),
-    [config, pot, hasMobile, selections, addons, altMode],
+    () => calculate(config, {
+      pot, hasMobile, selections, addons, altMode, planCost: currentPlanCost,
+    }),
+    [config, pot, hasMobile, selections, addons, altMode, currentPlanCost],
   );
 
   // Keep the URL in step with the current selection without adding history
   // entries for every checkbox click.
   useEffect(() => {
-    const encoded = encodeState({ pot, hasMobile, selections, addons, altChoice });
+    const encoded = encodeState({ pot, hasMobile, selections, addons, altChoice, view, plan });
     const next = `${window.location.pathname}${window.location.search}#${encoded}`;
     window.history.replaceState(null, "", next);
-  }, [pot, hasMobile, selections, addons, altChoice]);
+  }, [pot, hasMobile, selections, addons, altChoice, view, plan]);
+
+  const goTo = next => {
+    setView(next);
+    window.scrollTo({ top: 0, behavior: "auto" });
+  };
+
+  const usePlanFamily = family => {
+    setPlan({ family, speed: defaultSpeed(family, pot) });
+    setPlansFilter(family);
+    goTo("calc");
+  };
 
   const toggleService = id => {
     setSelections(prev => {
@@ -106,7 +179,9 @@ export const App = () => {
     }
     setSelections(cleanedSelections);
     setAddons(cleanedAddons);
-    if (!saved.pots.some(p => p.points === pot) && saved.pots.length) {
+    // With a fellesavtale chosen the pakkene come from prisarket, not from
+    // admin, so the saved list has no say over the current one.
+    if (!plan && !saved.pots.some(p => p.points === pot) && saved.pots.length) {
       setPot(saved.pots.some(p => p.points === saved.defaultPot)
         ? saved.defaultPot
         : saved.pots[saved.pots.length - 1].points);
@@ -120,58 +195,75 @@ export const App = () => {
 
   return (
     <ThemeProvider forceColorScheme="light">
-      <Header onAdminTap={() => setPinOpen(true)} />
+      <Header onAdminTap={() => setPinOpen(true)} view={view} onViewChange={goTo} />
 
-      <main className="app-stack">
-        <div className="app-col">
-          <PotCard
-            pots={config.pots}
-            pot={pot}
-            onPotChange={setPot}
-            showPotPrices={config.showPotPrices}
-            mobileBonus={config.mobileBonus}
-            hasMobile={hasMobile}
-            onMobileChange={setHasMobile}
-          />
-          <ServicesCard
-            services={config.services}
-            selections={selections}
-            addons={addons}
-            bundle={calc.bundle}
-            onToggle={toggleService}
-            onLevelChange={setServiceLevel}
-            onAddonToggle={toggleAddon}
-          />
-        </div>
+      {view === "plans" ? (
+        <PlansPage
+          family={plansFilter}
+          onFamilyChange={setPlansFilter}
+          onUsePlan={usePlanFamily}
+          onBack={() => goTo("calc")}
+        />
+      ) : (
+        <main className="app-stack">
+          <div className="app-col">
+            <PlanCard
+              plan={plan}
+              pot={pot}
+              onPlanChange={setPlan}
+              onShowPlans={() => goTo("plans")}
+            />
+            <PotCard
+              pots={potOptions}
+              pot={pot}
+              onPotChange={setPot}
+              showPotPrices={config.showPotPrices}
+              mobileBonus={config.mobileBonus}
+              hasMobile={hasMobile}
+              onMobileChange={setHasMobile}
+              plan={plan}
+            />
+            <ServicesCard
+              services={config.services}
+              selections={selections}
+              addons={addons}
+              bundle={calc.bundle}
+              onToggle={toggleService}
+              onLevelChange={setServiceLevel}
+              onAddonToggle={toggleAddon}
+            />
+          </div>
 
-        <div className="app-col app-colResults">
-          {hasSelection ? (
-            <>
-              <ResultCard ref={resultRef} savingMonth={calc.active.savingMonth} />
-              <UsageCard calc={calc} altMode={altMode} onAltModeChange={setAltChoice} />
-              <MathCard
-                calc={calc}
-                pot={pot}
-                hasMobile={hasMobile}
-                mobileBonus={config.mobileBonus}
-                extraPricePer10={config.extraPricePer10}
-              />
-            </>
-          ) : (
-            <section className="app-card app-emptyCard">
-              <span className="app-emptyMark" aria-hidden="true"><IconPebble size="lg" /></span>
-              <Heading tag="h2" variant="title-100">Klar når du er</Heading>
-              <Paragraph variant="paragraph-100">
-                Kryss av tjenestene du betaler for i dag, så regner vi ut hva du kan spare.
-              </Paragraph>
-            </section>
-          )}
-        </div>
+          <div className="app-col app-colResults">
+            {hasSelection ? (
+              <>
+                <ResultCard ref={resultRef} savingMonth={calc.active.savingMonth} />
+                <UsageCard calc={calc} altMode={altMode} onAltModeChange={setAltChoice} plan={plan} />
+                <MathCard
+                  calc={calc}
+                  pot={pot}
+                  hasMobile={hasMobile}
+                  mobileBonus={config.mobileBonus}
+                  extraPricePer10={config.extraPricePer10}
+                  plan={plan}
+                />
+              </>
+            ) : (
+              <section className="app-card app-emptyCard">
+                <span className="app-emptyMark" aria-hidden="true"><IconPebble size="lg" /></span>
+                <Heading tag="h2" variant="title-100">Klar når du er</Heading>
+                <Paragraph variant="paragraph-100">
+                  Kryss av tjenestene du betaler for i dag, så regner vi ut hva du kan spare.
+                </Paragraph>
+              </section>
+            )}
+          </div>
 
-        <footer className="app-foot">Veiledende priser per august 2026. Sjekk gjeldende pris hos den enkelte tjenesten.</footer>
-      </main>
+          <footer className="app-foot">Veiledende priser per august 2026. Sjekk gjeldende pris hos den enkelte tjenesten.</footer>
+        </main>
+      )}
 
-      {hasSelection && (
+      {view === "calc" && hasSelection && (
         <StickyBar
           savingMonth={calc.active.savingMonth}
           targetRef={resultRef}

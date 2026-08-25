@@ -1,9 +1,17 @@
+import { listFamilies, listSpeeds } from "./plans";
+
 // Selections live in the URL hash so a result can be linked or shared. The hash
 // is used rather than the query string to keep it inert for static hosting.
 
-export function encodeState({ pot, hasMobile, selections, addons, altChoice }) {
+export function encodeState({ pot, hasMobile, selections, addons, altChoice, view, plan }) {
   const params = new URLSearchParams();
   params.set("p", String(pot));
+  // The calculator is the default view, so only the other one is written down.
+  if (view && view !== "calc") params.set("v", view);
+  if (plan) {
+    params.set("f", plan.family);
+    params.set("sp", String(plan.speed));
+  }
   if (hasMobile) params.set("m", "1");
   const picked = Object.entries(selections).map(([id, lvl]) => `${id}:${lvl}`);
   if (picked.length) params.set("s", picked.join(","));
@@ -30,8 +38,25 @@ export function decodeState(hash, config) {
 
   const state = {};
 
-  const pot = Number(params.get("p"));
-  if (Number.isFinite(pot) && config.pots.some(p => p.points === pot)) state.pot = pot;
+  if (params.get("v") === "plans") state.view = "plans";
+
+  // A fellesavtale is only worth restoring when both halves of it survive: the
+  // avtalen has to still be in prisarket, and it has to still offer that speed.
+  const family = params.get("f");
+  const speed = Number(params.get("sp"));
+  if (family && listFamilies().includes(family) && listSpeeds(family).includes(speed)) {
+    state.plan = { family, speed };
+  }
+
+  // The valid pot values depend on whether a fellesavtale is in play, so the
+  // number is taken at face value here and clamped against the list that is
+  // actually on screen.
+  // An absent "p" must stay absent rather than reading as 0: a link that only
+  // carries a view or an avtale has no opinion about the pakke, and the caller's
+  // own default has to survive.
+  const potRaw = params.get("p");
+  const pot = Number(potRaw);
+  if (potRaw && Number.isFinite(pot) && pot >= 0) state.pot = pot;
 
   state.hasMobile = params.get("m") === "1";
 
