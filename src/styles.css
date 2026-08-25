@@ -1077,3 +1077,14 @@ body {
   /* Every table fits at this width, so there is nothing to swipe. */
   .app-mxHint { display: none; }
 }
+
+/* Sits under whatever caveat the page carries, separated by a rule so it reads
+   as a standing notice rather than more fine print about the prices. */
+.app-disclaimer {
+  display: block;
+  max-width: 62ch;
+  margin: 10px auto 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--purpur-color-border-weak);
+  text-wrap: pretty;
+}

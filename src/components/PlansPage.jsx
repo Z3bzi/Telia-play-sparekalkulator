@@ -8,6 +8,7 @@ import {
   speedLabel,
   tvPointsLabel,
 } from "../lib/plans";
+import { SiteFooter } from "./SiteFooter";
 
 const ALL = "";
 
@@ -138,11 +139,11 @@ export function PlansPage({ family, onFamilyChange, onUsePlan, onBack }) {
         </div>
       </section>
 
-      <footer className="app-foot">
+      <SiteFooter>
         «Ingen kostnad» betyr at valget er inkludert i rammene for fellesavtalen, og at beboere
         kan velge det alternativet uten ekstra kostnad. Prisene er hentet fra Telias prisark for
         Flex-avtalene — sjekk hva som gjelder for ditt borettslag.
-      </footer>
+      </SiteFooter>
     </main>
   );
 }

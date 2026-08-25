@@ -10,6 +10,7 @@ import { PlanCard } from "./components/PlanCard";
 import { PlansPage } from "./components/PlansPage";
 import { PotCard } from "./components/PotCard";
 import { ServicesCard } from "./components/ServicesCard";
+import { SiteFooter } from "./components/SiteFooter";
 import { UsageCard } from "./components/UsageCard";
 import { ResultCard } from "./components/ResultCard";
 import { MathCard } from "./components/MathCard";
@@ -259,7 +260,9 @@ export const App = () => {
             )}
           </div>
 
-          <footer className="app-foot">Veiledende priser per august 2026. Sjekk gjeldende pris hos den enkelte tjenesten.</footer>
+          <SiteFooter>
+            Veiledende priser per august 2026. Sjekk gjeldende pris hos den enkelte tjenesten.
+          </SiteFooter>
         </main>
       )}
 
