@@ -1,0 +1,2275 @@
+{
+  "currency": "NOK",
+  "unit": "kr/md.",
+  "source_note": "Transcribed from Telia Flex prisark. 'included' = 'Ingen kostnad' (covered by fellesavtalen, no extra cost). 'unavailable' = combination not offered ('-').",
+  "plans": [
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 689
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 50,
+      "tv_points": 80,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 100,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 250,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 500,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 750,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 689
+    },
+    {
+      "family": "Flex Basis Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 789
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 50,
+      "tv_points": 80,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 100,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 250,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 500,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 750,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Basis Standard",
+      "speed_mbit": 1000,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 689
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 50,
+      "tv_points": 80,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 100,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 250,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 500,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 750,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Basis Extra",
+      "speed_mbit": 1000,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 30,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 30,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 339
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 439
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 30,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 339
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 439
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 539
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 30,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 639
+    },
+    {
+      "family": "Flex Bredbånd Max Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 639
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 30,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 30,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 239
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 339
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 30,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 239
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 339
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 439
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 30,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 539
+    },
+    {
+      "family": "Flex Bredbånd Max Standard",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 539
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 50,
+      "tv_points": 80,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 100,
+      "tv_points": 80,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 250,
+      "tv_points": 80,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 500,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 750,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 1000,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 50,
+      "tv_points": 100,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 100,
+      "tv_points": 100,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 250,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 500,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 750,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 1000,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 50,
+      "tv_points": 120,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 100,
+      "tv_points": 120,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 250,
+      "tv_points": 120,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 500,
+      "tv_points": 120,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 750,
+      "tv_points": 120,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Extra",
+      "speed_mbit": 1000,
+      "tv_points": 120,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 50,
+      "tv_points": 80,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 100,
+      "tv_points": 80,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 250,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 500,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 750,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 1000,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 50,
+      "tv_points": 100,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 100,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 250,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 500,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 750,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Pluss Standard",
+      "speed_mbit": 1000,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 689
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 50,
+      "tv_points": 80,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 100,
+      "tv_points": 80,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 250,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 500,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 750,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 80,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 50,
+      "tv_points": 100,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 100,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 250,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 500,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 750,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Pluss Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 100,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 689
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 689
+    },
+    {
+      "family": "Flex Start Optimal",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 789
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 589
+    },
+    {
+      "family": "Flex Start Standard",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 689
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 50,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 100,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 250,
+      "tv_points": 0,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 500,
+      "tv_points": 0,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 750,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 0,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 50,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 100,
+      "tv_points": 15,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 250,
+      "tv_points": 15,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 500,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 750,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 15,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 50,
+      "tv_points": 40,
+      "price_type": "unavailable",
+      "price_nok": null
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 100,
+      "tv_points": 40,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 250,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 500,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 750,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 40,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 50,
+      "tv_points": 60,
+      "price_type": "included",
+      "price_nok": 0
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 100,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 189
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 250,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 289
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 500,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 389
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 750,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 489
+    },
+    {
+      "family": "Flex Start Xtra",
+      "speed_mbit": 1000,
+      "tv_points": 60,
+      "price_type": "paid",
+      "price_nok": 589
+    }
+  ]
+}

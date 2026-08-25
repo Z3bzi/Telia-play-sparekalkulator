@@ -131,7 +131,11 @@ function pack(chosen, available) {
   return { packed, used };
 }
 
-export function calculate(config, { pot, hasMobile, selections, addons = {}, altMode }) {
+// `planCost` is what the valgte kombinasjonen av hastighet og TV-poeng koster ut
+// over fellesavtalen — 0 når den ligger i rammen, og 0 når ingen fellesavtale er
+// valgt. Den trekkes fra begge alternativene likt, så anbefalingen står uendret:
+// den avgjør bare hva pakken faktisk er verdt når den er betalt for.
+export function calculate(config, { pot, hasMobile, selections, addons = {}, altMode, planCost = 0 }) {
   const { chosen, premium, included, bundle } = collect(config, selections, addons);
 
   const totalPrice = chosen.reduce((a, c) => a + c.price, 0);
@@ -143,7 +147,7 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
   const extraPoints = over ? Math.ceil((totalPoints - available) / 10) * 10 : 0;
   const extraCost = (extraPoints / 10) * config.extraPricePer10;
   const buy = { covered: chosen, dropped: [], extraPoints, extraCost,
-    savingMonth: totalPrice - extraCost, pointsUsed: totalPoints };
+    savingMonth: totalPrice - extraCost - planCost, pointsUsed: totalPoints };
 
   let fit = null;
   if (over) {
@@ -152,7 +156,7 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
       covered: packed,
       dropped: chosen.filter(c => !packed.some(p => p.id === c.id)),
       extraPoints: 0, extraCost: 0,
-      savingMonth: packed.reduce((a, c) => a + c.price, 0),
+      savingMonth: packed.reduce((a, c) => a + c.price, 0) - planCost,
       pointsUsed: used,
     };
   }
@@ -162,5 +166,5 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
 
   const active = over && altMode === "fit" && fit ? fit : buy;
   return { chosen, premium, premiumCost, included, bundle, totalPrice, totalPoints,
-    available, over, buy, fit, active, recommended };
+    available, over, buy, fit, active, recommended, planCost };
 }

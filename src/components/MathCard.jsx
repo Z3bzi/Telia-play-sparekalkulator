@@ -1,5 +1,6 @@
 import { Accordion } from "@purpur/library";
 import { kr } from "../lib/config";
+import { speedLabel } from "../lib/plans";
 
 // Two different reasons land in the same bucket, and the explanation has to
 // cover the ones actually on screen: a kroner-only tier costs the same either
@@ -14,7 +15,7 @@ function premiumReason(premium) {
   ].filter(Boolean).join(" ");
 }
 
-export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 }) {
+export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10, plan }) {
   const c = calc;
   const a = c.active;
   const coveredValue = a.covered.reduce((x, y) => x + y.price, 0);
@@ -35,6 +36,12 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 })
             <span>Tilgjengelige poeng ({pot}{hasMobile ? ` + ${mobileBonus} mobil` : ""})</span>
             <span>{c.available} poeng</span>
           </div>
+          {plan && (
+            <div className="app-mathRow">
+              <span>{pot} TV-poeng på {speedLabel(plan.speed)} i {plan.family}</span>
+              <span>{c.planCost > 0 ? `${kr(c.planCost)} kr/md.` : "Ingen kostnad"}</span>
+            </div>
+          )}
           <div className="app-mathDivider" />
           <div className="app-mathRow">
             <span>Verdi av tjenester dekket av poeng ({a.covered.length} stk.)</span>
@@ -44,6 +51,12 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10 })
             <span>− Kostnad for ekstra poeng ({a.extraPoints} p à {extraPricePer10} kr per 10)</span>
             <span>{kr(a.extraCost)} kr/md.</span>
           </div>
+          {c.planCost > 0 && (
+            <div className="app-mathRow">
+              <span>− Tillegg for TV-poengene i fellesavtalen</span>
+              <span>{kr(c.planCost)} kr/md.</span>
+            </div>
+          )}
           <div className="app-mathDivider" />
           <div className="app-mathRow app-mathSum">
             <span>Besparelse per måned</span>

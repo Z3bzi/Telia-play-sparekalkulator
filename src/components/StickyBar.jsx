@@ -26,8 +26,8 @@ export function StickyBar({ savingMonth, targetRef, suppressed = false }) {
 
   return (
     <div className={`app-stickyBar${shown ? " app-stickyOn" : ""}`} aria-hidden={!shown}>
-      <span className="app-stickyLabel">Du sparer</span>
-      <span className="app-stickyValue">{kr(savingMonth)} kr/md.</span>
+      <span className="app-stickyLabel">{savingMonth < 0 ? "Du betaler mer" : "Du sparer"}</span>
+      <span className="app-stickyValue">{kr(Math.abs(savingMonth))} kr/md.</span>
     </div>
   );
 }

@@ -35,12 +35,16 @@ function AltCard({ mode, calc, altMode, onAltModeChange }) {
         {isBest && <span className="app-altBadge">Best</span>}
       </span>
       <span className="app-altBody">{body}</span>
-      <span className="app-altSum">Sparer {kr(data.savingMonth)} kr/md.</span>
+      <span className="app-altSum">
+        {data.savingMonth < 0
+          ? `Koster ${kr(-data.savingMonth)} kr/md. mer`
+          : `Sparer ${kr(data.savingMonth)} kr/md.`}
+      </span>
     </button>
   );
 }
 
-export function UsageCard({ calc, altMode, onAltModeChange }) {
+export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
   const c = calc;
   const a = c.active;
   // The bar can exceed the pot, so scale against whichever is larger and draw a
@@ -106,6 +110,14 @@ export function UsageCard({ calc, altMode, onAltModeChange }) {
           <div className="app-coverRow app-coverExtra">
             <span>Ekstra poeng ({a.extraPoints} p)</span>
             <span>−{kr(a.extraCost)} kr/md.</span>
+          </div>
+        )}
+        {/* Poengene er ikke gratis når fellesavtalen tar betalt for dem, og da
+            hører prisen hjemme her sammen med kostnaden for ekstrapoeng. */}
+        {c.planCost > 0 && (
+          <div className="app-coverRow app-coverExtra">
+            <span>Tillegg for TV-poeng i {plan?.family ?? "fellesavtalen"}</span>
+            <span>−{kr(c.planCost)} kr/md.</span>
           </div>
         )}
         {c.included.length > 0 && (
