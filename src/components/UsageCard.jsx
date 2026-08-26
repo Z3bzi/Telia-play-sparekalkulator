@@ -18,9 +18,14 @@ function AltCard({ mode, calc, altMode, onAltModeChange }) {
   const selected = altMode === mode;
   const isBest = c.recommended === mode;
 
-  const body = mode === "buy"
-    ? `+${data.extraPoints} poeng for ${kr(data.extraCost)} kr/md. Alle ${c.chosen.length} tjenester dekkes.`
-    : `${data.covered.length} av ${c.chosen.length} tjenester — kombinasjonen med mest kroneverdi per poeng.`;
+  // Med poengtaket i veien dekker et fullt kjøp ikke nødvendigvis alt lenger, og
+  // da må kortet si hvorfor det ikke bare kjøper mer.
+  const body = mode !== "buy"
+    ? `${data.covered.length} av ${c.chosen.length} tjenester — kombinasjonen med mest kroneverdi per poeng.`
+    : data.capped
+      ? `+${data.extraPoints} poeng for ${kr(data.extraCost)} kr/md. — alt taket på ${c.ceiling} poeng tillater. `
+        + `${data.covered.length} av ${c.chosen.length} tjenester dekkes.`
+      : `+${data.extraPoints} poeng for ${kr(data.extraCost)} kr/md. Alle ${c.chosen.length} tjenester dekkes.`;
 
   return (
     <button
@@ -67,6 +72,13 @@ export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
         {c.totalPoints} av {c.available} poeng
         {c.over && <span className="app-barWarn"> — {c.totalPoints - c.available} poeng over</span>}
       </div>
+      {/* Taket er bare verdt å nevne når det faktisk står i veien. */}
+      {c.buy.capped && (
+        <div className="app-barText app-barWarn">
+          Taket er {c.ceiling} poeng, så alt får ikke plass uansett hvor mange ekstrapoeng
+          du kjøper.
+        </div>
+      )}
 
       {c.over && c.fit && (
         <div className="app-altWrap">
@@ -92,10 +104,10 @@ export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
         {c.chosen.length > 0 && a.covered.length === 0 && (
           <div className="app-coverRow">Ingen av tjenestene får plass i pakken.</div>
         )}
-        {c.over && altMode === "fit" && c.fit.dropped.length > 0 && (
+        {a.dropped.length > 0 && (
           <>
             <div className="app-coverHead">Utenfor pakken (beholdes som i dag):</div>
-            {c.fit.dropped.map(x => (
+            {a.dropped.map(x => (
               <div className="app-coverRow app-coverDrop" key={x.id}>
                 <span className="app-coverName">
                   {x.name} · {x.levelName}

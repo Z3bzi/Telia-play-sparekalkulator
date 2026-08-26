@@ -46,6 +46,11 @@ export const DEFAULT_CONFIG = {
   defaultPot: 60,
   mobileBonus: 10,
   extraPricePer10: 25,
+  // Taket på hvor mange poeng en kunde kan ha i det hele tatt. Mobilbonusen
+  // kommer på toppen, så 215 alene og 225 med mobilabonnement. Ekstrapoeng kan
+  // altså ikke kjøpes i det uendelige: er tjenestene verdt mer enn taket, må
+  // noe stå utenfor pakken uansett hvor mye man er villig til å betale.
+  maxPoints: 215,
   pin: "1234",
   lastUpdated: null,
   services: [
@@ -136,6 +141,9 @@ function migrateConfig(cfg) {
   // under a generic label rather than being dropped.
   // Configs stored while prices were always visible must not keep showing them.
   if (typeof cfg.showPotPrices !== "boolean") cfg.showPotPrices = false;
+  // Configs stored before the poengtaket existed have no ceiling at all, which
+  // would let «kjøp ekstra poeng» quote a number Telia does not sell.
+  if (!(Number(cfg.maxPoints) > 0)) cfg.maxPoints = DEFAULT_CONFIG.maxPoints;
   cfg.pots = (Array.isArray(cfg.pots) ? cfg.pots : []).map(p => {
     // A pakke needs nothing but its poengtall; navn and pris are optional and
     // stay absent unless someone has actually filled them in.

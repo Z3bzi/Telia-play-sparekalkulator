@@ -284,6 +284,17 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
               onChange={e => setDraft(d => ({ ...d, mobileBonus: Math.max(0, Number(e.target.value) || 0) }))}
             />
           </div>
+          <div className="app-adminRow">
+            {/* Mobilbonusen kommer på toppen av taket, slik den kommer på toppen
+                av pakken — 215 alene, 225 med mobilabonnement. */}
+            <TextField
+              id="max-points"
+              label="Tak på antall poeng (uten mobilbonus)"
+              type="number"
+              value={draft.maxPoints}
+              onChange={e => setDraft(d => ({ ...d, maxPoints: Math.max(1, Number(e.target.value) || 1) }))}
+            />
+          </div>
           <div className="app-stepLabel">Valgbare poengpakker</div>
           <div className="app-adminRow">
             {/* Off by default: MDU-kunder betaler det borettslaget har avtalt,

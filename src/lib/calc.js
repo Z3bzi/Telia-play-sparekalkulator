@@ -144,10 +144,29 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
   const available = pot + (hasMobile ? config.mobileBonus : 0);
   const over = totalPoints > available;
 
-  const extraPoints = over ? Math.ceil((totalPoints - available) / 10) * 10 : 0;
+  // Poeng kan ikke kjøpes i det uendelige. Taket gjelder totalen, og
+  // mobilbonusen løfter det på samme måte som den løfter pakken — 215 alene,
+  // 225 med mobilabonnement. Ekstrapoeng selges i bolker på ti, så det som er
+  // igjen opp til taket rundes ned til nærmeste hele bolk.
+  const ceiling = (Number(config.maxPoints) || Infinity) + (hasMobile ? config.mobileBonus : 0);
+  const headroom = Math.max(0, ceiling - available);
+  const wanted = over ? Math.ceil((totalPoints - available) / 10) * 10 : 0;
+  const extraPoints = Math.min(wanted, Math.floor(headroom / 10) * 10);
   const extraCost = (extraPoints / 10) * config.extraPricePer10;
-  const buy = { covered: chosen, dropped: [], extraPoints, extraCost,
-    savingMonth: totalPrice - extraCost - planCost, pointsUsed: totalPoints };
+
+  // Med taket i veien dekker «kjøp ekstra poeng» ikke nødvendigvis alt lenger.
+  // Når selv et fullt kjøp kommer til kort, må også dette alternativet pakke —
+  // det kjøper så mye det får lov til, og fyller med det som gir mest igjen.
+  const budget = available + extraPoints;
+  const capped = totalPoints > budget;
+  const bought = capped ? pack(chosen, budget) : { packed: chosen, used: totalPoints };
+  const buy = {
+    covered: bought.packed,
+    dropped: chosen.filter(c => !bought.packed.some(p => p.id === c.id)),
+    extraPoints, extraCost, capped,
+    savingMonth: bought.packed.reduce((a, c) => a + c.price, 0) - extraCost - planCost,
+    pointsUsed: bought.used,
+  };
 
   let fit = null;
   if (over) {
@@ -166,5 +185,5 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
 
   const active = over && altMode === "fit" && fit ? fit : buy;
   return { chosen, premium, premiumCost, included, bundle, totalPrice, totalPoints,
-    available, over, buy, fit, active, recommended, planCost };
+    available, ceiling, over, buy, fit, active, recommended, planCost };
 }
