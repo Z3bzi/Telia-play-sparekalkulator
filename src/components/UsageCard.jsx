@@ -21,7 +21,7 @@ function AltCard({ mode, calc, altMode, onAltModeChange }) {
   // Med poengtaket i veien dekker et fullt kjøp ikke nødvendigvis alt lenger, og
   // da må kortet si hvorfor det ikke bare kjøper mer.
   const body = mode !== "buy"
-    ? `${data.covered.length} av ${c.chosen.length} tjenester — kombinasjonen med mest kroneverdi per poeng.`
+    ? `${data.covered.length} av ${c.chosen.length} tjenester — kombinasjonen som gir mest igjen innenfor pakken.`
     : data.capped
       ? `+${data.extraPoints} poeng for ${kr(data.extraCost)} kr/md. — alt taket på ${c.ceiling} poeng tillater. `
         + `${data.covered.length} av ${c.chosen.length} tjenester dekkes.`

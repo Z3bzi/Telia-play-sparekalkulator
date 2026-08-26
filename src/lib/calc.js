@@ -105,12 +105,63 @@ function collect(config, selections, addons) {
   return { chosen, premium, included, bundle };
 }
 
-// Grådig etter kroneverdi per poeng, men en tjeneste som bare finnes sammen med
-// en annen kan ikke pakkes uten den: Disney+ uten TV 2 Play, eller HBO Max Sport
-// uten HBO Max, ville vært en dekning kunden ikke får kjøpt. Runden gjentas til
-// den ikke får plass til mer, slik at en avhengig tjeneste får en ny sjanse når
-// verten kom med etter den i verdirekkefølgen.
+// En tjeneste som bare finnes sammen med en annen kan ikke pakkes uten den:
+// Disney+ uten TV 2 Play, eller HBO Max Sport uten HBO Max, ville vært en
+// dekning kunden ikke får kjøpt. Kravet peker på verten ved id, og verten er
+// nivået selv — et tillegg kan ikke stille som vert for et annet tillegg.
+//
+// Kravet er allerede strøket i `collect` for tillegg som henger på et nivå
+// poengene ikke betaler for, så det som står igjen her skal håndheves.
+function requirementMasks(chosen) {
+  return chosen.map(c => c.requires
+    ? chosen.reduce((m, host, j) => (host.id === c.requires ? m | (1 << j) : m), 0)
+    : 0);
+}
+
+// Alle kombinasjoner, og den beste av dem. Antallet avkryssede linjer er lite —
+// åtte til tolv i praksis — så 2^n er billigere enn det ser ut, og til gjengjeld
+// er svaret beviselig det beste utvalget og ikke bare et godt et.
+function packExact(chosen, budget) {
+  const n = chosen.length;
+  const need = requirementMasks(chosen);
+
+  let bestMask = 0, bestPrice = -1, bestPoints = 0;
+  for (let mask = 0; mask < (1 << n); mask++) {
+    let points = 0, price = 0, valid = true;
+    for (let i = 0; i < n; i++) {
+      if (!(mask & (1 << i))) continue;
+      // Verten må være med i den samme pakken, ikke bare være avkrysset.
+      if (need[i] && !(mask & need[i])) { valid = false; break; }
+      points += chosen[i].points;
+      if (points > budget) { valid = false; break; }
+      price += chosen[i].price;
+    }
+    if (!valid || price < bestPrice) continue;
+    // Like mange kroner: den som bruker færrest poeng vinner, så det som blir
+    // til overs er ekte ledig plass og ikke en vilkårlig fylling.
+    if (price > bestPrice || points < bestPoints) {
+      bestMask = mask; bestPrice = price; bestPoints = points;
+    }
+  }
+
+  return { packed: chosen.filter((_, i) => bestMask & (1 << i)), used: bestPoints };
+}
+
+// Over denne grensen koster gjennomgangen mer enn den er verdt, og den grådige
+// runden under tar over. Startdata har åtte tjenester; grensen er satt der en
+// admin må ha lagt til godt over det dobbelte før den slår inn.
+const EXACT_LIMIT = 16;
+
 function pack(chosen, available) {
+  if (chosen.length <= EXACT_LIMIT) return packExact(chosen, available);
+  return packGreedy(chosen, available);
+}
+
+// Grådig etter kroneverdi per poeng. Runden gjentas til den ikke får plass til
+// mer, slik at en avhengig tjeneste får en ny sjanse når verten kom med etter
+// den i verdirekkefølgen. Reserve for de tilfellene der listen er for lang til
+// å gå gjennom alle kombinasjonene.
+function packGreedy(chosen, available) {
   const queue = [...chosen].sort((a, b) => b.valuePerPoint - a.valuePerPoint);
   const packed = [];
   let used = 0;
@@ -120,7 +171,7 @@ function pack(chosen, available) {
     for (let i = 0; i < queue.length; i++) {
       const c = queue[i];
       if (used + c.points > available) continue;
-      if (c.requires && !packed.some(p => p.serviceId === c.requires)) continue;
+      if (c.requires && !packed.some(p => p.id === c.requires)) continue;
       packed.push(c);
       used += c.points;
       queue.splice(i--, 1);
