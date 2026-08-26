@@ -709,7 +709,10 @@ body {
     gap: 20px;
     padding: 16px 24px 40px;
   }
-  .app-colResults { position: sticky; top: 20px; }
+  /* The wrapper stretches to fill its grid row so the sticky child is clamped
+     to the bottom of that row — at the footer, not over it. */
+  .app-colResults { align-self: stretch; }
+  .app-colSticky { position: sticky; top: 20px; }
   .app-card { padding: 22px; }
   .app-resultCard { padding: 36px 24px; }
   .app-resultBig { font-size: 76px; }

@@ -235,7 +235,12 @@ export const App = () => {
             />
           </div>
 
-          <div className="app-col app-colResults">
+          {/* The sticky column lives one level in: a sticky grid item is clamped
+              to the grid container, not to its own row, so it would slide down
+              over the footer. Stretched wrapper, sticky child, clamped to the
+              row it belongs to. */}
+          <div className="app-colResults">
+            <div className="app-col app-colSticky">
             {hasSelection ? (
               <>
                 <ResultCard ref={resultRef} savingMonth={calc.active.savingMonth} />
@@ -258,6 +263,7 @@ export const App = () => {
                 </Paragraph>
               </section>
             )}
+            </div>
           </div>
 
           <SiteFooter>
