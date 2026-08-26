@@ -36,6 +36,12 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10, p
             <span>Tilgjengelige poeng ({pot}{hasMobile ? ` + ${mobileBonus} mobil` : ""})</span>
             <span>{c.available} poeng</span>
           </div>
+          {c.buy.capped && (
+            <div className="app-mathRow">
+              <span>Tak på antall poeng{hasMobile ? ` (inkl. ${mobileBonus} mobil)` : ""}</span>
+              <span>{c.ceiling} poeng</span>
+            </div>
+          )}
           {plan && (
             <div className="app-mathRow">
               <span>{pot} TV-poeng på {speedLabel(plan.speed)} i {plan.family}</span>

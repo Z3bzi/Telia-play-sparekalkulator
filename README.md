@@ -53,19 +53,39 @@ Får alt plass, sparer du hele beløpet du betaler i dag. Hvis ikke, vises to l�
 
 | Løsning | Hva den gjør |
 | --- | --- |
-| **Kjøp ekstra poeng** | Kjøper differansen i blokker på 10 poeng. Alle tjenester dekkes. Besparelse = totalpris − kostnad for ekstrapoeng. |
-| **Bare det som får plass** | Fyller pakken med tjenestene som gir mest kroneverdi per poeng. Resten beholder du som i dag. |
+| **Kjøp ekstra poeng** | Kjøper differansen i blokker på 10 poeng, opp til poengtaket. Besparelse = verdien av det som dekkes − kostnad for ekstrapoeng. |
+| **Bare det som får plass** | Fyller pakken med kombinasjonen som gir mest kroneverdi. Resten beholder du som i dag. |
 
 Den som sparer mest merkes **Best** og velges automatisk, til du velger noe annet selv.
 Ved likt resultat vinner *Kjøp ekstra poeng*, siden den beholder alle tjenestene.
 
-`kr/poeng` under hver tjeneste er sorteringsnøkkelen «bare det som får plass» bruker –
-den forklarer hvorfor akkurat de tjenestene ble valgt.
+### Poengtaket
+
+En kunde kan ha **215 poeng** i alt, **225 med mobilabonnement hos Telia** — mobilbonusen
+løfter taket på samme måte som den løfter pakken. Ekstrapoeng kan altså ikke kjøpes i det
+uendelige.
+
+Er tjenestene verdt mer enn taket, kjøper *Kjøp ekstra poeng* så mye det får lov til og
+pakker resten på samme måte som *bare det som får plass* — det som gir mest kroneverdi per
+poeng kommer med, og resten står utenfor. Kalkulatoren sier fra når taket er det som
+stopper deg, i stedet for å prise ekstrapoeng Telia ikke selger.
+
+Taket kan endres i admin, under **Poeng og priser**.
+
+`kr/poeng` under hver tjeneste sier hvor mye abonnement hvert poeng låser opp, og
+forklarer stort sett hvorfor akkurat de tjenestene ble valgt.
+
+Pakkingen går gjennom alle kombinasjoner og velger den med flest kroner innenfor
+poengbudsjettet, slik at kombinasjonskravene holder. Utvalget er altså *beviselig best*,
+ikke bare godt. Ved like mange kroner vinner den som bruker færrest poeng.
+
+Antall avkryssede linjer er lite — åtte til tolv i praksis — så gjennomgangen er billig.
+Har noen lagt inn så mange tjenester i admin at listen passerer 16 linjer, tar en grådig
+runde over kroneverdi per poeng over igjen; da er svaret godt, men ikke garantert best.
 
 > [!NOTE]
-> Pakkingen er grådig, ikke garantert optimal. Sortering på kroneverdi per poeng er
-> rask og lett å forklare, men for enkelte kombinasjoner finnes det et bedre utvalg.
-> «Bare det som får plass» betyr *godt*, ikke *beviselig best*.
+> Målet er kroner spart, ikke antall tjenester. Noen ganger er én dyr tjeneste verdt mer
+> enn tre billige, og da er det den ene som kommer med.
 
 ## Fellesavtaler
 
@@ -121,7 +141,8 @@ npm run preview  # server dist/ lokalt
 Trykk fem ganger på logoen i toppen, og skriv inn PIN (standard: `1234`).
 
 Her kan du endre tjenester, nivåer, priser, poeng per nivå, tillegg, valgbare poengpakker
-(navn, poeng og månedspris), mobilbonus, pris per 10 ekstra poeng, PIN-koden og logofiler.
+(navn, poeng og månedspris), mobilbonus, pris per 10 ekstra poeng, taket på antall poeng,
+PIN-koden og logofiler.
 Kryss av **Kun kr** på et nivå for å markere at det ikke kan kjøpes for poeng, og
 **Vis månedspris på pakkene** hvis listeprisene stemmer for dem som skal bruke kalkulatoren.
 «Tilbakestill til startdata» henter inn standardoppsettet igjen.
