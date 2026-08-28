@@ -21,9 +21,121 @@ body {
   color: var(--purpur-color-text-default);
   background: var(--purpur-color-background-secondary);
   min-height: 100vh;
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  /* The site banner sits at the very top and absorbs the notch inset itself,
+     so the page background never shows above it. */
+  padding: 0 env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   -webkit-text-size-adjust: 100%;
   -webkit-font-smoothing: antialiased;
+}
+
+/* ---- Site chrome ---- */
+/* TStools eier denne stripen, verktøyet eier alt under den. Skillet er poenget:
+   Telia-merkingen i headeren under tilhører kalkulatoren, ikke nettstedet. */
+.site-bar {
+  background: #191521;
+  color: #ffffff;
+  padding-top: env(safe-area-inset-top);
+}
+
+/* Tracks .app-head and .app-stack, so the wordmark lines up with the cards. */
+.site-barRow {
+  max-width: 520px;
+  margin: 0 auto;
+  height: 42px;
+  padding: 0 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.site-mark {
+  font-size: 15px;
+  font-weight: var(--purpur-typography-weight-bold);
+  letter-spacing: -0.02em;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* The weight break is what stops "TS" from being read as part of "tools". */
+.site-markTail {
+  font-weight: 400;
+  color: #e4ddec;
+}
+
+.site-switch {
+  position: relative;
+}
+
+.site-switchBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font: inherit;
+  font-size: 12px;
+  font-weight: var(--purpur-typography-weight-medium);
+  color: #cfc6da;
+  background: none;
+  border: 0;
+  border-radius: 999px;
+  padding: 5px 9px;
+  cursor: pointer;
+}
+
+.site-switchBtn:hover {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.09);
+}
+
+.site-switchBtn:focus-visible {
+  outline: 2px solid #ffffff;
+  outline-offset: 1px;
+}
+
+.site-grid {
+  display: block;
+}
+
+.site-menu {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 20;
+  min-width: 220px;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  background: var(--purpur-color-background-primary);
+  border-radius: var(--purpur-border-radius-lg);
+  box-shadow: 0 8px 28px rgba(25, 21, 33, 0.22);
+}
+
+.site-menuItem {
+  display: block;
+  padding: 9px 10px;
+  border-radius: var(--purpur-border-radius-sm);
+  color: var(--purpur-color-text-default);
+  text-decoration: none;
+}
+
+.site-menuItem:hover {
+  background: var(--purpur-color-background-secondary);
+}
+
+.site-menuItem[aria-current="page"] {
+  background: var(--purpur-color-brand-light-purple);
+}
+
+.site-menuName {
+  display: block;
+  font-size: 14px;
+  font-weight: var(--purpur-typography-weight-bold);
+}
+
+.site-menuNote {
+  display: block;
+  font-size: 12px;
+  color: var(--purpur-color-text-medium);
 }
 
 .app-head {
@@ -697,6 +809,7 @@ body {
 }
 
 @media (min-width: 900px) {
+  .site-barRow { max-width: 1080px; padding: 0 24px; }
   .app-head { max-width: 1080px; padding: 28px 24px 4px; }
   .app-altGrid { grid-template-columns: 1fr 1fr; }
   /* The result card is always on screen on desktop, so the bar is redundant. */
