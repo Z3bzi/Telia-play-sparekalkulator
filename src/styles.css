@@ -29,7 +29,7 @@ body {
 }
 
 /* ---- Site chrome ---- */
-/* TStools eier denne stripen, verktøyet eier alt under den. Skillet er poenget:
+/* T Service Tools eier denne stripen, verktøyet eier alt under den. Skillet er poenget:
    Telia-merkingen i headeren under tilhører kalkulatoren, ikke nettstedet. */
 .site-bar {
   background: #191521;
@@ -51,13 +51,15 @@ body {
 
 .site-mark {
   font-size: 15px;
+  white-space: nowrap;
   font-weight: var(--purpur-typography-weight-bold);
   letter-spacing: -0.02em;
   user-select: none;
   -webkit-user-select: none;
 }
 
-/* The weight break is what stops "TS" from being read as part of "tools". */
+/* The weight break carries the T on its own, so the initial reads as the
+   initial and not as the first letter of "Service". */
 .site-markTail {
   font-weight: 400;
   color: #e4ddec;

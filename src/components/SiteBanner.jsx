@@ -3,7 +3,7 @@ import { useEffect, useRef, useState } from "react";
 /**
  * The site's own chrome, above everything a single tool renders.
  *
- * TStools owns this strip; the tool owns the page under it. Keeping the two
+ * T Service Tools owns this strip; the tool owns the page under it. Keeping the two
  * levels apart is the whole point: the Telia-branded header below belongs to
  * kalkulatoren, not to nettstedet, and bunntekstens forbehold reads as honest
  * only when the site itself never wears Telias merke.
@@ -53,8 +53,7 @@ export function SiteBanner() {
   return (
     <div className="site-bar">
       <div className="site-barRow">
-        {/* One text node, so it is read as the single word it is. */}
-        <span className="site-mark">TS<span className="site-markTail">tools</span></span>
+        <span className="site-mark">T<span className="site-markTail"> Service Tools</span></span>
 
         {TOOLS.length > 1 && (
           <div className="site-switch" ref={switcherRef}>
