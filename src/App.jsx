@@ -6,6 +6,7 @@ import { calculate } from "./lib/calc";
 import { decodeState, encodeState } from "./lib/url-state";
 import { defaultSpeed, planCost, tiersForSpeed } from "./lib/plans";
 import { Header } from "./components/Header";
+import { SiteBanner } from "./components/SiteBanner";
 import { PlanCard } from "./components/PlanCard";
 import { PlansPage } from "./components/PlansPage";
 import { PotCard } from "./components/PotCard";
@@ -196,6 +197,7 @@ export const App = () => {
 
   return (
     <ThemeProvider forceColorScheme="light">
+      <SiteBanner />
       <Header onAdminTap={() => setPinOpen(true)} view={view} onViewChange={goTo} />
 
       {view === "plans" ? (
