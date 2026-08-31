@@ -53,24 +53,43 @@ Får alt plass, sparer du hele beløpet du betaler i dag. Hvis ikke, vises to l�
 
 | Løsning | Hva den gjør |
 | --- | --- |
-| **Kjøp ekstra poeng** | Kjøper differansen i blokker på 10 poeng, opp til poengtaket. Besparelse = verdien av det som dekkes − kostnad for ekstrapoeng. |
+| **Kjøp ekstra poeng** | Går opp til den minste pakken som dekker behovet. Besparelse = verdien av det som dekkes − kostnad for ekstrapoeng. |
 | **Bare det som får plass** | Fyller pakken med kombinasjonen som gir mest kroneverdi. Resten beholder du som i dag. |
 
 Den som sparer mest merkes **Best** og velges automatisk, til du velger noe annet selv.
 Ved likt resultat vinner *Kjøp ekstra poeng*, siden den beholder alle tjenestene.
 
-### Poengtaket
+### Hvilke pakker finnes
 
-En kunde kan ha **215 poeng** i alt, **225 med mobilabonnement hos Telia** — mobilbonusen
-løfter taket på samme måte som den løfter pakken. Ekstrapoeng kan altså ikke kjøpes i det
-uendelige.
+Poengpakkene selges bare i de konfigurasjonene Telia faktisk tilbyr:
 
-Er tjenestene verdt mer enn taket, kjøper *Kjøp ekstra poeng* så mye det får lov til og
-pakker resten på samme måte som *bare det som får plass* — det som gir mest kroneverdi per
-poeng kommer med, og resten står utenfor. Kalkulatoren sier fra når taket er det som
-stopper deg, i stedet for å prise ekstrapoeng Telia ikke selger.
+| Pakke | Poeng i alt |
+| --- | --- |
+| TV & Strømming 15 poeng | 15 |
+| TV & Strømming 40 poeng | 40 |
+| TV & Strømming 60 poeng | 60 |
+| 60 poeng + 10 ekstra | 70 |
+| 60 poeng + 20 ekstra | 80 |
+| 60 poeng + 40 ekstra | 100 |
+| 60 poeng + 60 ekstra (Familie) | 120 |
+| 60 poeng + 80 ekstra | 140 |
+| 60 poeng + 150 ekstra | 210 |
 
-Taket kan endres i admin, under **Poeng og priser**.
+Ekstrapoeng er altså ikke en fri mengde man kjøper ti om gangen: de finnes bare i disse
+bolkene, og bare oppå 60-poengspakken. **60 + 30 er ikke en pakke**, og på 15 og 40 poeng
+kan man ikke kjøpe ekstrapoeng i det hele tatt — der sier kalkulatoren fra om at resten må
+stå utenfor, i stedet for å tilby et kjøp som ikke finnes.
+
+*Kjøp ekstra poeng* går derfor opp til den **minste** konfigurasjonen som dekker behovet.
+Har du en fellesavtale, er TV-poengene fra prisarket (80, 100 og 120) de samme
+konfigurasjonene, og du betaler bare veien videre til den neste.
+
+Taket på **210 poeng**, **220 med mobilabonnement hos Telia**, er ikke et tall for seg: det
+er den største pakken som finnes. Er tjenestene verdt mer enn det, kjøper *Kjøp ekstra
+poeng* den største pakken og pakker resten på samme måte som *bare det som får plass* — det
+som gir mest kroneverdi per poeng kommer med, og resten står utenfor.
+
+Bolkene og pakken de henger på kan endres i admin, under **Ekstrapoeng**.
 
 `kr/poeng` under hver tjeneste sier hvor mye abonnement hvert poeng låser opp, og
 forklarer stort sett hvorfor akkurat de tjenestene ble valgt.
@@ -141,8 +160,8 @@ npm run preview  # server dist/ lokalt
 Trykk fem ganger på logoen i toppen, og skriv inn PIN (standard: `1234`).
 
 Her kan du endre tjenester, nivåer, priser, poeng per nivå, tillegg, valgbare poengpakker
-(navn, poeng og månedspris), mobilbonus, pris per 10 ekstra poeng, taket på antall poeng,
-PIN-koden og logofiler.
+(navn, poeng og månedspris), mobilbonus, pris per 10 ekstra poeng, hvilke bolker med
+ekstrapoeng som selges og hvilken pakke de henger på, PIN-koden og logofiler.
 Kryss av **Kun kr** på et nivå for å markere at det ikke kan kjøpes for poeng, og
 **Vis månedspris på pakkene** hvis listeprisene stemmer for dem som skal bruke kalkulatoren.
 «Tilbakestill til startdata» henter inn standardoppsettet igjen.

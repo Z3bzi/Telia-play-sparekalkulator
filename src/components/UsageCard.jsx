@@ -18,14 +18,17 @@ function AltCard({ mode, calc, altMode, onAltModeChange }) {
   const selected = altMode === mode;
   const isBest = c.recommended === mode;
 
-  // Med poengtaket i veien dekker et fullt kjøp ikke nødvendigvis alt lenger, og
-  // da må kortet si hvorfor det ikke bare kjøper mer.
+  // Pakken kunden går opp til har et navn hos Telia når den har et — «Familie»
+  // er 60 poeng med 60 ekstra — og det er den pakken hen skal be om.
+  const step = `+${data.extraPoints} poeng${data.extraName ? ` (${data.extraName})` : ""} for ${kr(data.extraCost)} kr/md.`;
+  // Med den største pakken i veien dekker et fullt kjøp ikke nødvendigvis alt
+  // lenger, og da må kortet si hvorfor det ikke bare kjøper mer.
   const body = mode !== "buy"
     ? `${data.covered.length} av ${c.chosen.length} tjenester — kombinasjonen som gir mest igjen innenfor pakken.`
     : data.capped
-      ? `+${data.extraPoints} poeng for ${kr(data.extraCost)} kr/md. — alt taket på ${c.ceiling} poeng tillater. `
+      ? `${step} — den største pakken Telia selger, ${c.ceiling} poeng. `
         + `${data.covered.length} av ${c.chosen.length} tjenester dekkes.`
-      : `+${data.extraPoints} poeng for ${kr(data.extraCost)} kr/md. Alle ${c.chosen.length} tjenester dekkes.`;
+      : `${step} Alle ${c.chosen.length} tjenester dekkes.`;
 
   return (
     <button
@@ -72,15 +75,23 @@ export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
         {c.totalPoints} av {c.available} poeng
         {c.over && <span className="app-barWarn"> — {c.totalPoints - c.available} poeng over</span>}
       </div>
-      {/* Taket er bare verdt å nevne når det faktisk står i veien. */}
-      {c.buy.capped && (
+      {/* Grensen er bare verdt å nevne når den faktisk står i veien. */}
+      {c.over && c.extraOffered && c.buy.capped && (
         <div className="app-barText app-barWarn">
-          Taket er {c.ceiling} poeng, så alt får ikke plass uansett hvor mange ekstrapoeng
-          du kjøper.
+          Den største pakken er {c.ceiling} poeng, så alt får ikke plass uansett hvor mange
+          ekstrapoeng du kjøper.
+        </div>
+      )}
+      {/* Ekstrapoeng henger på den store pakken. På en mindre finnes de ikke å
+          kjøpe, og da er det bare én løsning å velge mellom. */}
+      {c.over && !c.extraOffered && (
+        <div className="app-barText app-barWarn">
+          Ekstrapoeng selges bare oppå {c.extraBase}-poengspakken, så på denne pakken må
+          resten stå utenfor.
         </div>
       )}
 
-      {c.over && c.fit && (
+      {c.over && c.fit && c.extraOffered && (
         <div className="app-altWrap">
           <div className="app-altHint">Tjenestene bruker mer enn pakken. Velg løsning:</div>
           <div className="app-altGrid" role="radiogroup" aria-label="Velg løsning for poeng over pakke">
@@ -120,7 +131,7 @@ export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
         )}
         {a.extraCost > 0 && (
           <div className="app-coverRow app-coverExtra">
-            <span>Ekstra poeng ({a.extraPoints} p)</span>
+            <span>Ekstra poeng ({a.extraPoints} p{a.extraName ? ` — ${a.extraName}` : ""})</span>
             <span>−{kr(a.extraCost)} kr/md.</span>
           </div>
         )}

@@ -46,11 +46,24 @@ export const DEFAULT_CONFIG = {
   defaultPot: 60,
   mobileBonus: 10,
   extraPricePer10: 25,
-  // Taket på hvor mange poeng en kunde kan ha i det hele tatt. Mobilbonusen
-  // kommer på toppen, så 215 alene og 225 med mobilabonnement. Ekstrapoeng kan
-  // altså ikke kjøpes i det uendelige: er tjenestene verdt mer enn taket, må
-  // noe stå utenfor pakken uansett hvor mye man er villig til å betale.
-  maxPoints: 215,
+  // Ekstrapoeng selges ikke i frie bolker på ti. Telia tilbyr pakkene i et fast
+  // sett konfigurasjoner, og ekstrapoeng finnes bare oppå den største av dem:
+  // 15, 40 og 60 poeng, og 60 poeng med 10, 20, 40, 60 (Familie), 80 eller 150
+  // ekstrapoeng. Alt annet — 60 + 30, eller ekstrapoeng oppå 40 — er en pakke
+  // kunden ikke får kjøpt, og kalkulatoren skal ikke prise den.
+  //
+  // Taket på 210 poeng er ikke et tall for seg, men det den største
+  // konfigurasjonen kommer ut på. Mobilbonusen kommer på toppen, slik den
+  // kommer på toppen av pakken.
+  extraBase: 60,
+  extraSteps: [
+    { points: 10 },
+    { points: 20 },
+    { points: 40 },
+    { points: 60, name: "Familie" },
+    { points: 80 },
+    { points: 150 },
+  ],
   pin: "1234",
   lastUpdated: null,
   services: [
@@ -122,6 +135,22 @@ export function pruneBundleRefs(services) {
   return services;
 }
 
+// Ekstrapoeng-bolkene, ryddet: bare positive tall, ingen doble, og stigende.
+// Rekkefølgen betyr noe — kalkulatoren tar den minste konfigurasjonen som holder
+// — og to like bolker ville vært to navn på samme pakke.
+export function normaliseSteps(steps) {
+  const seen = new Set();
+  const out = [];
+  for (const s of Array.isArray(steps) ? steps : []) {
+    const points = Number(s && typeof s === "object" ? s.points : s) || 0;
+    if (points <= 0 || seen.has(points)) continue;
+    seen.add(points);
+    const name = typeof s === "object" ? String(s?.name ?? "").trim() : "";
+    out.push({ points, ...(name ? { name } : {}) });
+  }
+  return out.sort((a, b) => a.points - b.points);
+}
+
 // Configs saved before points moved onto levels carry a single service-wide
 // `points`; spread it onto every tier so stored admin edits keep working.
 function migrateConfig(cfg) {
@@ -141,9 +170,13 @@ function migrateConfig(cfg) {
   // under a generic label rather than being dropped.
   // Configs stored while prices were always visible must not keep showing them.
   if (typeof cfg.showPotPrices !== "boolean") cfg.showPotPrices = false;
-  // Configs stored before the poengtaket existed have no ceiling at all, which
-  // would let «kjøp ekstra poeng» quote a number Telia does not sell.
-  if (!(Number(cfg.maxPoints) > 0)) cfg.maxPoints = DEFAULT_CONFIG.maxPoints;
+  // Configs stored before the konfigurasjonene were known priced ekstrapoeng in
+  // free blocks of ten up to a `maxPoints` ceiling. That ceiling has no meaning
+  // now — hvilke pakker som finnes avgjør hvor langt man kommer — so it is
+  // dropped rather than migrated into a step list it never described.
+  delete cfg.maxPoints;
+  if (!(Number(cfg.extraBase) >= 0)) cfg.extraBase = DEFAULT_CONFIG.extraBase;
+  cfg.extraSteps = normaliseSteps(cfg.extraSteps ?? DEFAULT_CONFIG.extraSteps);
   cfg.pots = (Array.isArray(cfg.pots) ? cfg.pots : []).map(p => {
     // A pakke needs nothing but its poengtall; navn and pris are optional and
     // stay absent unless someone has actually filled them in.

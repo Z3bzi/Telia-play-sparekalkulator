@@ -182,6 +182,29 @@ function packGreedy(chosen, available) {
   return { packed, used };
 }
 
+// Poengpakkene finnes bare i de konfigurasjonene Telia selger: pakkene selv, og
+// den største av dem med en av de faste ekstrapoeng-bolkene oppå. Herfra kan
+// kunden altså gå opp til de konfigurasjonene som er større enn pakken hen har,
+// og ingen andre — 40 poeng + 10 ekstra er ikke en pakke, uansett hvor mye
+// kunden er villig til å betale.
+//
+// Pakker under `extraBase` har ingen vei oppover: der er ekstrapoeng ikke en
+// vare, og kalkulatoren har ikke lov til å prise seg ut av problemet.
+//
+// `points` er hva spranget koster i poeng — differansen opp fra pakken kunden
+// står på, ikke bolken i seg selv. Det betyr noe for fellesavtalene, der
+// TV-poengene fra prisarket (80, 100, 120) allerede er slike konfigurasjoner:
+// derfra betales bare veien videre til den neste.
+export function extraOptions(config, pot) {
+  const base = Number(config.extraBase);
+  if (!Number.isFinite(base) || pot < base) return [];
+  return (config.extraSteps ?? [])
+    .map(step => ({ total: base + (Number(step.points) || 0), name: step.name }))
+    .filter(o => o.total > pot)
+    .sort((a, b) => a.total - b.total)
+    .map(o => ({ ...o, points: o.total - pot }));
+}
+
 // `planCost` is what the valgte kombinasjonen av hastighet og TV-poeng koster ut
 // over fellesavtalen — 0 når den ligger i rammen, og 0 når ingen fellesavtale er
 // valgt. Den trekkes fra begge alternativene likt, så anbefalingen står uendret:
@@ -192,29 +215,44 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
   const totalPrice = chosen.reduce((a, c) => a + c.price, 0);
   const totalPoints = chosen.reduce((a, c) => a + c.points, 0);
   const premiumCost = premium.reduce((a, c) => a + c.price, 0);
-  const available = pot + (hasMobile ? config.mobileBonus : 0);
+  const bonus = hasMobile ? config.mobileBonus : 0;
+  const available = pot + bonus;
   const over = totalPoints > available;
 
-  // Poeng kan ikke kjøpes i det uendelige. Taket gjelder totalen, og
-  // mobilbonusen løfter det på samme måte som den løfter pakken — 215 alene,
-  // 225 med mobilabonnement. Ekstrapoeng selges i bolker på ti, så det som er
-  // igjen opp til taket rundes ned til nærmeste hele bolk.
-  const ceiling = (Number(config.maxPoints) || Infinity) + (hasMobile ? config.mobileBonus : 0);
-  const headroom = Math.max(0, ceiling - available);
-  const wanted = over ? Math.ceil((totalPoints - available) / 10) * 10 : 0;
-  const extraPoints = Math.min(wanted, Math.floor(headroom / 10) * 10);
-  const extraCost = (extraPoints / 10) * config.extraPricePer10;
+  // Hvilke pakker kunden kan gå opp til herfra, og hva spranget koster. Er det
+  // ingen — pakken er under den ekstrapoengene henger på — finnes ikke
+  // «kjøp ekstra poeng» som alternativ i det hele tatt.
+  const options = extraOptions(config, pot);
+  const extraOffered = options.length > 0;
+
+  // Taket er den største konfigurasjonen som finnes, ikke et tall for seg.
+  // Mobilbonusen løfter det slik den løfter pakken — 210 alene, 220 med
+  // mobilabonnement på den største pakken.
+  const largest = options.length ? options[options.length - 1] : null;
+  const ceiling = (largest ? largest.total : pot) + bonus;
+
+  // Den minste konfigurasjonen som dekker behovet. Rekker ingen av dem, står
+  // den største igjen: mer enn det kan kunden ikke kjøpe seg til.
+  const wanted = over
+    ? (options.find(o => o.total + bonus >= totalPoints) ?? largest)
+    : null;
+  const extraPoints = wanted ? wanted.points : 0;
+  const extraName = wanted?.name ?? null;
+  // Prisen er oppgitt per ti poeng, og bolkene er hele tiere. En bolk en admin
+  // har funnet på trenger ikke være det, så kronebeløpet rundes.
+  const extraCost = Math.round((extraPoints / 10) * config.extraPricePer10);
 
   // Med taket i veien dekker «kjøp ekstra poeng» ikke nødvendigvis alt lenger.
-  // Når selv et fullt kjøp kommer til kort, må også dette alternativet pakke —
-  // det kjøper så mye det får lov til, og fyller med det som gir mest igjen.
+  // Når selv den største pakken kommer til kort, må også dette alternativet
+  // pakke — det kjøper så mye det får lov til, og fyller med det som gir mest
+  // igjen.
   const budget = available + extraPoints;
   const capped = totalPoints > budget;
   const bought = capped ? pack(chosen, budget) : { packed: chosen, used: totalPoints };
   const buy = {
     covered: bought.packed,
     dropped: chosen.filter(c => !bought.packed.some(p => p.id === c.id)),
-    extraPoints, extraCost, capped,
+    extraPoints, extraCost, extraName, capped,
     savingMonth: bought.packed.reduce((a, c) => a + c.price, 0) - extraCost - planCost,
     pointsUsed: bought.used,
   };
@@ -232,9 +270,12 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
   }
 
   // Ties go to "buy", which keeps every service the user actually pays for.
-  const recommended = fit && fit.savingMonth > buy.savingMonth ? "fit" : "buy";
+  // Uten ekstrapoeng å kjøpe er de to alternativene det samme regnestykket, og
+  // da er «bare det som får plass» det ærlige navnet på svaret.
+  const recommended = fit && (!extraOffered || fit.savingMonth > buy.savingMonth) ? "fit" : "buy";
 
-  const active = over && altMode === "fit" && fit ? fit : buy;
+  const active = over && fit && (altMode === "fit" || !extraOffered) ? fit : buy;
   return { chosen, premium, premiumCost, included, bundle, totalPrice, totalPoints,
-    available, ceiling, over, buy, fit, active, recommended, planCost };
+    available, ceiling, over, buy, fit, active, recommended, planCost,
+    extraOffered, extraBase: Number(config.extraBase) || 0 };
 }

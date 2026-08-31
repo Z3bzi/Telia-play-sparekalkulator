@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button, Checkbox, Modal, Select, TextField } from "@purpur/library";
-import { DEFAULT_CONFIG, pruneBundleRefs } from "../lib/config";
+import { DEFAULT_CONFIG, normaliseSteps, pruneBundleRefs } from "../lib/config";
 
 const clone = obj => JSON.parse(JSON.stringify(obj));
 
@@ -109,7 +109,29 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
 
   const addPot = () => setDraft(d => ({ ...clone(d), pots: [...clone(d.pots), { name: "Ny pakke", points: 20, price: 0 }] }));
 
+  const updateStep = (i, field, value) => setDraft(d => {
+    const next = clone(d);
+    next.extraSteps[i][field] = value;
+    return next;
+  });
+
+  const removeStep = i => setDraft(d => {
+    const next = clone(d);
+    next.extraSteps.splice(i, 1);
+    return next;
+  });
+
+  const addStep = () => setDraft(d => ({
+    ...clone(d),
+    extraSteps: [...clone(d.extraSteps ?? []), { points: 10 }],
+  }));
+
   const reset = () => setDraft(clone(DEFAULT_CONFIG));
+
+  // Hva den største pakken kommer ut på, mens bolkene redigeres. Ubrukelige
+  // bolker teller ikke med, så tallet er det samme som kalkulatoren vil bruke.
+  const maxTotal = (Number(draft.extraBase) || 0)
+    + Math.max(0, ...normaliseSteps(draft.extraSteps).map(st => st.points));
 
   const save = () => {
     // Deduplicate by point count: PotSelector keys and matches selection by it,
@@ -132,6 +154,10 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
       // longer exists — keep the previous values rather than persist either.
       pin: draft.pin.trim() || config.pin,
       pots: pots.length ? pots : config.pots,
+      // Bolkene ryddes på samme vilkår som pakkene: bare positive tall, ingen
+      // doble, stigende. En tom liste betyr at ekstrapoeng ikke selges i det
+      // hele tatt, og det er en gyldig konfigurasjon — ikke en feil å rette opp.
+      extraSteps: normaliseSteps(draft.extraSteps),
       // A tjeneste that was just removed cannot be required or included by the
       // ones that remain — such a peker would lock them out of poeng for good.
       services: pruneBundleRefs(draft.services.filter(s => s.name.trim() && s.levels.length > 0)),
@@ -284,17 +310,42 @@ export function AdminModal({ open, onOpenChange, config, onSave }) {
               onChange={e => setDraft(d => ({ ...d, mobileBonus: Math.max(0, Number(e.target.value) || 0) }))}
             />
           </div>
+
+          <div className="app-stepLabel">Ekstrapoeng</div>
+          {/* Ekstrapoeng er ikke en fri mengde, men et fast sett pakker oppå én
+              bestemt pakke. Taket følger av den største bolken og settes ikke
+              for seg — det ville bare kunnet motsi listen under. */}
           <div className="app-adminRow">
-            {/* Mobilbonusen kommer på toppen av taket, slik den kommer på toppen
-                av pakken — 215 alene, 225 med mobilabonnement. */}
             <TextField
-              id="max-points"
-              label="Tak på antall poeng (uten mobilbonus)"
+              id="extra-base"
+              label="Ekstrapoeng selges oppå (poeng)"
               type="number"
-              value={draft.maxPoints}
-              onChange={e => setDraft(d => ({ ...d, maxPoints: Math.max(1, Number(e.target.value) || 1) }))}
+              value={draft.extraBase}
+              onChange={e => setDraft(d => ({ ...d, extraBase: Math.max(0, Number(e.target.value) || 0) }))}
+              helperText={`Største pakke blir ${maxTotal} poeng.`}
             />
           </div>
+          {(draft.extraSteps ?? []).map((st, i) => (
+            <div className="app-adminRow app-adminPot" key={i}>
+              <TextField
+                id={`step-name-${i}`}
+                label="Navn (valgfritt)"
+                value={st.name ?? ""}
+                onChange={e => updateStep(i, "name", e.target.value)}
+              />
+              <TextField
+                className="app-adminNum"
+                id={`step-points-${i}`}
+                label="Ekstra poeng"
+                type="number"
+                value={st.points}
+                onChange={e => updateStep(i, "points", Math.max(0, Number(e.target.value) || 0))}
+              />
+              <Button variant="destructive" size="sm" onClick={() => removeStep(i)}>Fjern bolk</Button>
+            </div>
+          ))}
+          <Button variant="tertiary-purple" onClick={addStep}>+ Bolk med ekstrapoeng</Button>
+
           <div className="app-stepLabel">Valgbare poengpakker</div>
           <div className="app-adminRow">
             {/* Off by default: MDU-kunder betaler det borettslaget har avtalt,
