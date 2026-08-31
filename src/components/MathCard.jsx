@@ -36,9 +36,9 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10, p
             <span>Tilgjengelige poeng ({pot}{hasMobile ? ` + ${mobileBonus} mobil` : ""})</span>
             <span>{c.available} poeng</span>
           </div>
-          {c.buy.capped && (
+          {c.extraOffered && c.buy.capped && (
             <div className="app-mathRow">
-              <span>Tak på antall poeng{hasMobile ? ` (inkl. ${mobileBonus} mobil)` : ""}</span>
+              <span>Største pakke{hasMobile ? ` (inkl. ${mobileBonus} mobil)` : ""}</span>
               <span>{c.ceiling} poeng</span>
             </div>
           )}
@@ -54,7 +54,10 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10, p
             <span>{kr(coveredValue)} kr/md.</span>
           </div>
           <div className="app-mathRow">
-            <span>− Kostnad for ekstra poeng ({a.extraPoints} p à {extraPricePer10} kr per 10)</span>
+            <span>
+              − Kostnad for ekstra poeng ({a.extraPoints} p à {extraPricePer10} kr per 10)
+              {a.extraName && <><br /><small>Pakken heter {a.extraName} hos Telia.</small></>}
+            </span>
             <span>{kr(a.extraCost)} kr/md.</span>
           </div>
           {c.planCost > 0 && (
