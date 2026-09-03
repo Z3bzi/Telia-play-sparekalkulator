@@ -209,7 +209,7 @@ export function extraOptions(config, pot) {
 // over fellesavtalen — 0 når den ligger i rammen, og 0 når ingen fellesavtale er
 // valgt. Den trekkes fra begge alternativene likt, så anbefalingen står uendret:
 // den avgjør bare hva pakken faktisk er verdt når den er betalt for.
-export function calculate(config, { pot, hasMobile, selections, addons = {}, altMode, planCost = 0 }) {
+export function calculate(config, { pot, hasMobile, selections, addons = {}, altMode, planCost = 0, planOptions = null }) {
   const { chosen, premium, included, bundle } = collect(config, selections, addons);
 
   const totalPrice = chosen.reduce((a, c) => a + c.price, 0);
@@ -221,8 +221,11 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
 
   // Hvilke pakker kunden kan gå opp til herfra, og hva spranget koster. Er det
   // ingen — pakken er under den ekstrapoengene henger på — finnes ikke
-  // «kjøp ekstra poeng» som alternativ i det hele tatt.
-  const options = extraOptions(config, pot);
+  // «kjøp ekstra poeng» som alternativ i det hele tatt. Med en fellesavtale
+  // kommer disse fra avtalens eget prisark (planOptions) i stedet for de løse
+  // SDU-pakkenes flate sats — Telia selger ikke ekstrapoeng på Min Side til en
+  // fellesavtale-kunde, de går til en annen rad i borettslagets prisark.
+  const options = planOptions ?? extraOptions(config, pot);
   const extraOffered = options.length > 0;
 
   // Taket er den største konfigurasjonen som finnes, ikke et tall for seg.
@@ -238,9 +241,14 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
     : null;
   const extraPoints = wanted ? wanted.points : 0;
   const extraName = wanted?.name ?? null;
-  // Prisen er oppgitt per ti poeng, og bolkene er hele tiere. En bolk en admin
-  // har funnet på trenger ikke være det, så kronebeløpet rundes.
-  const extraCost = Math.round((extraPoints / 10) * config.extraPricePer10);
+  // planOptions bærer sin egen kr-kostnad, hentet fra avtalen (ekte eller
+  // ekstrapolert). Uten en avtale er ekstrapoeng en flat løs-pakke-sats,
+  // oppgitt per ti poeng — bolkene er hele tiere, men en admin-oppfunnet bolk
+  // trenger ikke være det, så kronebeløpet rundes.
+  const extraCost = wanted
+    ? (planOptions ? wanted.cost : Math.round((extraPoints / 10) * config.extraPricePer10))
+    : 0;
+  const extraExtrapolated = wanted?.extrapolated ?? false;
 
   // Med taket i veien dekker «kjøp ekstra poeng» ikke nødvendigvis alt lenger.
   // Når selv den største pakken kommer til kort, må også dette alternativet
@@ -252,7 +260,7 @@ export function calculate(config, { pot, hasMobile, selections, addons = {}, alt
   const buy = {
     covered: bought.packed,
     dropped: chosen.filter(c => !bought.packed.some(p => p.id === c.id)),
-    extraPoints, extraCost, extraName, capped,
+    extraPoints, extraCost, extraName, extraExtrapolated, capped,
     savingMonth: bought.packed.reduce((a, c) => a + c.price, 0) - extraCost - planCost,
     pointsUsed: bought.used,
   };

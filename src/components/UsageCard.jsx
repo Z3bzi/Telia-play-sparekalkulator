@@ -1,5 +1,6 @@
 import { Heading } from "@purpur/library";
 import { kr } from "../lib/config";
+import { speedLabel } from "../lib/plans";
 
 // A 0-point service has infinite value per point (it costs nothing from the
 // package) — meaningful for the packing order, meaningless on screen.
@@ -20,7 +21,8 @@ function AltCard({ mode, calc, altMode, onAltModeChange }) {
 
   // Pakken kunden går opp til har et navn hos Telia når den har et — «Familie»
   // er 60 poeng med 60 ekstra — og det er den pakken hen skal be om.
-  const step = `+${data.extraPoints} poeng${data.extraName ? ` (${data.extraName})` : ""} for ${kr(data.extraCost)} kr/md.`;
+  const step = `+${data.extraPoints} poeng${data.extraName ? ` (${data.extraName})` : ""} for `
+    + `${kr(data.extraCost)} kr/md.${data.extraExtrapolated ? " (anslått)" : ""}`;
   // Med den største pakken i veien dekker et fullt kjøp ikke nødvendigvis alt
   // lenger, og da må kortet si hvorfor det ikke bare kjøper mer.
   const body = mode !== "buy"
@@ -86,8 +88,9 @@ export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
           kjøpe, og da er det bare én løsning å velge mellom. */}
       {c.over && !c.extraOffered && (
         <div className="app-barText app-barWarn">
-          Ekstrapoeng selges bare oppå {c.extraBase}-poengspakken, så på denne pakken må
-          resten stå utenfor.
+          {plan
+            ? `${plan.family} tilbyr ikke flere TV-poeng enn dette på ${speedLabel(plan.speed)}, så resten må stå utenfor.`
+            : `Ekstrapoeng selges bare oppå ${c.extraBase}-poengspakken, så på denne pakken må resten stå utenfor.`}
         </div>
       )}
 

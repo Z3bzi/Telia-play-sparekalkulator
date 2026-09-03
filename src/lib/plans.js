@@ -105,6 +105,66 @@ export function planCost(family, speedMbit, tvPoints) {
 }
 
 /**
+ * The kr/poeng Telia charges within one avtale+hastighet, read off the last
+ * steg arket faktisk priser. Brukes til å prise TV-poeng-totaler forbi det
+ * avtalens egen tabell når — flere avtaler (Flex Basis Optimal, Flex Start …)
+ * stopper på 80 eller 100 TV-poeng, mens behovet til en husstand kan gå
+ * høyere. Ekstrapolering fra avtalens egen sats holder tallet forankret i
+ * hva Telia faktisk tar for *denne* avtalen, i stedet for å låne satsen fra
+ * de løse SDU-pakkene, som ikke har noe med avtalen å gjøre.
+ */
+export function pointRate(family, speedMbit) {
+  const tiers = listTvPointTiers(family);
+  for (let i = tiers.length - 1; i > 0; i--) {
+    const hi = getPlanRow(family, speedMbit, tiers[i]);
+    const lo = getPlanRow(family, speedMbit, tiers[i - 1]);
+    if (!hi || !lo || hi.price_type === "unavailable" || lo.price_type === "unavailable") continue;
+    const dPts = tiers[i] - tiers[i - 1];
+    if (dPts <= 0) continue;
+    const hiPrice = hi.price_type === "paid" ? (hi.price_nok ?? 0) : 0;
+    const loPrice = lo.price_type === "paid" ? (lo.price_nok ?? 0) : 0;
+    return (hiPrice - loPrice) / dPts;
+  }
+  return null;
+}
+
+/**
+ * TV-poeng-konfigurasjoner forbi pakken en fellesavtale-kunde sitter på:
+ * ekte rader fra prisarket der de finnes, og ekstrapolert fra avtalens egen
+ * kr/poeng forbi det — stegvis med samme mellomrom avtalen selv bruker
+ * (typisk 20 poeng), avgrenset av `ceilingTotal` så konseptet ikke løper i
+ * det uendelige. `cost` er allerede tillegget over `currentCost` — hva det
+ * faktisk koster å kjøpe seg opp fra pakken kunden står på.
+ */
+export function planExtraOptions(family, speedMbit, pot, currentCost, ceilingTotal) {
+  const tiers = listTvPointTiers(family);
+  if (!tiers.length) return [];
+  const maxTier = tiers[tiers.length - 1];
+  const options = [];
+
+  for (const t of tiers) {
+    if (t <= pot) continue;
+    const cost = planCost(family, speedMbit, t);
+    if (cost === null) continue;
+    options.push({ total: t, points: t - pot, cost: Math.round(cost - currentCost), extrapolated: false });
+  }
+
+  const rate = pointRate(family, speedMbit);
+  const lastGap = tiers.length > 1 ? tiers[tiers.length - 1] - tiers[tiers.length - 2] : null;
+  if (rate !== null && lastGap) {
+    const topRow = getPlanRow(family, speedMbit, maxTier);
+    const topPrice = topRow?.price_type === "paid" ? (topRow.price_nok ?? 0) : 0;
+    for (let t = maxTier + lastGap; t <= ceilingTotal; t += lastGap) {
+      if (t <= pot) continue;
+      const cost = topPrice + rate * (t - maxTier);
+      options.push({ total: t, points: t - pot, cost: Math.round(cost - currentCost), extrapolated: true });
+    }
+  }
+
+  return options.sort((a, b) => a.total - b.total);
+}
+
+/**
  * The facts about a family worth stating above its table, all read off the
  * sheet rather than assumed: which combinations the fellesavtale covers, how
  * far the TV-points go, and what the paid steps span.
