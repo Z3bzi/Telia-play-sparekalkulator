@@ -917,6 +917,44 @@ body {
   border-radius: var(--purpur-border-radius-sm);
 }
 
+.app-modeToggle {
+  display: flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 14px;
+  background: var(--purpur-color-background-secondary);
+  border-radius: var(--purpur-border-radius-lg);
+}
+
+.app-modeBtn {
+  flex: 1;
+  padding: 9px 12px;
+  border: 2px solid transparent;
+  border-radius: var(--purpur-border-radius-md);
+  background: transparent;
+  color: var(--purpur-color-text-medium);
+  font: inherit;
+  font-weight: var(--purpur-typography-weight-bold);
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
+}
+
+.app-modeBtn:hover {
+  color: var(--purpur-color-text-default);
+}
+
+.app-modeBtn:focus-visible {
+  outline: 2px solid var(--purpur-color-border-interactive-focus);
+  outline-offset: 2px;
+}
+
+.app-modeOn,
+.app-modeOn:hover {
+  border-color: var(--purpur-color-border-interactive-primary);
+  background: var(--purpur-color-background-primary);
+  color: var(--purpur-color-text-interactive-primary);
+}
+
 .app-planFields {
   display: flex;
   flex-direction: column;
