@@ -142,7 +142,7 @@ export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
             hører prisen hjemme her sammen med kostnaden for ekstrapoeng. */}
         {c.planCost > 0 && (
           <div className="app-coverRow app-coverExtra">
-            <span>Tillegg for TV-poeng i {plan?.family ?? "fellesavtalen"}</span>
+            <span>{plan ? `Tillegg for TV-poeng i ${plan.family}` : "Poengpakken din"}</span>
             <span>−{kr(c.planCost)} kr/md.</span>
           </div>
         )}

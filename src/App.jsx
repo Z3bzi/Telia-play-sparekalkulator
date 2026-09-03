@@ -39,6 +39,11 @@ export const App = () => {
       : (config.pots[config.pots.length - 1]?.points ?? 0)),
   );
   const [hasMobile, setHasMobile] = useState(() => initial.hasMobile ?? false);
+  // Hva kalkulator-modus (SDU) kunden faktisk betaler for poengpakken sin.
+  // Valgfritt — startdata sier ingenting om løspakke-priser, så uten et tall
+  // her holdes den utenfor regnestykket akkurat som før, og forutsetter at
+  // kunden har Telia Play uansett.
+  const [sduPrice, setSduPrice] = useState(() => initial.sduPrice ?? 0);
   const [selections, setSelections] = useState(() => initial.selections ?? {});
   const [addons, setAddons] = useState(() => initial.addons ?? {});
   // null means "follow the recommendation" until the user picks explicitly.
@@ -58,7 +63,7 @@ export const App = () => {
   // What the chosen kombinasjonen adds to the monthly bill. A kombinasjon the
   // avtalen doesn't offer has no price at all; it is treated as free here and
   // called out in the pakkevalget instead, so the sum never invents a number.
-  const currentPlanCost = plan ? (planCost(plan.family, plan.speed, pot) ?? 0) : 0;
+  const currentPlanCost = plan ? (planCost(plan.family, plan.speed, pot) ?? 0) : sduPrice;
 
   // How far the "kjøp ekstra poeng"-konseptet strekker seg, uansett kilde:
   // den samme grensen de løse SDU-pakkene bruker (60-poengspakken + den
@@ -141,10 +146,10 @@ export const App = () => {
   // Keep the URL in step with the current selection without adding history
   // entries for every checkbox click.
   useEffect(() => {
-    const encoded = encodeState({ pot, hasMobile, selections, addons, altChoice, view, plan });
+    const encoded = encodeState({ pot, hasMobile, selections, addons, altChoice, view, plan, sduPrice });
     const next = `${window.location.pathname}${window.location.search}#${encoded}`;
     window.history.replaceState(null, "", next);
-  }, [pot, hasMobile, selections, addons, altChoice, view, plan]);
+  }, [pot, hasMobile, selections, addons, altChoice, view, plan, sduPrice]);
 
   const goTo = next => {
     setView(next);
@@ -249,6 +254,8 @@ export const App = () => {
               hasMobile={hasMobile}
               onMobileChange={setHasMobile}
               plan={plan}
+              sduPrice={sduPrice}
+              onSduPriceChange={setSduPrice}
             />
             <ServicesCard
               services={config.services}

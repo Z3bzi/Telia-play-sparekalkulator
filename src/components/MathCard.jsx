@@ -68,7 +68,7 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10, p
           </div>
           {c.planCost > 0 && (
             <div className="app-mathRow">
-              <span>− Tillegg for TV-poengene i fellesavtalen</span>
+              <span>− {plan ? "Tillegg for TV-poengene i fellesavtalen" : "Prisen for poengpakken din"}</span>
               <span>{kr(c.planCost)} kr/md.</span>
             </div>
           )}
