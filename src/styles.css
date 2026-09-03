@@ -1080,12 +1080,19 @@ body {
   position: relative;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
-  padding: 0 20px;
+  /* No side padding here: the sticky label column parks at the scroller's own
+     left edge, so any padding leaves a strip the prices scroll through. The
+     inset lives on the outer cells instead. */
+  padding: 0;
 }
 
 .app-mx {
   width: 100%;
-  border-collapse: collapse;
+  /* Collapsed borders merge the cell backgrounds into the table's own paint
+     layer, and Safari then draws the scrolling prices straight over the sticky
+     label column. Separate borders keep each cell's background its own. */
+  border-collapse: separate;
+  border-spacing: 0;
   font-size: 13.5px;
   white-space: nowrap;
 }
@@ -1108,10 +1115,21 @@ body {
 .app-mxCorner {
   position: sticky;
   left: 0;
-  z-index: 1;
+  z-index: 2;
+  /* Opaque, and wide enough to carry the panel's own left inset, so nothing
+     shows up beside the label while the prices slide past underneath. */
   background: var(--purpur-color-brand-deep-purple);
   text-align: right;
-  padding: 10px 14px 10px 0;
+  padding: 10px 14px 10px 20px;
+  /* The divider belongs to the column that stays put; a border on the first
+     price cell would scroll away with it. */
+  box-shadow: 1px 0 0 rgba(255, 255, 255, 0.14);
+}
+
+/* The right-hand inset the scroller no longer carries. */
+.app-mxColHead:last-child,
+.app-mxCell:last-child {
+  padding-right: 20px;
 }
 
 .app-mxCell {
@@ -1119,6 +1137,14 @@ body {
   text-align: center;
   border-left: 1px solid rgba(255, 255, 255, 0.14);
   color: var(--purpur-color-text-medium-negative);
+  /* Opaque under the sticky column's shadow, and so the highlighted «Ingen
+     kostnad» tint doesn't stack up as it scrolls past its neighbours. */
+  background: var(--purpur-color-brand-deep-purple);
+}
+
+/* The sticky column draws its own divider, so the first price cell doesn't. */
+.app-mxCell:first-of-type {
+  border-left: 0;
 }
 
 .app-mx tbody tr + tr .app-mxCell,
@@ -1133,7 +1159,8 @@ body {
 .app-mxCell.app-mx-included {
   color: var(--purpur-color-text-default-negative);
   font-weight: var(--purpur-typography-weight-bold);
-  background: rgba(255, 255, 255, 0.1);
+  background: linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)),
+    var(--purpur-color-brand-deep-purple);
   /* Colour alone must not carry «Ingen kostnad», so the cell keeps the words. */
   white-space: normal;
   min-width: 92px;
@@ -1165,7 +1192,9 @@ body {
     flex-direction: column;
   }
   .app-mxPanel { padding: 28px 0 22px; }
-  .app-mxHead, .app-mxScroll, .app-mxFoot { padding-left: 28px; padding-right: 28px; }
+  .app-mxHead, .app-mxFoot { padding-left: 28px; padding-right: 28px; }
+  .app-mxRowHead, .app-mxCorner { padding-left: 28px; }
+  .app-mxColHead:last-child, .app-mxCell:last-child { padding-right: 28px; }
   .app-mx { font-size: 15px; }
 }
 
