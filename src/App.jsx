@@ -4,7 +4,7 @@ import { IconPebble } from "@purpur/library/icon/pebble";
 import { kr, loadConfig, persistConfig } from "./lib/config";
 import { calculate } from "./lib/calc";
 import { decodeState, encodeState } from "./lib/url-state";
-import { defaultSpeed, planCost, tiersForSpeed } from "./lib/plans";
+import { defaultSpeed, planCost, planExtraOptions, tiersForSpeed } from "./lib/plans";
 import { Header } from "./components/Header";
 import { SiteBanner } from "./components/SiteBanner";
 import { PlanCard } from "./components/PlanCard";
@@ -60,6 +60,26 @@ export const App = () => {
   // called out in the pakkevalget instead, so the sum never invents a number.
   const currentPlanCost = plan ? (planCost(plan.family, plan.speed, pot) ?? 0) : 0;
 
+  // How far the "kjøp ekstra poeng"-konseptet strekker seg, uansett kilde:
+  // den samme grensen de løse SDU-pakkene bruker (60-poengspakken + den
+  // største ekstrapoeng-bolken), så en fellesavtale ikke ekstrapoleres i det
+  // uendelige.
+  const planCeiling = useMemo(() => {
+    const base = Number(config.extraBase) || 0;
+    const maxStep = (config.extraSteps ?? []).reduce((m, s) => Math.max(m, Number(s.points) || 0), 0);
+    return base + maxStep;
+  }, [config]);
+
+  // Med en fellesavtale kommer "kjøp ekstra poeng" fra avtalens eget
+  // prisark — ekte rader der de finnes, ekstrapolert fra avtalens egen
+  // kr/poeng forbi det — i stedet for de løse SDU-pakkenes flate sats.
+  // Uten avtale (SDU-modus) er dette null, og calculate() faller tilbake
+  // til den flate satsen som før.
+  const planOptions = useMemo(() => {
+    if (!plan) return null;
+    return planExtraOptions(plan.family, plan.speed, pot, currentPlanCost, planCeiling);
+  }, [plan, pot, currentPlanCost, planCeiling]);
+
   // Which pakke leaves the most igjen once it is paid for. Worth surfacing
   // precisely because the answer is not "the biggest one": a pakke that costs
   // 389 kr/md. has to save more than that before it beats the free one.
@@ -68,8 +88,12 @@ export const App = () => {
     let best = null;
     for (const t of planTiers) {
       if (!t.available) continue;
+      const tPlanOptions = plan
+        ? planExtraOptions(plan.family, plan.speed, t.points, t.price, planCeiling)
+        : null;
       const c = calculate(config, {
         pot: t.points, hasMobile, selections, addons, altMode: "buy", planCost: t.price,
+        planOptions: tPlanOptions,
       });
       // The user is free to pick either alternative when the pakke overflows,
       // so a pakke is judged by the better of the two.
@@ -77,7 +101,7 @@ export const App = () => {
       if (!best || value > best.value) best = { points: t.points, value };
     }
     return best?.points ?? null;
-  }, [planTiers, config, hasMobile, selections, addons]);
+  }, [planTiers, config, hasMobile, selections, addons, plan, planCeiling]);
 
   const potOptions = useMemo(() => {
     if (!planTiers) return config.pots;
@@ -101,17 +125,17 @@ export const App = () => {
 
   const recommended = useMemo(
     () => calculate(config, {
-      pot, hasMobile, selections, addons, altMode: "buy", planCost: currentPlanCost,
+      pot, hasMobile, selections, addons, altMode: "buy", planCost: currentPlanCost, planOptions,
     }).recommended,
-    [config, pot, hasMobile, selections, addons, currentPlanCost],
+    [config, pot, hasMobile, selections, addons, currentPlanCost, planOptions],
   );
   const altMode = altChoice ?? recommended;
 
   const calc = useMemo(
     () => calculate(config, {
-      pot, hasMobile, selections, addons, altMode, planCost: currentPlanCost,
+      pot, hasMobile, selections, addons, altMode, planCost: currentPlanCost, planOptions,
     }),
-    [config, pot, hasMobile, selections, addons, altMode, currentPlanCost],
+    [config, pot, hasMobile, selections, addons, altMode, currentPlanCost, planOptions],
   );
 
   // Keep the URL in step with the current selection without adding history

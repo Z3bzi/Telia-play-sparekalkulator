@@ -55,8 +55,14 @@ export function MathCard({ calc, pot, hasMobile, mobileBonus, extraPricePer10, p
           </div>
           <div className="app-mathRow">
             <span>
-              − Kostnad for ekstra poeng ({a.extraPoints} p à {extraPricePer10} kr per 10)
+              − Kostnad for ekstra poeng ({a.extraPoints} p{!plan && ` à ${extraPricePer10} kr per 10`})
               {a.extraName && <><br /><small>Pakken heter {a.extraName} hos Telia.</small></>}
+              {a.extraExtrapolated && (
+                <><br /><small>
+                  {plan?.family ?? "Denne avtalen"} selger ikke denne poengsummen direkte —
+                  prisen er anslått ut fra avtalens egne trinn.
+                </small></>
+              )}
             </span>
             <span>{kr(a.extraCost)} kr/md.</span>
           </div>
