@@ -13,8 +13,11 @@ inn i admin av den som har de riktige, men prisen holdes av som standard uansett
 MDU-kunder – de som får TV gjennom borettslag eller sameie – betaler det avtalen deres med
 Telia sier, og kalkulatoren vet ikke hvem som sitter på andre siden.
 
-Prisen på de løse pakkene inngår ikke i regnestykket: kalkulatoren sammenligner hva
-strømmetjenestene koster med og uten poeng, og forutsetter at du har Telia Play uansett.
+Prisen på de løse pakkene inngår ikke i regnestykket som standard: kalkulatoren
+sammenligner hva strømmetjenestene koster med og uten poeng, og forutsetter at du har
+Telia Play uansett. Vet du hva du faktisk betaler for pakken din, kan du fylle det inn
+under poengpakke-valget — da trekkes den fra besparelsen på samme måte som tillegget en
+fellesavtale koster.
 
 Velger du i stedet **fellesavtalen borettslaget har**, kommer TV-poengene – og hva de
 koster – rett fra Telias prisark. Da inngår tillegget i regnestykket, fordi det er en

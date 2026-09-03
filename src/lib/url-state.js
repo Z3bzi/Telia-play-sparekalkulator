@@ -3,7 +3,7 @@ import { listFamilies, listSpeeds } from "./plans";
 // Selections live in the URL hash so a result can be linked or shared. The hash
 // is used rather than the query string to keep it inert for static hosting.
 
-export function encodeState({ pot, hasMobile, selections, addons, altChoice, view, plan }) {
+export function encodeState({ pot, hasMobile, selections, addons, altChoice, view, plan, sduPrice }) {
   const params = new URLSearchParams();
   params.set("p", String(pot));
   // The calculator is the default view, so only the other one is written down.
@@ -11,6 +11,9 @@ export function encodeState({ pot, hasMobile, selections, addons, altChoice, vie
   if (plan) {
     params.set("f", plan.family);
     params.set("sp", String(plan.speed));
+  } else if (sduPrice) {
+    // Only means something in kalkulator-modus — a fellesavtale prices itself.
+    params.set("pp", String(sduPrice));
   }
   if (hasMobile) params.set("m", "1");
   const picked = Object.entries(selections).map(([id, lvl]) => `${id}:${lvl}`);
@@ -46,6 +49,10 @@ export function decodeState(hash, config) {
   const speed = Number(params.get("sp"));
   if (family && listFamilies().includes(family) && listSpeeds(family).includes(speed)) {
     state.plan = { family, speed };
+  } else {
+    const ppRaw = params.get("pp");
+    const pp = Number(ppRaw);
+    if (ppRaw && Number.isFinite(pp) && pp >= 0) state.sduPrice = pp;
   }
 
   // The valid pot values depend on whether a fellesavtale is in play, so the
