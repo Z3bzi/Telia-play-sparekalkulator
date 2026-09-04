@@ -136,6 +136,30 @@ i kalkulatoren. Da skjer tre ting:
   den største: en pakke til 389 kr/md. må dekke mer enn 389 kr/md. i tjenester før den
   slår den som er inkludert.
 
+Arket stopper på 60, 80, 100 eller 120 TV-poeng, avhengig av avtalen, men avtalen gjør
+ikke det: Telia selger flere poeng enn tabellen rekker å skrive ned. *Kjøp ekstra poeng*
+regner videre oppover derfra, og prisen hentes fra avtalen selv – ikke fra en flat sats.
+
+Kolonnen kunden står i svarer når den har to betalte trinn: da er trappen allerede i gang,
+og den forlenges med **avtalens eget poengsteg ved akkurat den hastigheten**. Steget er
+ikke likt i alle avtaler – Flex Basis, Start, Extra og Pluss går 100 kr/md. per trinn, mens
+Flex Bredbånd Max går 100 kr/md. fra 15 til 40 TV-poeng og 50 kr/md. fra 40 til 60. Derfor
+leses det av det øverste trinnparet i kolonnen, som er den trappen som fortsetter.
+
+Ligger kunden på grensen for fellesavtalen, har kolonnen ingen trapp å forlenge – på
+50 Mbit/s i Flex Start er alt under 60 TV-poeng merket «–». Da står prisen på første hakk
+ut av avtalen i naboraden i stedet: trappen går i to retninger samtidig, og **ett hakk opp
+i TV-poeng koster det samme som ett hakk opp i hastighet**. Flex Start Optimal med 60
+TV-poeng ligger i avtalen på 50 Mbit/s og koster 389 kr/md. på 100 Mbit/s, og 389 kr/md. er
+dermed også det 80 TV-poeng koster på 50 Mbit/s. Derfra gjelder poengsteget igjen.
+
+«Ingen kostnad» teller aldri som et trinn i den trappen. Spranget fra rammen avtalen dekker
+og opp til første betalte kombinasjon er avtalens grunnpris, ikke et poengsteg, og å regne
+det som 0 kr ville gjort steget flere hundre kroner for stort.
+
+Tall som ikke står i arket selv merkes **(anslått)**, både på løsningskortet og i
+«Slik regnet vi».
+
 Koster poengene mer enn tjenestene de dekker, sier resultatkortet **Du betaler mer** i
 stedet for å vise en besparelse med minus foran.
 
