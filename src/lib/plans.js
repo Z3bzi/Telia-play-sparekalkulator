@@ -105,16 +105,28 @@ export function planCost(family, speedMbit, tvPoints) {
 }
 
 /**
+ * Prisen arket oppgir for én kombinasjon, men bare når den er et betalt trinn.
+ * «Ingen kostnad» er ikke et trinn i trappen — det er rammen fellesavtalen
+ * allerede dekker — og å regne det som 0 kr ville gjort spranget ut av avtalen
+ * til et poengsteg. Det er det ikke: det spranget er avtalens grunnpris.
+ */
+function paidPrice(family, speedMbit, tvPoints) {
+  const row = getPlanRow(family, speedMbit, tvPoints);
+  return row?.price_type === "paid" ? (row.price_nok ?? 0) : null;
+}
+
+/**
  * Hva ett hakk opp i TV-poeng koster ved én hastighet, lest av de to øverste
- * trinnene kolonnen faktisk priser. Toppen først: der ligger steget mellom to
- * betalte trinn, mens bunnen av kolonnen har spranget ut av fellesavtalen —
- * som er avtalens grunnpris, ikke et steg.
+ * trinnene kolonnen selv priser. Avtalene er ikke enige om dette steget: Flex
+ * Start og Flex Basis går 100 kr per trinn hele veien, mens Flex Bredbånd Max
+ * går 100 kr fra 15 til 40 TV-poeng og 50 kr fra 40 til 60. Toppen er derfor
+ * den eneste riktige å lese av — det er den trappen som fortsetter oppover.
  */
 function tierStepAt(family, speedMbit) {
   const tiers = listTvPointTiers(family);
   for (let i = tiers.length - 1; i > 0; i--) {
-    const hi = planCost(family, speedMbit, tiers[i]);
-    const lo = planCost(family, speedMbit, tiers[i - 1]);
+    const hi = paidPrice(family, speedMbit, tiers[i]);
+    const lo = paidPrice(family, speedMbit, tiers[i - 1]);
     if (hi === null || lo === null) continue;
     return hi - lo;
   }
@@ -123,8 +135,9 @@ function tierStepAt(family, speedMbit) {
 
 /**
  * Samme steg, men med resten av avtalen som reserve: en kolonne med bare ett
- * priset trinn (50 Mbit/s i Flex Start, der alt under 60 poeng er «-») sier
- * ingenting om steget, mens de raske kolonnene i samme avtale gjør det.
+ * betalt trinn sier ingenting om steget, mens de raske kolonnene i samme
+ * avtale gjør det. Steget er likt i alle kolonner som har det, så det spiller
+ * ingen rolle hvilken av dem svaret kommer fra.
  */
 function tierStep(family, speedMbit) {
   const own = tierStepAt(family, speedMbit);
@@ -138,60 +151,67 @@ function tierStep(family, speedMbit) {
 }
 
 /**
+ * Grunnprisen for å gå ut av fellesavtalen ved én hastighet: det første
+ * betalte trinnet på arkets øverste poengrad, funnet ved å se oppover i
+ * hastighet herfra. Trappen i arket går nemlig i to retninger samtidig — ett
+ * hakk opp i TV-poeng koster det samme som ett hakk opp i hastighet — så det
+ * første hakket ut av avtalen står allerede i naboraden. Flex Start Optimal
+ * med 60 TV-poeng ligger i avtalen på 50 Mbit/s og koster 389 kr på
+ * 100 Mbit/s, og 389 kr er dermed også det 80 TV-poeng koster på 50 Mbit/s.
+ */
+function stepOutPrice(family, speedMbit) {
+  const speeds = listSpeeds(family);
+  const tiers = listTvPointTiers(family);
+  const topTier = tiers[tiers.length - 1];
+  for (let s = speeds.indexOf(speedMbit) + 1; s < speeds.length; s++) {
+    const price = paidPrice(family, speeds[s], topTier);
+    if (price !== null) return price;
+  }
+  return null;
+}
+
+/**
  * Hva en TV-poeng-sum forbi arkets egne trinn koster ved én hastighet, og om
- * tallet er lest eller anslått.
+ * tallet er lest eller anslått. Arket stopper på 60, 80, 100 eller 120
+ * TV-poeng avhengig av avtalen, men avtalen gjør ikke det — Telia selger flere
+ * poeng enn tabellen rekker å skrive ned.
  *
- * Trappen i prisarket går i to retninger samtidig: ett hakk opp i TV-poeng
- * koster nøyaktig det samme som ett hakk opp i hastighet. Flex Start Optimal
- * med 60 TV-poeng ligger i fellesavtalen på 50 Mbit/s og koster 389 kr på
- * 100 Mbit/s — og 389 kr er også det 80 TV-poeng koster på 50 Mbit/s. Arket
- * stopper på 60 eller 80 TV-poeng i flere avtaler, mens Telia fortsetter å
- * selge oppover, og da står prisen allerede i naboraden: den skal leses av
- * diagonalen, ikke gjettes.
- *
- * Diagonalen gjør jobben så langt hastighetene rekker — ett trinn ned i
- * poeng, ett opp i hastighet, helt til vi står på en rad arket priser. Går det
- * tomt for hastigheter først, tas resten rett opp i kolonnen med avtalens eget
- * poengsteg.
+ * Kolonnen kunden står i svarer selv når den har to betalte trinn: da er
+ * trappen allerede i gang, og den forlenges med avtalens eget poengsteg ved
+ * akkurat den hastigheten. Har den ikke det, står kunden på grensen for
+ * fellesavtalen, og første hakk ut av den koster grunnprisen fra naboraden —
+ * derfra igjen gjelder poengsteget.
  *
  * Returnerer null bare når avtalen ikke gir noe å regne fra i det hele tatt.
  */
 export function projectPlanCost(family, speedMbit, tvPoints) {
-  const speeds = listSpeeds(family);
   const tiers = listTvPointTiers(family);
-  const startSpeed = speeds.indexOf(speedMbit);
-  if (startSpeed < 0 || !tiers.length) return null;
+  if (!listSpeeds(family).includes(speedMbit) || !tiers.length) return null;
 
   const exact = planCost(family, speedMbit, tvPoints);
   if (exact !== null) return { cost: exact, extrapolated: false };
 
-  const top = tiers.length - 1;
-  const gap = top > 0 ? tiers[top] - tiers[top - 1] : 0;
+  const top = tiers[tiers.length - 1];
+  const gap = tiers.length > 1 ? top - tiers[tiers.length - 2] : 0;
   // Forbi toppen er det eneste vi kan strekke. Under den er «-» et bevisst
   // valg fra Telia — avtalen selges ikke ned — og skal ikke prises bort.
-  if (tvPoints <= tiers[top] || gap <= 0) return null;
-  const steps = (tvPoints - tiers[top]) / gap;
+  if (tvPoints <= top || gap <= 0) return null;
+  const steps = (tvPoints - top) / gap;
   if (!Number.isInteger(steps)) return null;
 
-  let tier = top + steps;
-  let speed = startSpeed;
-  while (tier > top && speed < speeds.length - 1) { tier--; speed++; }
-
-  // Landet på en ekte rad: prisen står der, selv om den gjelder en annen
-  // kombinasjon enn den kunden spør om.
-  let base = null;
-  for (let s = speed; s < speeds.length && base === null; s++) {
-    base = planCost(family, speeds[s], tiers[Math.min(tier, top)]);
-    if (base !== null) speed = s;
+  const ownStep = tierStepAt(family, speedMbit);
+  if (ownStep !== null) {
+    const topPrice = paidPrice(family, speedMbit, top);
+    if (topPrice !== null) return { cost: topPrice + ownStep * steps, extrapolated: true };
   }
+
+  const base = stepOutPrice(family, speedMbit);
   if (base === null) return null;
+  if (steps === 1) return { cost: base, extrapolated: true };
 
-  const remaining = tier - top;
-  if (remaining <= 0) return { cost: base, extrapolated: true };
-
-  const step = tierStep(family, speeds[speed]);
+  const step = tierStep(family, speedMbit);
   if (step === null) return null;
-  return { cost: base + step * remaining, extrapolated: true };
+  return { cost: base + step * (steps - 1), extrapolated: true };
 }
 
 /**
