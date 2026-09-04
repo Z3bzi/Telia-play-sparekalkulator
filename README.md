@@ -136,6 +136,18 @@ i kalkulatoren. Da skjer tre ting:
   den største: en pakke til 389 kr/md. må dekke mer enn 389 kr/md. i tjenester før den
   slår den som er inkludert.
 
+Arket stopper på 60, 80, 100 eller 120 TV-poeng, avhengig av avtalen, men avtalen gjør
+ikke det: Telia selger flere poeng enn tabellen rekker å skrive ned. Prisen står likevel i
+arket, bare i naboraden – trappen går i to retninger samtidig, og **ett hakk opp i TV-poeng
+koster nøyaktig det samme som ett hakk opp i hastighet**. Flex Start Optimal med 60
+TV-poeng ligger i avtalen på 50 Mbit/s og koster 389 kr/md. på 100 Mbit/s, og 389 kr/md. er
+dermed også det 80 TV-poeng koster på 50 Mbit/s.
+
+*Kjøp ekstra poeng* leser prisen av den diagonalen så langt hastighetene i avtalen rekker,
+og tar resten rett opp i kolonnen med avtalens eget poengsteg når den går tom for
+hastigheter. Tall som ikke står i arket selv merkes **(anslått)**, både på løsningskortet
+og i «Slik regnet vi».
+
 Koster poengene mer enn tjenestene de dekker, sier resultatkortet **Du betaler mer** i
 stedet for å vise en besparelse med minus foran.
 

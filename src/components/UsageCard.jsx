@@ -85,11 +85,14 @@ export function UsageCard({ calc, altMode, onAltModeChange, plan }) {
         </div>
       )}
       {/* Ekstrapoeng henger på den store pakken. På en mindre finnes de ikke å
-          kjøpe, og da er det bare én løsning å velge mellom. */}
+          kjøpe, og da er det bare én løsning å velge mellom. Med en fellesavtale
+          finnes veien oppover alltid — arket stopper, men avtalen gjør det ikke
+          — så der er det bare taket kalkulatoren regner innenfor som kan stå i
+          veien. */}
       {c.over && !c.extraOffered && (
         <div className="app-barText app-barWarn">
           {plan
-            ? `${plan.family} tilbyr ikke flere TV-poeng enn dette på ${speedLabel(plan.speed)}, så resten må stå utenfor.`
+            ? `${plan.family} regnes ikke høyere enn ${c.available} poeng på ${speedLabel(plan.speed)}, så resten må stå utenfor.`
             : `Ekstrapoeng selges bare oppå ${c.extraBase}-poengspakken, så på denne pakken må resten stå utenfor.`}
         </div>
       )}
